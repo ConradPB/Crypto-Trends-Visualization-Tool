@@ -1,0 +1,34 @@
+# dependencies
+node_modules
+dist
+
+#environment variables
+
+.env
+
+# misc
+package-lock.json
+pnpm-lock.yaml
+.DS_Store
+src/.DS_Store
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# OS generated files
+Thumbs.db
+*.swp
+
+# IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# coverage directory
+coverage/

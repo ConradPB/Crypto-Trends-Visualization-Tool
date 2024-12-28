@@ -1,0 +1,36 @@
+{
+  "name": "trendsvisualizer",
+  "version": "1.0.0",
+  "description": "trend visualizer web app for crypto assets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ConradPB/Crypto-Trends-Visualization-Tool.git"
+  },
+  "keywords": [
+    "crypto",
+    "tool"
+  ],
+  "author": "Conrad PMB",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ConradPB/Crypto-Trends-Visualization-Tool/issues"
+  },
+  "homepage": "https://github.com/ConradPB/Crypto-Trends-Visualization-Tool#readme",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
