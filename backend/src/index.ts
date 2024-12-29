@@ -13,6 +13,15 @@ app.use(express.json()); // Parse JSON requests
 
 app.use('/api/crypto', cryptoRoutes);
 
+// Global Error Handler
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.error(`[Error] ${err.message}`);
+    res.status(err.status || 500).json({
+        error: err.message || 'Internal Server Error',
+    });
+});
+
+
 //app.use((req, res, next) => {
   //  console.log(`Incoming request: ${req.method} ${req.url}`);
   //  next();
