@@ -24,7 +24,7 @@ export const getCryptoPrices = async (req: Request, res: Response) => {
     const { ids, vs_currencies } = req.query;
 
     try {
-        const response = await axios.get('https://api.fakeurl.com/sile/price', {
+        const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
             params: { ids, vs_currencies },
         });
         res.json(response.data);

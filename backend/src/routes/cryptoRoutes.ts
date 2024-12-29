@@ -1,18 +1,11 @@
-import { Router } from 'express';
+import express from 'express';
 import { getCryptoPrices } from '../controllers/cryptoController';
 
-const router = Router();
+const router = express.Router();
 
-
-// router.use((req, res, next) => {
-  // console.log(`Crypto route handler: ${req.method} ${req.url}`);
-   // next();
-//}); 
-
-// Log when the route is hit
-router.get('/prices', (req, res, next) => {
-    console.log('Crypto prices route accessed');
-    next();
-}, getCryptoPrices);
+// Define the route with properly typed parameters
+router.get('/prices', (req: express.Request, res: express.Response) => {
+    getCryptoPrices(req, res);
+});
 
 export default router;
