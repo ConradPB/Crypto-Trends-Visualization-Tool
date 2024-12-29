@@ -13,10 +13,10 @@ app.use(express.json()); // Parse JSON requests
 
 app.use('/api/crypto', cryptoRoutes);
 
-app.use((req, res, next) => {
-    console.log(`Incoming request: ${req.method} ${req.url}`);
-    next();
-});
+//app.use((req, res, next) => {
+  //  console.log(`Incoming request: ${req.method} ${req.url}`);
+  //  next();
+//});
 
 
 // Define a simple route
