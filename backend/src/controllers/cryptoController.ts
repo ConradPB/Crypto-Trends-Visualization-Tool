@@ -1,25 +1,34 @@
-import { Request, Response, RequestHandler } from 'express';
-import { fetchCryptoPrices } from '../services/cryptoService';
+import { Request, Response } from 'express';
+import axios from 'axios';
+import Joi from 'joi';
 
-export const getCryptoPrices: RequestHandler = async (req, res) => {
-    console.log('Inside getCryptoPrices');
-    const { ids, vs_currencies } = req.query;
+const schema = Joi.object({
+    ids: Joi.string().required().messages({
+        'string.base': `"ids" should be a string`,
+        'string.empty': `"ids" cannot be an empty field`,
+        'any.required': `"ids" is a required field`,
+    }),
+    vs_currencies: Joi.string().required().messages({
+        'string.base': `"vs_currencies" should be a string`,
+        'string.empty': `"vs_currencies" cannot be an empty field`,
+        'any.required': `"vs_currencies" is a required field`,
+    }),
+});
 
-    if (!ids || !vs_currencies) {
-        res.status(400).json({ error: 'Missing required query parameters: ids, vs_currencies' });
-        return;
+export const getCryptoPrices = async (req: Request, res: Response) => {
+    const { error } = schema.validate(req.query);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
     }
 
+    const { ids, vs_currencies } = req.query;
+
     try {
-        const axios = require('axios');
         const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
-            params: { ids, vs_currencies }
+            params: { ids, vs_currencies },
         });
-        console.log('CoinGecko API Response:', response.data); // Log the response
         res.json(response.data);
-    } catch (error) {
-        console.error('Error calling CoinGecko API:', error);
+    } catch (err) {
         res.status(500).json({ error: 'Failed to fetch crypto prices' });
     }
 };
-
