@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cryptoRoutes from './routes/cryptoRoutes';
+import cors from 'cors';
 
 // Load environment variables
 dotenv.config();
@@ -10,7 +11,8 @@ const app = express();
 
 // Middleware
 app.use(express.json()); // Parse JSON requests
-
+app.use(express.urlencoded({ extended: true }));
+app.use(cors())
 app.use('/api/crypto', cryptoRoutes);
 
 // Global Error Handler
