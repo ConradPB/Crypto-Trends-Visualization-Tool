@@ -1,24 +1,25 @@
-import { Request, Response } from 'express';
+import { Request, Response } from 'express-serve-static-core';
 import axios from 'axios';
-import Joi from 'joi';
-
-const schema = Joi.object({
-    ids: Joi.string().default('bitcoin,ethereum'),
-    vs_currencies: Joi.string().default('usd')
-});
-
-const apiUrl = process.env.COINGECKO_API_URL;
 
 export const getCryptoPrices = async (req: Request, res: Response) => {
+    const { ids, vs_currencies } = req.query as { ids: string; vs_currencies: string };
+
+    if (!ids || !vs_currencies) {
+        return res.status(400).json({ error: 'Missing required query parameters: ids and vs_currencies' });
+    }
+
     try {
-        console.log('Simulating API response');
-        const mockResponse = {
-            bitcoin: { usd: 50000 },
-            ethereum: { usd: 4000 },
-        };
-        return res.status(200).json(mockResponse);
+        const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
+            params: { ids, vs_currencies },
+        });
+
+        res.json(response.data);
     } catch (error) {
-        console.error('Unexpected error:', error);
-        return res.status(500).json({ error: 'An unexpected error occurred' });
+        if (axios.isAxiosError(error)) {
+            console.error('Error fetching data from CoinGecko:', error.message);
+        } else {
+            console.error('Unexpected error:', error);
+        }
+        res.status(500).json({ error: 'Failed to fetch crypto prices' });
     }
 };
