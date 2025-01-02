@@ -1,38 +1,43 @@
 import { Request, Response } from 'express';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
+
+const DEBUG = true;
 
 export const getCryptoPrices = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { ids = 'bitcoin,ethereum', vs_currencies = 'usd' } = req.query;
-        
+        if (DEBUG) console.log('Attempting API call to CoinGecko');
+
         const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
             params: { 
-                ids, 
-                vs_currencies 
+                ids: req.query.ids || 'bitcoin',
+                vs_currencies: req.query.vs_currencies || 'usd'
             },
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            timeout: 5000
+                'accept': 'application/json',
+                'x-cg-pro-api-key': process.env.COINGECKO_API_KEY
+            }
         });
 
-        res.status(200).json(response.data);
-    } catch (error) {
-        console.error('Error fetching crypto prices:', error);
-        
-        if (axios.isAxiosError(error)) {
-            const axiosError = error as AxiosError;
-            
-            if (axiosError.response) {
-                res.status(axiosError.response.status).json({
-                    error: 'CoinGecko API error',
-                    details: axiosError.response.data
-                });
-                return;
-            }
+        if (DEBUG) console.log('Response received:', response.data);
+        res.json(response.data);
+
+    } catch (error: any) {
+        if (DEBUG) {
+            console.error('API Error:', {
+                message: error.message,
+                status: error.response?.status,
+                data: error.response?.data
+            });
         }
-        
-        res.status(500).json({ error: 'Failed to fetch crypto prices' });
+
+        if (error.response?.status === 429) {
+            res.status(429).json({ error: 'Rate limit exceeded. Please try again later.' });
+            return;
+        }
+
+        res.status(500).json({ 
+            error: 'Failed to fetch crypto prices',
+            details: error.response?.data?.error || error.message
+        });
     }
 };
