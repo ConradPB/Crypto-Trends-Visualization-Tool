@@ -12,31 +12,12 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
-// Force console to flush immediately
-if (process.env.NODE_ENV !== 'production') {
-    const originalConsoleError = console.error;
-    const originalConsoleLog = console.log;
-    
-    console.error = (...args) => {
-        originalConsoleError(...args);
-        if (process.stdout.write) {
-            process.stdout.write('');
-        }
-    };
-    
-    console.log = (...args) => {
-        originalConsoleLog(...args);
-        if (process.stdout.write) {
-            process.stdout.write('');
-        }
-    };
-}
-
 // Routes
 app.use('/api/crypto', cryptoRoutes);
 
 // Global error handler
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+// Add underscore prefix to unused parameters to satisfy TypeScript
+app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
     console.error('Global error handler caught:', err);
     res.status(500).json({
         error: 'Internal server error',
@@ -63,3 +44,5 @@ const server = app.listen(PORT, () => {
 server.on('error', (error) => {
     console.error('Server error:', error);
 });
+
+export default app;
