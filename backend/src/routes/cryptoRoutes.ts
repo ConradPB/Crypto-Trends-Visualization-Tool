@@ -1,8 +1,16 @@
-import express from 'express';
+import { Router } from 'express';
 import { getCryptoPrices } from '../controllers/cryptoController';
 
-const router = express.Router();
+// Create router instance
+const router = Router();
 
-router.get('/prices', getCryptoPrices);
+
+ router.get('/prices', async (req, res, next) => {
+     try {
+         await getCryptoPrices(req, res);
+     } catch (error) {
+         next(error);
+     }
+ });
 
 export default router;
