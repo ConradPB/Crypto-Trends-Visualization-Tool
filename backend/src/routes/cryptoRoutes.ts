@@ -1,16 +1,9 @@
 import { Router } from 'express';
 import { getCryptoPrices } from '../controllers/cryptoController';
+import { validateCryptoRequest } from '../middleware/validation';
 
-// Create router instance
 const router = Router();
 
-
- router.get('/prices', async (req, res, next) => {
-     try {
-         await getCryptoPrices(req, res);
-     } catch (error) {
-         next(error);
-     }
- });
+router.get('/prices', validateCryptoRequest, getCryptoPrices);
 
 export default router;
