@@ -1,10 +1,9 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 const app = express();
 
-// Test route
-app.get('/', (req, res) => {
-    res.send('Server is up and running!');
+app.get('/api/crypto/prices', (req: Request, res: Response) => {
+    res.json({ message: 'Prices route is working!' });
 });
 
 const PORT = 7000;
