@@ -1,11 +1,20 @@
 import express from 'express';
-import { getCryptoPrices } from './controllers/cryptoController';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import cryptoRoutes from './routes/cryptoRoutes';
+
+dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.get('/api/crypto/prices', getCryptoPrices);
+// Middleware
+app.use(express.json());
+app.use(cors());
 
-const PORT = 7000;
+// Routes
+app.use('/api/crypto', cryptoRoutes);
+
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
