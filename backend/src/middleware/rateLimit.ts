@@ -1,12 +1,12 @@
 import rateLimit from 'express-rate-limit';
 import { Request, Response } from 'express';
 
-// Add type definition for the rate limit info
+// Adding type definition for the rate limit info
 interface RateLimitInfo {
     resetTime: Date;
 }
 
-// Extend Express Request type
+// Extending Express Request type
 declare module 'express' {
     export interface Request {
         rateLimit?: RateLimitInfo;
