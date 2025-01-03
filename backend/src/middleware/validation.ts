@@ -43,7 +43,7 @@ const schemas = {
     })
 };
 
-// Create validation middleware factory
+// Validation middleware factory
 export const validate = (schemaName: keyof typeof schemas) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
