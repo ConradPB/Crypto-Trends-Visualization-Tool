@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/ConradPB/Crypto-Trends-Visualization-Tool#readme",
   "dependencies": {
+    "@types/node-cache": "^4.2.5",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -35,7 +36,8 @@
     "express-serve-static-core": "^0.1.1",
     "joi": "^17.13.3",
     "mongoose": "^8.9.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
