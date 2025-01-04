@@ -7,7 +7,7 @@ import {
 } from '../controllers/cryptoController';
 import { validate } from '../middleware/validation';
 import { cryptoLimiter } from '../middleware/rateLimit';
-import { cacheMiddleware } from '../middleware/cache';
+import { cacheMiddleware } from '../middleware/Cache';
 
 const router = Router();
 
