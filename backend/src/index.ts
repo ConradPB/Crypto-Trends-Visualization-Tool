@@ -25,6 +25,12 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
     });
 });
 
+app.use((req, _res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
+
+
 // Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
     console.error('Uncaught Exception:', error);
