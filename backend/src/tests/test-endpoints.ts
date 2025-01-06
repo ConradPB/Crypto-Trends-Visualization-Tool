@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5000/api/crypto';
+const BASE_URL = 'http://localhost:7000/api/crypto';
 
 const testEndpoints = async () => {
     try {
@@ -54,13 +54,18 @@ const testEndpoints = async () => {
             }
         }
 
-    } catch (error) {
+    }  catch (error) {
         if (axios.isAxiosError(error)) {
-            console.error('Test failed:', error.response?.data || error.message);
+            console.error('Test failed with Axios error:');
+            console.error('Error message:', error.message);
+            console.error('Response data:', error.response?.data);
+            console.error('Response status:', error.response?.status);
+            console.error('Response headers:', error.response?.headers);
         } else {
-            console.error('Test failed:', error);
+            console.error('Test failed with unknown error:', error);
         }
     }
+
 };
 
 // Run tests
