@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+
 import cryptoRoutes from './routes/cryptoRoutes';
 
 dotenv.config();
