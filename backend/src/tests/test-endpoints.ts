@@ -2,6 +2,18 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:7000/api/crypto';
 
+const healthCheck = async () => {
+    try {
+        const response = await axios.get(BASE_URL.replace('/api/crypto', '/'));
+        console.log('Health check passed:', response.status);
+    } catch (error) {
+        console.error('Health check failed. Is the server running?');
+        process.exit(1); // Exit the script early if the server isn't reachable
+    }
+};
+
+await healthCheck();
+
 const testEndpoints = async () => {
     try {
         console.log('Testing /prices endpoint:');
