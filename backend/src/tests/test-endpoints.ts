@@ -12,8 +12,6 @@ const healthCheck = async () => {
     }
 };
 
-await healthCheck();
-
 const testEndpoints = async () => {
     try {
         console.log('Testing /prices endpoint:');
