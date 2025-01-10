@@ -28,7 +28,17 @@ export const getCryptoPrices = async (req: Request, res: Response): Promise<void
 
         // Return the data to the client
         res.json(response.data);
-    } catch (error: any) 
+    } catch (error: any) {
+        console.error('Error fetching crypto prices:', error.message);
+        if (axios.isAxiosError(error) && error.response) {
+            // Include more specific error information for debugging
+            res.status(error.response.status).json({ 
+                error: error.response.data || 'Failed to fetch crypto prices' 
+            });
+        } else {
+            res.status(500).json({ error: 'Failed to fetch crypto prices' });
+        }
+    }
 };
 
 
