@@ -3,41 +3,27 @@ import axios from 'axios';
 
 export const getCryptoPrices = async (req: Request, res: Response): Promise<void> => {
     try {
-        // Extract and validate query parameters
-        const ids = req.query.ids as string || 'bitcoin';
-        const vs_currencies = req.query.vs_currencies as string || 'usd';
+        // Sanitize and format query parameters
+        const ids = (req.query.ids as string || 'bitcoin').trim();
+        const vs_currencies = (req.query.vs_currencies as string || 'usd').trim();
 
-        if (!ids || !vs_currencies) {
-            res.status(400).json({ error: 'Missing required query parameters: ids and vs_currencies' });
-            return;
-        }
-
-        // Send request to CoinGecko API
         const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
             params: {
                 ids,
                 vs_currencies,
+                include_24hr_change: true,
+                include_market_cap: true
             },
             headers: {
-                'accept': 'application/json',
-                ...(process.env.COINGECKO_API_KEY && { 'x-cg-pro-api-key': process.env.COINGECKO_API_KEY }),
-            },
+                accept: 'application/json'
+            }
         });
-
-        // Return the data to the client
         res.json(response.data);
     } catch (error: any) {
-        console.error('Error fetching crypto prices:', error.message);
-        if (axios.isAxiosError(error) && error.response) {
-            // Include more specific error information for debugging
-            res.status(error.response.status).json({ 
-                error: error.response.data || 'Failed to fetch crypto prices' 
-            });
-        } else {
-            res.status(500).json({ error: 'Failed to fetch crypto prices' });
-        }
+        res.status(500).json({ error: 'Failed to fetch crypto prices' });
     }
 };
+
 
 
 export const getHistoricalData = async (req: Request, res: Response): Promise<void> => {
