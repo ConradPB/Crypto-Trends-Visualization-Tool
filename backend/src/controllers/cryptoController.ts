@@ -17,8 +17,6 @@ export const getCryptoPrices = async (req: Request, res: Response): Promise<void
             params: {
                 ids,
                 vs_currencies,
-                include_24hr_change: true,
-                include_market_cap: true,
             },
             headers: {
                 'accept': 'application/json',
