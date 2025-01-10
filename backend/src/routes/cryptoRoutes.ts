@@ -19,9 +19,7 @@ router.get('/prices',
 );
 
 router.get('/historical', 
-    cryptoLimiter,
-    validate('historical'),
-    cacheMiddleware,
+   
     getHistoricalData
 );
 
