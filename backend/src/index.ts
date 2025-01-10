@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cryptoRoutes from './routes/cryptoRoutes';
 
+
 dotenv.config();
 
 const app = express();
