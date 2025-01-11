@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "target": "ES2020",                 // Target modern JavaScript features.
+      "module": "CommonJS",              // Align with Node.js default.
+      "outDir": "./dist",                // Compiled output folder.
+      "rootDir": "./src",                // Source folder for TypeScript files.
+      "strict": true,                    // Enable strict type-checking options.
+      "esModuleInterop": true,           // Enable interop for ES modules.
+      "forceConsistentCasingInFileNames": true, // Enforce consistent file name casing.
+      "skipLibCheck": true,              // Skip type checking of declaration files.
+      "resolveJsonModule": true,         // Allow importing JSON files.
+      "moduleResolution": "node",        // Use Node.js module resolution strategy.
+      "allowJs": false,                  // Disallow JavaScript files in your TypeScript project.
+      "declaration": true,               // Generate `.d.ts` declaration files.
+      "sourceMap": true,                 // Include source maps in compiled output.
+      "incremental": true                // Enable faster builds with incremental compilation.
+    },
+    "include": ["src"],                  // Include the source folder.
+    "exclude": ["node_modules", "dist"]  // Exclude `node_modules` and output folder.
+  }
