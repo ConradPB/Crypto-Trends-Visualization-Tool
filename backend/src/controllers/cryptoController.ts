@@ -53,3 +53,27 @@ export const getTrendingCoins = async (_req: Request, res: Response): Promise<vo
         res.status(500).json({ error: 'Failed to fetch trending coins' });
     }
 };
+
+export const getMarketData = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { vs_currency = 'usd', order = 'market_cap_desc', per_page = 10, page = 1, sparkline = false } = req.query;
+
+        const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
+            params: {
+                vs_currency,
+                order,
+                per_page,
+                page,
+                sparkline,
+            },
+            headers: {
+                'accept': 'application/json',
+            },
+        });
+
+        res.json(response.data);
+    } catch (error: any) {
+        console.error('Error fetching market data:', error.message);
+        res.status(500).json({ error: 'Failed to fetch market data' });
+    }
+};
