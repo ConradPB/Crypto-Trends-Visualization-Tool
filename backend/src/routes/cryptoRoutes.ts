@@ -1,11 +1,13 @@
 import { Router } from 'express';
-import { getCryptoPrices, getHistoricalData, getTrendingCoins, } from '../controllers/cryptoController';
+import { getCryptoPrices, getHistoricalData, getMarketData, getTrendingCoins, } from '../controllers/cryptoController';
 
 const router: Router = Router();
 
 router.get('/prices', getCryptoPrices);
 router.get('/historical', getHistoricalData);
 router.get('/trending', getTrendingCoins);
+router.get('/markets', getMarketData);
+
 
 
 
