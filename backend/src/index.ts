@@ -31,6 +31,9 @@ app.use((req, _res, next) => {
     next();
 });
 
+app.use('*', (req, res) => {
+    res.status(404).send('Route not found');
+});
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
