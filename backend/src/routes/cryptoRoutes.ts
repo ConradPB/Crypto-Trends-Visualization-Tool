@@ -1,14 +1,43 @@
 import { Router } from 'express';
-import { getCryptoPrices, getHistoricalData, getMarketData, getTrendingCoins, } from '../controllers/cryptoController';
+import { 
+    getCryptoPrices, 
+    getHistoricalData, 
+    getTrendingCoins, 
+    getMarketData 
+} from '../controllers/cryptoController';
+import { validateRequest } from '../middleware/validation';
+import { pricesSchema, historicalSchema, trendingSchema, marketSchema } from '../middleware/validationSchemas';
+import { cryptoLimiter } from '../middleware/rateLimit';
+import { cacheMiddleware } from '../middleware/Cache';
 
-const router: Router = Router();
+const router = Router();
 
-router.get('/prices', getCryptoPrices);
-router.get('/historical', getHistoricalData);
-router.get('/trending', getTrendingCoins);
-router.get('/markets', getMarketData);
+router.get('/prices',
+    cryptoLimiter,
+    validateRequest(pricesSchema),
+    cacheMiddleware,
+    getCryptoPrices
+);
 
+router.get('/historical',
+    cryptoLimiter,
+    validateRequest(historicalSchema),
+    cacheMiddleware,
+    getHistoricalData
+);
 
+router.get('/trending',
+    cryptoLimiter,
+    validateRequest(trendingSchema),
+    cacheMiddleware,
+    getTrendingCoins
+);
 
+router.get('/markets',
+    cryptoLimiter,
+    validateRequest(marketSchema),
+    cacheMiddleware,
+    getMarketData
+);
 
 export default router;
