@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
+import logger from '../utils/logger';
 
 export const getCryptoPrices = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -9,13 +10,13 @@ export const getCryptoPrices = async (req: Request, res: Response): Promise<void
                 vs_currencies: req.query.vs_currencies || 'usd'
             }
         });
+        logger.info(`Fetched prices for: ${req.query.ids || 'bitcoin,ethereum'}`);
         res.json(response.data);
     } catch (error: any) {
-        console.error('Error fetching prices:', error.message);
+        logger.error(`Error fetching prices: ${error.message}`);
         res.status(500).json({ error: 'Failed to fetch prices' });
     }
 };
-
 
 export const getHistoricalData = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -32,9 +33,10 @@ export const getHistoricalData = async (req: Request, res: Response): Promise<vo
             },
         });
 
+        logger.info(`Fetched historical data for: ${id}, Days: ${days}, Interval: ${interval}`);
         res.json(response.data);
     } catch (error: any) {
-        console.error('Error fetching historical data:', error.message);
+        logger.error(`Error fetching historical data: ${error.message}`);
         res.status(500).json({ error: 'Failed to fetch historical data' });
     }
 };
@@ -47,9 +49,10 @@ export const getTrendingCoins = async (_req: Request, res: Response): Promise<vo
             },
         });
 
+        logger.info('Fetched trending coins');
         res.json(response.data);
     } catch (error: any) {
-        console.error('Error fetching trending coins:', error.message);
+        logger.error(`Error fetching trending coins: ${error.message}`);
         res.status(500).json({ error: 'Failed to fetch trending coins' });
     }
 };
@@ -71,9 +74,10 @@ export const getMarketData = async (req: Request, res: Response): Promise<void> 
             },
         });
 
+        logger.info(`Fetched market data: VS Currency: ${vs_currency}, Order: ${order}, Page: ${page}, Per Page: ${per_page}`);
         res.json(response.data);
     } catch (error: any) {
-        console.error('Error fetching market data:', error.message);
+        logger.error(`Error fetching market data: ${error.message}`);
         res.status(500).json({ error: 'Failed to fetch market data' });
     }
 };
