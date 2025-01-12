@@ -6,9 +6,9 @@ import {
     getMarketData 
 } from '../controllers/cryptoController';
 import { validateRequest } from '../middleware/validation';
-import { pricesSchema, historicalSchema, trendingSchema, marketSchema } from '../middleware/validationSchemas';
+import { pricesSchema, historicalSchema, trendingSchema, marketSchema } from '../Schemas/validationSchemas';
 import { cryptoLimiter } from '../middleware/rateLimit';
-import { cacheMiddleware } from '../middleware/Cache';
+import { cacheMiddleware } from '../middleware/cache';
 
 const router: Router = Router();
 
