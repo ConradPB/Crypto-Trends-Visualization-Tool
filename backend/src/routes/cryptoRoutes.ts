@@ -10,7 +10,7 @@ import { pricesSchema, historicalSchema, trendingSchema, marketSchema } from '..
 import { cryptoLimiter } from '../middleware/rateLimit';
 import { cacheMiddleware } from '../middleware/Cache';
 
-const router = Router();
+const router: Router = Router();
 
 router.get('/prices',
     cryptoLimiter,
