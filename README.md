@@ -122,3 +122,45 @@ Example:
 Example:
 
 `GET /api/crypto/markets?vs_currency=usd&order=market_cap_desc&page=1`
+
+## Middleware
+
+- **Validation:** Ensures all incoming requests have the correct structure and parameters.
+- **Rate Limiting:** Prevents excessive API requests.
+- **Caching:** Speeds up frequent requests by storing results in memory.
+
+## Error Handling
+
+Centralized error handling ensures consistent error responses:
+
+```javascript
+{
+  "error": "Internal server error",
+  "message": "Error details here"
+}
+```
+
+## Logging
+
+Logs all incoming requests and errors for easier debugging. The logs include:
+
+- Request method and URL.
+- Error stack traces when applicable.
+
+## Testing
+
+To run endpoint tests, execute:
+
+`pnpm test:endpoints`
+
+## Deployment
+
+Ensure the following for deployment:
+
+- Proper environment variables are set.
+- Use a process manager like PM2 or Docker.
+- Enable HTTPS in production.
+
+## License
+
+This project is licensed under the ISC License.
