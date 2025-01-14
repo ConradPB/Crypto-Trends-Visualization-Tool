@@ -11,8 +11,11 @@ const HistoricalData: React.FC = () => {
     const [selectedCoin, setSelectedCoin] = useState('bitcoin');
     const [timeRange, setTimeRange] = useState('7');
   
-    // Fetch historical data on coin or time range change
+    // Fetching historical data on coin or time range change
     useEffect(() => {
       dispatch(fetchHistoricalData({ id: selectedCoin, days: timeRange }));
     }, [selectedCoin, timeRange, dispatch]);
-  
+    // Format data for the chart
+    const formattedData = historicalData[selectedCoin]?.prices?.map(([timestamp, price]: [number, number]) => ({
+        date: new Date(timestamp).toLocaleDateString(), price,
+    })) || [];
