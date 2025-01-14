@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../store";
 import { fetchHistoricalData } from "../features/cryptoSlice";
 import { RootState } from "../store";
 import { Box, CircularProgress, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 
-const HistoricalData: React.FC = () => {
+    const dispatch: AppDispatch = useDispatch();
     const dispatch = useDispatch();
-    const { HistoricalData, loading, error } = useSelector((state: RootState) => state.crypto);
+    const { historicalData, loading, error } = useSelector((state: RootState) => state.crypto);
   
     const [selectedCoin, setSelectedCoin] = useState('bitcoin');
     const [timeRange, setTimeRange] = useState('7');
@@ -18,7 +19,8 @@ const HistoricalData: React.FC = () => {
       dispatch(fetchHistoricalData({ id: selectedCoin, days: timeRange }));
     }, [selectedCoin, timeRange, dispatch]);
     // Format data for the chart
-    const formattedData = historicalData[selectedCoin]?.prices?.map(([timestamp, price]: [number, number]) => ({
+    const formattedData = 
+    historicalData[selectedCoin]?.prices?.map(([timestamp, price]: [number, number]) => ({
         date: new Date(timestamp).toLocaleDateString(), price,
     })) || [];
 
