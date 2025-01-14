@@ -5,6 +5,7 @@ const store = configureStore({
   reducer: {
     crypto: cryptoReducer,
   },
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export type RootState = ReturnType<typeof store.getState>;
