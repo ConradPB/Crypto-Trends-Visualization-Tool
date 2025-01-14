@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHistoricalData } from "../features/cryptoSlice";
 import { RootState } from "../store";
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Box, CircularProgress, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 
 const HistoricalData: React.FC = () => {
@@ -51,6 +52,29 @@ const HistoricalData: React.FC = () => {
             </Select>
           </FormControl>
     
-        
+          {loading ? (
+        <Box mt={4} display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
+      ) : error ? (
+        <Box mt={4}>
+          <Typography color="error">{error}</Typography>
+        </Box>
+      ) : (
+        <Box mt={4} height={400}>
+          <ResponsiveContainer>
+            <LineChart data={formattedData}>
+              <CartesianGrid stroke="#f5f5f5" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="price" stroke="#8884d8" />
+            </LineChart>
+          </ResponsiveContainer>
+        </Box>
+      )}
+    </Box>
+  );
+};
     
     export default HistoricalData;
