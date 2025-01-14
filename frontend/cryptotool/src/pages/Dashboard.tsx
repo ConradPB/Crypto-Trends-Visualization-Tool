@@ -8,8 +8,23 @@ const Dashboard = () => {
                 Welcome to Crypto Trends Visualization Tool!
             </Typography>
             <Box>
-                <Button variant="contained" color="primary" sx={{ m: 1 }} component={Link} to="/crypto">
+                <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ m: 1 }}
+                    component={Link}
+                    to="/crypto"
+                >
                     View Crypto Prices
+                </Button>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    sx={{ m: 1 }}
+                    component={Link}
+                    to="/historical"
+                >
+                    View Historical Data
                 </Button>
             </Box>
         </Box>
@@ -17,3 +32,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
