@@ -63,4 +63,54 @@ export const fetchHistoricalData = createAsyncThunk(
     }
   );
   
+  // Slice
+  const cryptoSlice = createSlice({
+    name: 'crypto',
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+      builder
+        // Fetch Crypto Prices
+        .addCase(fetchCryptoPrices.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(fetchCryptoPrices.fulfilled, (state, action) => {
+          state.loading = false;
+          state.prices = action.payload;
+        })
+        .addCase(fetchCryptoPrices.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        })
+        // Fetch Historical Data
+        .addCase(fetchHistoricalData.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(fetchHistoricalData.fulfilled, (state, action) => {
+          state.loading = false;
+          state.historicalData = action.payload;
+        })
+        .addCase(fetchHistoricalData.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        })
+        // Fetch Trending Coins
+        .addCase(fetchTrendingCoins.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(fetchTrendingCoins.fulfilled, (state, action) => {
+          state.loading = false;
+          state.trendingCoins = action.payload;
+        })
+        .addCase(fetchTrendingCoins.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        });
+    },
+  });
+  
+  export default cryptoSlice.reducer;
   
