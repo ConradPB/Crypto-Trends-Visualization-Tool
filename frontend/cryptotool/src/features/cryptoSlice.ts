@@ -33,3 +33,34 @@ export const fetchCryptoPrices = createAsyncThunk(
   }
 );
 
+export const fetchHistoricalData = createAsyncThunk(
+    'crypto/fetchHistoricalData',
+    async (params: { id: string; days: string }, { rejectWithValue }) => {
+      try {
+        const response = await axios.get(`/api/crypto/historical?id=${params.id}&days=${params.days}`);
+        return response.data;
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+          return rejectWithValue(error.response.data || 'Failed to fetch historical data');
+        }
+        return rejectWithValue('Failed to fetch historical data');
+      }
+    }
+  );
+  
+  export const fetchTrendingCoins = createAsyncThunk(
+    'crypto/fetchTrendingCoins',
+    async (_, { rejectWithValue }) => {
+      try {
+        const response = await axios.get('/api/crypto/trending');
+        return response.data;
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+          return rejectWithValue(error.response.data || 'Failed to fetch trending coins');
+        }
+        return rejectWithValue('Failed to fetch trending coins');
+      }
+    }
+  );
+  
+  
