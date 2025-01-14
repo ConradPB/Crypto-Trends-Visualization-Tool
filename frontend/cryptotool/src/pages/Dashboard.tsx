@@ -1,19 +1,18 @@
-// pages/Dashboard.tsx
-import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button, Typography, Box } from '@mui/material';
 
 const Dashboard = () => {
     return (
-        <div>
-            <h1>Welcome to Crypto Trends Visualization Tool!</h1>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/crypto">View Crypto Prices</Link>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <Box sx={{ textAlign: 'center', mt: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                Welcome to Crypto Trends Visualization Tool!
+            </Typography>
+            <Box>
+                <Button variant="contained" color="primary" sx={{ m: 1 }} component={Link} to="/crypto">
+                    View Crypto Prices
+                </Button>
+            </Box>
+        </Box>
     );
 };
 
