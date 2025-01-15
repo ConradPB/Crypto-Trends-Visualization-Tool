@@ -1,68 +1,81 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../store";
 import { fetchTrendingCoins } from "../features/cryptoSlice";
-import { RootState } from "../store";
+import { AppDispatch, RootState } from "../store";
 import {
-    Box,
-    CircularProgress,
-    Typography,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  CircularProgress,
+  Grid,
+  Avatar,
 } from "@mui/material";
 
 const TrendingCoins = () => {
-    const dispatch: AppDispatch = useDispatch();
-    const { trendingCoins, loading, error } = useSelector((state: RootState) => state.crypto);
-  
-    useEffect(() => {
-      dispatch(fetchTrendingCoins());
-    }, [dispatch]);
-  
-    return (
-      <Box padding={4}>
-        <Typography variant="h4" gutterBottom>
-          Trending Coins
-        </Typography>
-  
-        {loading ? (
-          <Box mt={4} display="flex" justifyContent="center">
-            <CircularProgress />
-          </Box>
-        ) : error ? (
-          <Box mt={4}>
-            <Typography color="error">{error}</Typography>
-          </Box>
-        ) : (
-          <TableContainer component={Paper} sx={{ mt: 4, maxWidth: '100%', mx: 'auto' }}>
-            <Table>
-              <TableHead>
-                <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Rank</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Symbol</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {trendingCoins.map((coin) => (
-                  <TableRow key={coin.id}>
-                    <TableCell>{coin.marketCapRank}</TableCell>
-                    <TableCell>{coin.name}</TableCell>
-                    <TableCell>{coin.symbol.toUpperCase()}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
-      </Box>
-    );
-  };
-  
+  const dispatch: AppDispatch = useDispatch();
+  const { trendingCoins, loading, error } = useSelector(
+    (state: RootState) => state.crypto
+  );
+
+  useEffect(() => {
+    dispatch(fetchTrendingCoins());
+  }, [dispatch]);
+
+  return (
+    <Box padding={4}>
+      {/* Page Title */}
+      <Typography variant="h4" gutterBottom textAlign="center">
+        Trending Coins
+      </Typography>
+
+      {loading ? (
+        <Box mt={4} display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
+      ) : error ? (
+        <Box mt={4}>
+          <Typography color="error" textAlign="center">
+            {error}
+          </Typography>
+        </Box>
+      ) : (
+        <Grid container spacing={4} mt={2}>
+          {trendingCoins.map((coin) => (
+            <Grid item xs={12} sm={6} md={4} key={coin.id}>
+              <Card
+                sx={{
+                  backgroundColor: "#f9f9f9",
+                  borderRadius: 2,
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                  textAlign: "center",
+                  padding: 2,
+                }}
+              >
+                <CardContent>
+                  <Avatar
+                    src={`https://cryptoicons.org/api/icon/${coin.symbol.toLowerCase()}/200`}
+                    alt={coin.name}
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      margin: "0 auto 16px",
+                    }}
+                  />
+                  <Typography variant="h6" gutterBottom>
+                    {coin.name} ({coin.symbol.toUpperCase()})
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Market Cap Rank: {coin.marketCapRank}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+    </Box>
+  );
+};
 
 export default TrendingCoins;
