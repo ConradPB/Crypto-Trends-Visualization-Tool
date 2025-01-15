@@ -13,7 +13,7 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2"; 
+import { Grid } from '@mui/material';
 import {
   CartesianGrid,
   Line,
@@ -67,9 +67,9 @@ const HistoricalData = () => {
           backgroundColor: "#f9f9f9",
         }}
       >
-        <Grid2 container spacing={3} justifyContent="center">
+        <Grid container spacing={3} justifyContent="center">
           {/* Dropdown for Selecting Cryptocurrency */}
-          <Grid2 item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={4}>
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
               <Select
@@ -82,10 +82,10 @@ const HistoricalData = () => {
                 <MenuItem value="ethereum">Ethereum</MenuItem>
               </Select>
             </FormControl>
-          </Grid2>
+          </Grid>
 
           {/* Dropdown for Selecting Time Range */}
-          <Grid2 item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={4}>
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel id="time-range-select-label">Time Range</InputLabel>
               <Select
@@ -99,8 +99,8 @@ const HistoricalData = () => {
                 <MenuItem value="90">90 Days</MenuItem>
               </Select>
             </FormControl>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Paper>
 
       {/* Chart Section */}
