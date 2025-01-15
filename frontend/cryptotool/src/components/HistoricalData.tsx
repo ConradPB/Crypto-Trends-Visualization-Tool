@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store";
 import { fetchHistoricalData } from "../features/cryptoSlice";
 import { RootState } from "../store";
-import Grid from '@mui/material/Grid';
-
 import {
   Box,
   CircularProgress,
@@ -15,6 +13,7 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2"; 
 import {
   CartesianGrid,
   Line,
@@ -34,7 +33,7 @@ const HistoricalData = () => {
   const [selectedCoin, setSelectedCoin] = useState("bitcoin");
   const [timeRange, setTimeRange] = useState("7");
 
-  // Fetching historical data on coin or time range change
+  // Fetch historical data on coin or time range change
   useEffect(() => {
     dispatch(fetchHistoricalData({ id: selectedCoin, days: timeRange }));
   }, [selectedCoin, timeRange, dispatch]);
@@ -59,59 +58,50 @@ const HistoricalData = () => {
         Cryptocurrency Historical Data
       </Typography>
 
-      <Paper elevation={3} sx={{ padding: 3, marginTop: 2 }}>
-        <Grid container spacing={3} justifyContent="center">
-          {/* Dropdown for Selecting Coin */}
-          <Grid item xs={12} sm={6} md={4}>
-            <FormControl
-            sx={{
-                minWidth: 200,
-                marginRight: 2,
-                }}
-                >
-                    <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
-                    <Select
-                    labelId="coin-select-label"
-                    value={selectedCoin}
-                    onChange={(e) => setSelectedCoin(e.target.value)}
-                    >
-                        <MenuItem value="bitcoin">Bitcoin</MenuItem>
-                        <MenuItem value="ethereum">Ethereum</MenuItem>
-                        </Select>
-                        </FormControl>
-                        <FormControl
-                        sx={{
-                            minWidth: 150,
-                            }}
-                            >
-                                <InputLabel id="time-range-select-label">Time Range</InputLabel>
-                                <Select
-                                labelId="time-range-select-label"
-                                value={timeRange}
-                                onChange={(e) => setTimeRange(e.target.value)}
-                                >
-                                    <MenuItem value="7">7 Days</MenuItem>
-                                    <MenuItem value="30">30 Days</MenuItem>
-                                    </Select>
-                                    </FormControl>
-                                    </Grid>
-                                    {/* Dropdown for Selecting Time Range */}
-                                    <Grid item xs={12} sm={6} md={4}>
-                                        <FormControl fullWidth>
-                                            <InputLabel id="time-range-select-label">Time Range</InputLabel>
-                                            <Select
-                                            labelId="time-range-select-label"
-                                            value={timeRange}
-                                            onChange={(e) => setTimeRange(e.target.value)}
-                                            >
-                                                <MenuItem value="7">7 Days</MenuItem>
-                                                <MenuItem value="30">30 Days</MenuItem>
-                                                <MenuItem value="90">90 Days</MenuItem>
-                                                </Select>
-                                                </FormControl>
-                                            </Grid>
-                                        </Grid>
-                                    </Paper>
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 3,
+          marginTop: 2,
+          borderRadius: 2,
+          backgroundColor: "#f9f9f9",
+        }}
+      >
+        <Grid2 container spacing={3} justifyContent="center">
+          {/* Dropdown for Selecting Cryptocurrency */}
+          <Grid2 item xs={12} sm={6} md={4}>
+            <FormControl fullWidth variant="outlined" size="small">
+              <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
+              <Select
+                labelId="coin-select-label"
+                value={selectedCoin}
+                onChange={(e) => setSelectedCoin(e.target.value)}
+                label="Cryptocurrency"
+              >
+                <MenuItem value="bitcoin">Bitcoin</MenuItem>
+                <MenuItem value="ethereum">Ethereum</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid2>
+
+          {/* Dropdown for Selecting Time Range */}
+          <Grid2 item xs={12} sm={6} md={4}>
+            <FormControl fullWidth variant="outlined" size="small">
+              <InputLabel id="time-range-select-label">Time Range</InputLabel>
+              <Select
+                labelId="time-range-select-label"
+                value={timeRange}
+                onChange={(e) => setTimeRange(e.target.value)}
+                label="Time Range"
+              >
+                <MenuItem value="7">7 Days</MenuItem>
+                <MenuItem value="30">30 Days</MenuItem>
+                <MenuItem value="90">90 Days</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid2>
+        </Grid2>
+      </Paper>
 
       {/* Chart Section */}
       {loading ? (
@@ -120,7 +110,9 @@ const HistoricalData = () => {
         </Box>
       ) : error ? (
         <Box mt={4}>
-          <Typography color="error">{error}</Typography>
+          <Typography color="error" textAlign="center">
+            {error}
+          </Typography>
         </Box>
       ) : (
         <Box
