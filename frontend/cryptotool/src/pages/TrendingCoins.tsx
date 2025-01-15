@@ -19,49 +19,50 @@ import {
 const TrendingCoins = () => {
     const dispatch: AppDispatch = useDispatch();
     const { trendingCoins, loading, error } = useSelector((state: RootState) => state.crypto);
-
+  
     useEffect(() => {
-        dispatch(fetchTrendingCoins());
+      dispatch(fetchTrendingCoins());
     }, [dispatch]);
-
+  
     return (
-        <Box padding={4}>
-            <Typography variant="h4" gutterBottom>
-                Trending Cryptocurrencies
-            </Typography>
-
-            {loading ? (
-                <Box mt={4} display="flex" justifyContent="center">
-                    <CircularProgress />
-                </Box>
-            ) : error ? (
-                <Typography color="error" mt={4}>
-                    {error}
-                </Typography>
-            ) : (
-                <TableContainer component={Paper} sx={{ mt: 4 }}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Rank</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Symbol</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {trendingCoins.map((coin) => (
-                                <TableRow key={coin.id}>
-                                    <TableCell>{coin.marketCapRank}</TableCell>
-                                    <TableCell>{coin.name}</TableCell>
-                                    <TableCell>{coin.symbol.toUpperCase()}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            )}
-        </Box>
+      <Box padding={4}>
+        <Typography variant="h4" gutterBottom>
+          Trending Coins
+        </Typography>
+  
+        {loading ? (
+          <Box mt={4} display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Box mt={4}>
+            <Typography color="error">{error}</Typography>
+          </Box>
+        ) : (
+          <TableContainer component={Paper} sx={{ mt: 4, maxWidth: '100%', mx: 'auto' }}>
+            <Table>
+              <TableHead>
+                <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Rank</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Symbol</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {trendingCoins.map((coin) => (
+                  <TableRow key={coin.id}>
+                    <TableCell>{coin.marketCapRank}</TableCell>
+                    <TableCell>{coin.name}</TableCell>
+                    <TableCell>{coin.symbol.toUpperCase()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Box>
     );
-};
+  };
+  
 
 export default TrendingCoins;
