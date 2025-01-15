@@ -26,6 +26,15 @@ const Dashboard = () => {
                 >
                     View Historical Data
                 </Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ m: 1 }}
+                    component={Link}
+                    to="/trending">
+                        
+                    View Trending Coins                        
+                </Button>
             </Box>
         </Box>
     );
