@@ -1,44 +1,87 @@
 import { Link } from 'react-router-dom';
-import { Button, Typography, Box, Grid } from '@mui/material';
+import { Button, Typography, Box, Stack } from '@mui/material';
 
 const Dashboard = () => {
-    return (
-      <Box sx={{ textAlign: 'center', mt: 6 }}>
-        <Typography variant="h3" gutterBottom>
-          Welcome to Crypto Trends Visualization Tool!
-        </Typography>
-        <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-          Stay updated with the latest trends and historical data in the cryptocurrency market.
-        </Typography>
-        <Grid container justifyContent="center" spacing={3} sx={{ mt: 4 }}>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              sx={{ px: 4, py: 2 }}
-              component={Link}
-              to="/crypto"
-            >
-              View Crypto Prices
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              size="large"
-              sx={{ px: 4, py: 2 }}
-              component={Link}
-              to="/trending"
-            >
-              View Trending Coins
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-    );
-  };
-  
+  return (
+    <Box
+      sx={{
+        textAlign: 'center',
+        mt: 6,
+        px: 2,
+        py: 4,
+        background: 'linear-gradient(to right, #4facfe, #00f2fe)',
+        color: '#fff',
+        borderRadius: 2,
+        boxShadow: 3,
+      }}
+    >
+      <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+        Welcome to Crypto Trends Visualization Tool!
+      </Typography>
+      <Typography
+        variant="subtitle1"
+        gutterBottom
+        sx={{
+          color: 'rgba(255, 255, 255, 0.9)',
+          fontStyle: 'italic',
+          mb: 4,
+        }}
+      >
+        Explore the latest prices, trending coins, and historical data in the cryptocurrency market.
+      </Typography>
+
+      <Stack direction="row" justifyContent="center" spacing={3} sx={{ mt: 4 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          sx={{
+            px: 5,
+            py: 2,
+            backgroundColor: '#ff8a65',
+            '&:hover': { backgroundColor: '#ff7043' },
+          }}
+          component={Link}
+          to="/crypto"
+        >
+          View Crypto Prices
+        </Button>
+
+        <Button
+          variant="contained"
+          color="secondary"
+          size="large"
+          sx={{
+            px: 5,
+            py: 2,
+            backgroundColor: '#4db6ac',
+            '&:hover': { backgroundColor: '#26a69a' },
+          }}
+          component={Link}
+          to="/trending"
+        >
+          View Trending Coins
+        </Button>
+
+        <Button
+          variant="contained"
+          size="large"
+          sx={{
+            px: 5,
+            py: 2,
+            backgroundColor: '#7986cb',
+            '&:hover': { backgroundColor: '#5c6bc0' },
+          }}
+          component={Link}
+          to="/historical"
+        >
+          View Historical Data
+        </Button>
+      </Stack>
+    </Box>
+  );
+};
+
 export default Dashboard;
+
 
