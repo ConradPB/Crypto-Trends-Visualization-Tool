@@ -63,33 +63,10 @@ const HistoricalData = () => {
           {/* Dropdown for Selecting Coin */}
           <Grid item xs={12} sm={6} md={4}>
 
-          <FormControl
-  fullWidth
-  sx={{
-    '& .MuiInputLabel-root': {
-      top: '-5px', // Adjusts the label's position
-    },
-    '& .MuiInputLabel-shrink': {
-      top: '0', // Ensures the label aligns when focused
-    },
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderWidth: '2px', // Makes the outline clearer
-    },
-  }}
->
-  <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
-  <Select
-    labelId="coin-select-label"
-    value={selectedCoin}
-    onChange={(e) => setSelectedCoin(e.target.value)}
-  >
-    <MenuItem value="bitcoin">Bitcoin</MenuItem>
-    <MenuItem value="ethereum">Ethereum</MenuItem>
-  </Select>
-</FormControl>
+          
 
 
-          </Grid2>
+          </Grid>
 
           {/* Dropdown for Selecting Time Range */}
           <Grid item xs={12} sm={6} md={4}>
