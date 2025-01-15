@@ -11,6 +11,8 @@ import {
   MenuItem,
   Select,
   Typography,
+  Grid,
+  Paper,
 } from "@mui/material";
 import {
   CartesianGrid,
@@ -38,41 +40,60 @@ const HistoricalData = () => {
 
   // Format data for the chart
   const formattedData =
-    historicalData[selectedCoin]?.map(({ date, price }) => ({
-      date,
-      price,
-    })) || [];
+    historicalData[selectedCoin]?.map(
+      (entry: { date: string; price: number }) => ({
+        date: new Date(entry.date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }),
+        price: entry.price,
+      })
+    ) || [];
 
   return (
     <Box padding={4}>
-      <Typography variant="h4" gutterBottom>
-        Historical Data
+      {/* Page Title */}
+      <Typography variant="h4" gutterBottom textAlign="center">
+        Cryptocurrency Historical Data
       </Typography>
 
-      <FormControl sx={{ minWidth: 200, marginRight: 2 }}>
-        <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
-        <Select
-          labelId="coin-select-label"
-          value={selectedCoin}
-          onChange={(e) => setSelectedCoin(e.target.value)}
-        >
-          <MenuItem value="bitcoin">Bitcoin</MenuItem>
-          <MenuItem value="ethereum">Ethereum</MenuItem>
-        </Select>
-      </FormControl>
+      <Paper elevation={3} sx={{ padding: 3, marginTop: 2 }}>
+        <Grid container spacing={3} justifyContent="center">
+          {/* Dropdown for Selecting Coin */}
+          <Grid item xs={12} sm={6} md={4}>
+            <FormControl fullWidth>
+              <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
+              <Select
+                labelId="coin-select-label"
+                value={selectedCoin}
+                onChange={(e) => setSelectedCoin(e.target.value)}
+              >
+                <MenuItem value="bitcoin">Bitcoin</MenuItem>
+                <MenuItem value="ethereum">Ethereum</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
 
-      <FormControl sx={{ minWidth: 150 }}>
-        <InputLabel id="time-range-select-label">Time Range</InputLabel>
-        <Select
-          labelId="time-range-select-label"
-          value={timeRange}
-          onChange={(e) => setTimeRange(e.target.value)}
-        >
-          <MenuItem value="7">7 Days</MenuItem>
-          <MenuItem value="30">30 Days</MenuItem>
-        </Select>
-      </FormControl>
+          {/* Dropdown for Selecting Time Range */}
+          <Grid item xs={12} sm={6} md={4}>
+            <FormControl fullWidth>
+              <InputLabel id="time-range-select-label">Time Range</InputLabel>
+              <Select
+                labelId="time-range-select-label"
+                value={timeRange}
+                onChange={(e) => setTimeRange(e.target.value)}
+              >
+                <MenuItem value="7">7 Days</MenuItem>
+                <MenuItem value="30">30 Days</MenuItem>
+                <MenuItem value="90">90 Days</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+      </Paper>
 
+      {/* Chart Section */}
       {loading ? (
         <Box mt={4} display="flex" justifyContent="center">
           <CircularProgress />
@@ -82,14 +103,28 @@ const HistoricalData = () => {
           <Typography color="error">{error}</Typography>
         </Box>
       ) : (
-        <Box mt={4} height={400}>
+        <Box
+          mt={4}
+          sx={{
+            height: 400,
+            backgroundColor: "#fff",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+            borderRadius: 2,
+            padding: 2,
+          }}
+        >
           <ResponsiveContainer>
             <LineChart data={formattedData}>
               <CartesianGrid stroke="#f5f5f5" />
               <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
-              <Line type="monotone" dataKey="price" stroke="#8884d8" />
+              <Line
+                type="monotone"
+                dataKey="price"
+                stroke="#8884d8"
+                strokeWidth={2}
+              />
             </LineChart>
           </ResponsiveContainer>
         </Box>
