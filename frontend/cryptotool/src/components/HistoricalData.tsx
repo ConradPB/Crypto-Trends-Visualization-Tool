@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store";
 import { fetchHistoricalData } from "../features/cryptoSlice";
 import { RootState } from "../store";
+import Grid from '@mui/material/Grid';
 import {
   Box,
   CircularProgress,
@@ -11,7 +12,6 @@ import {
   MenuItem,
   Select,
   Typography,
-  Grid,
   Paper,
 } from "@mui/material";
 import {
@@ -74,32 +74,26 @@ const HistoricalData = () => {
                     value={selectedCoin}
                     onChange={(e) => setSelectedCoin(e.target.value)}
                     >
-    <MenuItem value="bitcoin">Bitcoin</MenuItem>
-    <MenuItem value="ethereum">Ethereum</MenuItem>
-  </Select>
-</FormControl>
-
-<FormControl
-  sx={{
-    minWidth: 150,
-  }}
->
-  <InputLabel id="time-range-select-label">Time Range</InputLabel>
-  <Select
-    labelId="time-range-select-label"
-    value={timeRange}
-    onChange={(e) => setTimeRange(e.target.value)}
-  >
-    <MenuItem value="7">7 Days</MenuItem>
-    <MenuItem value="30">30 Days</MenuItem>
-  </Select>
-</FormControl>
-
-
-          
-
-
-          </Grid>
+                        <MenuItem value="bitcoin">Bitcoin</MenuItem>
+                        <MenuItem value="ethereum">Ethereum</MenuItem>
+                        </Select>
+                        </FormControl>
+                        <FormControl
+                        sx={{
+                            minWidth: 150,
+                            }}
+                            >
+                                <InputLabel id="time-range-select-label">Time Range</InputLabel>
+                                <Select
+                                labelId="time-range-select-label"
+                                value={timeRange}
+                                onChange={(e) => setTimeRange(e.target.value)}
+                                >
+                                    <MenuItem value="7">7 Days</MenuItem>
+                                    <MenuItem value="30">30 Days</MenuItem>
+                                    </Select>
+                                    </FormControl>
+                                    </Grid>
 
           {/* Dropdown for Selecting Time Range */}
           <Grid item xs={12} sm={6} md={4}>
