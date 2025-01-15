@@ -62,6 +62,39 @@ const HistoricalData = () => {
         <Grid container spacing={3} justifyContent="center">
           {/* Dropdown for Selecting Coin */}
           <Grid item xs={12} sm={6} md={4}>
+            <FormControl
+            sx={{
+                minWidth: 200,
+                marginRight: 2,
+                }}
+                >
+                    <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
+                    <Select
+                    labelId="coin-select-label"
+                    value={selectedCoin}
+                    onChange={(e) => setSelectedCoin(e.target.value)}
+                    >
+    <MenuItem value="bitcoin">Bitcoin</MenuItem>
+    <MenuItem value="ethereum">Ethereum</MenuItem>
+  </Select>
+</FormControl>
+
+<FormControl
+  sx={{
+    minWidth: 150,
+  }}
+>
+  <InputLabel id="time-range-select-label">Time Range</InputLabel>
+  <Select
+    labelId="time-range-select-label"
+    value={timeRange}
+    onChange={(e) => setTimeRange(e.target.value)}
+  >
+    <MenuItem value="7">7 Days</MenuItem>
+    <MenuItem value="30">30 Days</MenuItem>
+  </Select>
+</FormControl>
+
 
           
 
