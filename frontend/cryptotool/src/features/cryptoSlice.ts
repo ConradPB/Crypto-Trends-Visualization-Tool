@@ -49,19 +49,27 @@ export const fetchHistoricalData = createAsyncThunk(
 );
 
 export const fetchTrendingCoins = createAsyncThunk(
-  'crypto/fetchTrendingCoins',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axios.get('/api/crypto/trending');
-      return response.data;
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response) {
-        return rejectWithValue(error.response.data || 'Failed to fetch trending coins');
+    'crypto/fetchTrendingCoins',
+    async (_, { rejectWithValue }) => {
+      try {
+        const response = await axios.get('/api/crypto/trending');
+        // Process response if needed
+        const formattedData = response.data.map((coin: { id: string; name: string; symbol: string; market_cap_rank: number }) => ({
+          id: coin.id,
+          name: coin.name,
+          symbol: coin.symbol,
+          marketCapRank: coin.market_cap_rank,
+        }));
+        return formattedData;
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+          return rejectWithValue(error.response.data || 'Failed to fetch trending coins');
+        }
+        return rejectWithValue('Failed to fetch trending coins');
       }
-      return rejectWithValue('Failed to fetch trending coins');
     }
-  }
-);
+  );
+  
 
 // Slice
 const cryptoSlice = createSlice({
