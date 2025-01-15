@@ -4,6 +4,7 @@ import { AppDispatch } from "../store";
 import { fetchHistoricalData } from "../features/cryptoSlice";
 import { RootState } from "../store";
 import Grid from '@mui/material/Grid';
+
 import {
   Box,
   CircularProgress,
@@ -94,24 +95,23 @@ const HistoricalData = () => {
                                     </Select>
                                     </FormControl>
                                     </Grid>
-
-          {/* Dropdown for Selecting Time Range */}
-          <Grid item xs={12} sm={6} md={4}>
-            <FormControl fullWidth>
-              <InputLabel id="time-range-select-label">Time Range</InputLabel>
-              <Select
-                labelId="time-range-select-label"
-                value={timeRange}
-                onChange={(e) => setTimeRange(e.target.value)}
-              >
-                <MenuItem value="7">7 Days</MenuItem>
-                <MenuItem value="30">30 Days</MenuItem>
-                <MenuItem value="90">90 Days</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-      </Paper>
+                                    {/* Dropdown for Selecting Time Range */}
+                                    <Grid item xs={12} sm={6} md={4}>
+                                        <FormControl fullWidth>
+                                            <InputLabel id="time-range-select-label">Time Range</InputLabel>
+                                            <Select
+                                            labelId="time-range-select-label"
+                                            value={timeRange}
+                                            onChange={(e) => setTimeRange(e.target.value)}
+                                            >
+                                                <MenuItem value="7">7 Days</MenuItem>
+                                                <MenuItem value="30">30 Days</MenuItem>
+                                                <MenuItem value="90">90 Days</MenuItem>
+                                                </Select>
+                                                </FormControl>
+                                            </Grid>
+                                        </Grid>
+                                    </Paper>
 
       {/* Chart Section */}
       {loading ? (
