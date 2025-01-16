@@ -20,17 +20,17 @@ const initialState: CryptoState = {
 
 // Async Thunks for API calls
 export const fetchCryptoPrices = createAsyncThunk(
-  'crypto/fetchCryptoPrices',
+  "crypto/fetchCryptoPrices",
   async (ids: string, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`/api/crypto/prices?ids=${ids}`);
-      return response.data;
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response) {
-        return rejectWithValue(error.response.data || 'Failed to fetch prices');
+      try {
+          const response = await axiosInstance.get(`/crypto/prices?ids=${ids}`);
+          return response.data;
+      } catch (error) {
+          if (axios.isAxiosError(error) && error.response) {
+              return rejectWithValue(error.response.data || "Failed to fetch prices");
+          }
+          return rejectWithValue("Failed to fetch prices");
       }
-      return rejectWithValue('Failed to fetch prices');
-    }
   }
 );
 
