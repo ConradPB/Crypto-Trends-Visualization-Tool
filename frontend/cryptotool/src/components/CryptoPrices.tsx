@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCryptoPrices } from "../features/cryptoSlice";
@@ -52,7 +53,6 @@ const CryptoPrices = () => {
       </Box>
     </Box>
   );
-  
 };
 
 export default CryptoPrices;
