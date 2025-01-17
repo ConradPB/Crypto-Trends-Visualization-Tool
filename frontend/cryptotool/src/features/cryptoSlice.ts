@@ -23,8 +23,11 @@ export const fetchCryptoPrices = createAsyncThunk(
   "crypto/fetchCryptoPrices",
   async (ids: string, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`/crypto/prices?ids=${ids}`);
-      console.log("Crypto Prices Response:", response.data);
+      // Add the `vs_currencies=usd` parameter to the URL
+      const response = await axiosInstance.get(
+        `/crypto/prices?ids=${ids}&vs_currencies=usd`
+      );
+      console.log("Crypto Prices API Response:", response.data);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
