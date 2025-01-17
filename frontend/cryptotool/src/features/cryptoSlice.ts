@@ -111,7 +111,7 @@ const cryptoSlice = createSlice({
       .addCase(fetchTrendingCoins.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-        state.trendingCoins = (action.payload as { coins: { id: string; name: string; symbol: string; marketCapRank: number }[] }).coins;
+        state.trendingCoins = []; // Reset trendingCoins on error
       });
   },
 });
