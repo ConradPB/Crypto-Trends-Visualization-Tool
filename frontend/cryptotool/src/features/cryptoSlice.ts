@@ -54,7 +54,8 @@ export const fetchTrendingCoins = createAsyncThunk(
   async (_, { rejectWithValue }) => {
       try {
           const response = await axiosInstance.get("/crypto/trending");
-          return response.data;
+          console.log("Trending Coins API Response:", response.data);
+          return response.data.coins;
       } catch (error) {
           if (axios.isAxiosError(error) && error.response) {
               return rejectWithValue(error.response.data || "Failed to fetch trending coins");
@@ -105,11 +106,12 @@ const cryptoSlice = createSlice({
       })
       .addCase(fetchTrendingCoins.fulfilled, (state, action) => {
         state.loading = false;
-        state.trendingCoins = action.payload;
+        state.trendingCoins = action.payload as { id: string; name: string; symbol: string; marketCapRank: number }[];
       })
       .addCase(fetchTrendingCoins.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.trendingCoins = (action.payload as { coins: { id: string; name: string; symbol: string; marketCapRank: number }[] }).coins;
       });
   },
 });
