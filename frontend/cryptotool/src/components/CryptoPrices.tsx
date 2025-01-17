@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCryptoPrices } from "../features/cryptoSlice";
@@ -45,9 +44,9 @@ const CryptoPrices = () => {
         Cryptocurrency Prices
       </Typography>
       <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-        {Object.entries(prices).map(([coin, price]) => (
+        {Object.entries(prices).map(([coin, priceData]) => (
           <Typography key={coin}>
-            {coin.toUpperCase()}: ${price.toFixed(2)}
+            {coin.toUpperCase()}: ${priceData?.usd?.toFixed(2) || "N/A"}
           </Typography>
         ))}
       </Box>
