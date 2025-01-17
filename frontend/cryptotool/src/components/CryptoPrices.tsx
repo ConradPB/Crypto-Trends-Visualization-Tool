@@ -44,9 +44,9 @@ const CryptoPrices = () => {
         Cryptocurrency Prices
       </Typography>
       <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-        {Object.entries(prices).map(([coin, priceData]) => (
+        {Object.entries(prices).map(([coin, price]) => (
           <Typography key={coin}>
-            {coin.toUpperCase()}: ${priceData?.usd?.toFixed(2) || "N/A"}
+            {coin.toUpperCase()}: ${price?.toFixed(2) || "N/A"}
           </Typography>
         ))}
       </Box>
