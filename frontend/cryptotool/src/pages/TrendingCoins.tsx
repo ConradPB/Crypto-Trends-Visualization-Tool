@@ -1,16 +1,8 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Box, Card, Typography } from "@mui/material";
 import { fetchTrendingCoins } from "../features/cryptoSlice";
 import { AppDispatch, RootState } from "../store";
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  CircularProgress,
-  Grid,
-  Avatar,
-} from "@mui/material";
 
 const TrendingCoins = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -18,62 +10,69 @@ const TrendingCoins = () => {
     (state: RootState) => state.crypto
   );
 
+  // Fetch trending coins on component mount
   useEffect(() => {
     dispatch(fetchTrendingCoins());
   }, [dispatch]);
 
-  return (
-    <Box padding={4}>
-      {/* Page Title */}
-      <Typography variant="h4" gutterBottom textAlign="center">
-        Trending Coins
-      </Typography>
+  // Handle loading state
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <Typography variant="h6">Loading trending coins...</Typography>
+      </Box>
+    );
+  }
 
-      {loading ? (
-        <Box mt={4} display="flex" justifyContent="center">
-          <CircularProgress />
-        </Box>
-      ) : error ? (
-        <Box mt={4}>
-          <Typography color="error" textAlign="center">
-            {error}
-          </Typography>
-        </Box>
-      ) : (
-        <Grid container spacing={4} mt={2}>
-          {trendingCoins.map((coin) => (
-            <Grid item xs={12} sm={6} md={4} key={coin.id}>
-              <Card
-                sx={{
-                  backgroundColor: "#f9f9f9",
-                  borderRadius: 2,
-                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                  textAlign: "center",
-                  padding: 2,
-                }}
-              >
-                <CardContent>
-                  <Avatar
-                    src={`https://cryptoicons.org/api/icon/${coin.symbol.toLowerCase()}/200`}
-                    alt={coin.name}
-                    sx={{
-                      width: 56,
-                      height: 56,
-                      margin: "0 auto 16px",
-                    }}
-                  />
-                  <Typography variant="h6" gutterBottom>
-                    {coin.name} ({coin.symbol.toUpperCase()})
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Market Cap Rank: {coin.marketCapRank}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )}
+  // Handle error state
+  if (error) {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <Typography variant="h6" color="error">
+          Failed to fetch trending coins: {error}
+        </Typography>
+      </Box>
+    );
+  }
+
+  // Handle case where no coins are available
+  if (!Array.isArray(trendingCoins) || trendingCoins.length === 0) {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <Typography variant="h6">No trending coins available</Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Box display="flex" flexWrap="wrap" gap={2} p={2}>
+      {trendingCoins.map((coin) => {
+        const { id, name, symbol, marketCapRank: market_cap_rank } = coin; // Extract relevant data from the `coin` object
+
+        return (
+          <Card
+            key={id}
+            sx={{
+              padding: 2,
+              width: 250,
+              boxShadow: 3,
+              textAlign: "center",
+              borderRadius: 2,
+              "&:hover": { boxShadow: 6 },
+            }}
+          >
+            <Typography variant="h6" gutterBottom>
+              {name}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" gutterBottom>
+              Symbol: {symbol.toUpperCase()}
+            </Typography>
+            <Typography variant="body2" color="textSecondary">
+              Rank: {market_cap_rank}
+            </Typography>
+          </Card>
+        );
+      })}
     </Box>
   );
 };
