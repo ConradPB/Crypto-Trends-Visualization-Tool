@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Button, Typography, Box, Stack } from '@mui/material';
+import { Button, Typography, Box, Stack } from '@mui/material'
 
 const Dashboard = () => {
   return (
