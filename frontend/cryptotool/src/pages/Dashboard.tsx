@@ -15,7 +15,7 @@ const Dashboard = () => {
         boxShadow: 3,
       }}
     >
-      <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold', font; }}>
+      <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
         Welcome to Crypto Trends Visualization Tool!
       </Typography>
       <Typography
