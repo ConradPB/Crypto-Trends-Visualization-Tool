@@ -9,11 +9,10 @@ const AppRoutes = () => (
     <Router>
         <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="*" element={<NotFound />} />
             <Route path="/crypto" element={<CryptoPrices />} />
             <Route path="/trending" element={<TrendingCoins />} />
             <Route path="/historical" element={<HistoricalData />} />
-
+            <Route path="*" element={<NotFound />} /> {/* Move this to the end */}
         </Routes>
     </Router>
 );
