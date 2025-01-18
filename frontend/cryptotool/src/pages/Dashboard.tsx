@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Button, Typography, Box, Stack } from '@mui/material'
+import { Button, Typography, Box, Stack } from '@mui/material';
 
 const Dashboard = () => {
   return (
@@ -15,7 +15,7 @@ const Dashboard = () => {
         boxShadow: 3,
       }}
     >
-      <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+      <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold', font; }}>
         Welcome to Crypto Trends Visualization Tool!
       </Typography>
       <Typography
