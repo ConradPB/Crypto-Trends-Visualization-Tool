@@ -46,9 +46,12 @@ export const fetchHistoricalData = createAsyncThunk(
   'crypto/fetchHistoricalData',
   async (params: { id: string; days: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/crypto/historical?id=${params.id}&days=${params.days}`);
+      console.log('Fetching historical data with params:', params);
+      const response = await axiosInstance.get(`/crypto/historical?id=${params.id}&days=${params.days}`);
+      console.log('Historical data response:', response.data);
       return response.data;
-    } catch (error: unknown) {
+    } catch (error) {
+      console.error('Error fetching historical data:', error);
       if (axios.isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data || 'Failed to fetch historical data');
       }
