@@ -6,12 +6,12 @@ import { Box, Typography, CircularProgress } from "@mui/material";
 
 const CryptoPrices = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { prices, loading, error } = useSelector(
+  const { prices, loading, error } = useSelector( 
     (state: RootState) => state.crypto
   );
 
   useEffect(() => {
-    dispatch(fetchCryptoPrices("bitcoin,ethereum"));
+    dispatch(fetchCryptoPrices("bitcoin,ethereum"));  
   }, [dispatch]);
 
   if (loading) {
@@ -38,12 +38,14 @@ const CryptoPrices = () => {
       <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
         {Object.entries(prices).map(([coin, priceData]) => (
           <Typography key={coin}>
-            {coin.toUpperCase()}: ${(priceData as any).usd?.toFixed(2) || "N/A"}
+            {coin.toUpperCase()}: ${priceData.usd.toFixed(2)}
           </Typography>
         ))}
       </Box>
     </Box>
   );
 };
+
+ 
 
 export default CryptoPrices;
