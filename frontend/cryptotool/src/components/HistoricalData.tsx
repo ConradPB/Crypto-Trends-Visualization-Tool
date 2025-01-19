@@ -24,6 +24,17 @@ import {
   YAxis,
 } from "recharts";
 
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{
+      payload: {
+          tooltip: {
+              date: string;
+              price: string;
+          };
+      };
+  }>;
+}
 const HistoricalData = () => {
   const dispatch: AppDispatch = useDispatch();
   const { historicalData, loading, error } = useSelector(
@@ -33,27 +44,38 @@ const HistoricalData = () => {
   const [selectedCoin, setSelectedCoin] = useState("bitcoin");
   const [timeRange, setTimeRange] = useState("7");
 
-  // Fetch historical data on coin or time range change
   useEffect(() => {
+    console.log("Fetching historical data for:", selectedCoin, timeRange);
     dispatch(fetchHistoricalData({ id: selectedCoin, days: timeRange }));
   }, [selectedCoin, timeRange, dispatch]);
 
   // Format data for the chart
-  const formattedData =
-    historicalData[selectedCoin]?.map(
-      (entry: { date: string; price: number }) => ({
-        date: new Date(entry.date).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        }),
-        price: entry.price,
-      })
-    ) || [];
+  const formattedData = historicalData[selectedCoin]?.map(entry => ({
+    date: new Date(entry.date).toLocaleDateString(),
+    price: parseFloat(entry.price.toFixed(2)),
+    tooltip: {
+      date: new Date(entry.date).toLocaleString(),
+      price: `$${entry.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    }
+  })) || [];
+
+  
+const CustomTooltip = ({ active, payload }: TooltipProps) => {
+  if (active && payload && payload.length) {
+      return (
+          <Paper sx={{ p: 2, backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
+              <Typography variant="subtitle2">{payload[0].payload.tooltip.date}</Typography>
+              <Typography variant="body1" color="primary">
+                  Price: {payload[0].payload.tooltip.price}
+              </Typography>
+          </Paper>
+      );
+  }
+  return null;
+};
 
   return (
     <Box padding={4}>
-      {/* Page Title */}
       <Typography variant="h4" gutterBottom textAlign="center">
         Cryptocurrency Historical Data
       </Typography>
@@ -68,7 +90,6 @@ const HistoricalData = () => {
         }}
       >
         <Grid container spacing={3} justifyContent="center">
-          {/* Dropdown for Selecting Cryptocurrency */}
           <Grid item xs={12} sm={6} md={4}>
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
@@ -80,11 +101,12 @@ const HistoricalData = () => {
               >
                 <MenuItem value="bitcoin">Bitcoin</MenuItem>
                 <MenuItem value="ethereum">Ethereum</MenuItem>
+                <MenuItem value="dogecoin">Dogecoin</MenuItem>
+                <MenuItem value="cardano">Cardano</MenuItem>
               </Select>
             </FormControl>
           </Grid>
 
-          {/* Dropdown for Selecting Time Range */}
           <Grid item xs={12} sm={6} md={4}>
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel id="time-range-select-label">Time Range</InputLabel>
@@ -94,53 +116,62 @@ const HistoricalData = () => {
                 onChange={(e) => setTimeRange(e.target.value)}
                 label="Time Range"
               >
+                <MenuItem value="1">24 Hours</MenuItem>
                 <MenuItem value="7">7 Days</MenuItem>
                 <MenuItem value="30">30 Days</MenuItem>
                 <MenuItem value="90">90 Days</MenuItem>
+                <MenuItem value="365">1 Year</MenuItem>
               </Select>
             </FormControl>
           </Grid>
         </Grid>
       </Paper>
 
-      {/* Chart Section */}
-      {loading ? (
-        <Box mt={4} display="flex" justifyContent="center">
-          <CircularProgress />
-        </Box>
-      ) : error ? (
-        <Box mt={4}>
-          <Typography color="error" textAlign="center">
-            {error}
-          </Typography>
-        </Box>
-      ) : (
-        <Box
-          mt={4}
-          sx={{
-            height: 400,
-            backgroundColor: "#fff",
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-            borderRadius: 2,
-            padding: 2,
-          }}
-        >
+      <Box
+        mt={4}
+        sx={{
+          height: 400,
+          backgroundColor: "#fff",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+          borderRadius: 2,
+          padding: 2,
+        }}
+      >
+        {loading ? (
+          <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+            <Typography color="error">{error}</Typography>
+          </Box>
+        ) : (
           <ResponsiveContainer>
             <LineChart data={formattedData}>
-              <CartesianGrid stroke="#f5f5f5" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis 
+                dataKey="date" 
+                tick={{ fontSize: 12 }}
+                interval="preserveStartEnd"
+              />
+              <YAxis 
+                tick={{ fontSize: 12 }}
+                domain={['auto', 'auto']}
+                tickFormatter={(value) => `$${value.toLocaleString()}`}
+              />
+              <Tooltip content={<CustomTooltip />} />
               <Line
                 type="monotone"
                 dataKey="price"
-                stroke="#8884d8"
+                stroke="#2196f3"
                 strokeWidth={2}
+                dot={false}
+                animationDuration={500}
               />
             </LineChart>
           </ResponsiveContainer>
-        </Box>
-      )}
+        )}
+      </Box>
     </Box>
   );
 };
