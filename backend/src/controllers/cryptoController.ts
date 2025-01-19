@@ -49,8 +49,18 @@ export const getTrendingCoins = async (_req: Request, res: Response): Promise<vo
             },
         });
 
+        // Transformed the data to match frontend expectations
+        const transformedData = {
+            coins: response.data.coins.map((item: any) => ({
+                id: item.item.id,
+                name: item.item.name,
+                symbol: item.item.symbol,
+                marketCapRank: item.item.market_cap_rank
+            }))
+        };
+
         logger.info('Fetched trending coins');
-        res.json(response.data);
+        res.json(transformedData);
     } catch (error: any) {
         logger.error(`Error fetching trending coins: ${error.message}`);
         res.status(500).json({ error: 'Failed to fetch trending coins' });
