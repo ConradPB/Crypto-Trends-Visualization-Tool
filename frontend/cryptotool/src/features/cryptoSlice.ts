@@ -2,8 +2,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import axiosInstance from '../api/axiosInstance';
 
+export interface CryptoPriceData {
+  usd: number;
+}
 interface CryptoState {
-  prices: Record<string, number>;
+  prices: Record<string, CryptoPriceData>;  
   historicalData: Record<string, { date: string; price: number }[]>;
   trendingCoins: { id: string; name: string; symbol: string; marketCapRank: number }[];
   loading: boolean;
