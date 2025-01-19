@@ -11,10 +11,15 @@ const CryptoPrices = () => {
   );
 
   useEffect(() => {
+    console.log("CryptoPrices component mounted");
+
     dispatch(fetchCryptoPrices("bitcoin,ethereum"));
   }, [dispatch]);
+  console.log("Current state:", { prices, loading, error });
+
 
   if (loading) {
+    console.log("Loading state active");
     return (
       <Box display="flex" justifyContent="center" mt={4}>
         <CircularProgress />
@@ -23,12 +28,14 @@ const CryptoPrices = () => {
   }
 
   if (error) {
+    console.log("Error state active:", error);
     return (
       <Typography color="error" mt={4} textAlign="center">
         {error}
       </Typography>
     );
   }
+  console.log("Rendering prices:", prices);
 
   if (Object.keys(prices).length === 0) {
     return (
