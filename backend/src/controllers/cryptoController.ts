@@ -33,8 +33,17 @@ export const getHistoricalData = async (req: Request, res: Response): Promise<vo
             },
         });
 
+        const prices = response.data.prices.map((item: [number, number]) => ({
+            date: new Date(item[0]).toISOString(),
+            price: item[1]
+        }));
+
+        const formattedData = {
+            [(id as string)]: prices
+        };
+
         logger.info(`Fetched historical data for: ${id}, Days: ${days}, Interval: ${interval}`);
-        res.json(response.data);
+        res.json(formattedData);
     } catch (error: any) {
         logger.error(`Error fetching historical data: ${error.message}`);
         res.status(500).json({ error: 'Failed to fetch historical data' });
