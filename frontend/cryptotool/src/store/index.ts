@@ -5,7 +5,7 @@ import alertsReducer from '../features/alertsSlice';
 const store = configureStore({
   reducer: {
     crypto: cryptoReducer,
-    alerts: alertsReducer,  // Add alerts reducer
+    alerts: alertsReducer,  
   },
   devTools: process.env.NODE_ENV !== 'production',
 });
