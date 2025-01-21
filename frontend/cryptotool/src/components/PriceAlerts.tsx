@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAlert, removeAlert, toggleAlert } from '../features/alertsSlice';
+import { fetchCryptoPrices } from '../features/cryptoSlice';
+import { checkAlerts } from '../utils/alertChecker';
 import { Bell, BellOff, Trash2 } from 'lucide-react';
-import type { RootState } from '../store';
+import type { RootState, AppDispatch } from '../store';
 import type { PriceAlert } from '../features/alertsSlice';
+import { AlertCheck } from '../utils/alertChecker';
 
 type AlertCondition = 'above' | 'below';
 
@@ -14,14 +17,56 @@ interface NewAlertState {
 }
 
 const PriceAlerts = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();  // Updated dispatch typing
   const alerts = useSelector((state: RootState) => state.alerts.alerts);
+  const prices = useSelector((state: RootState) => state.crypto.prices);
+  const [triggeredAlerts, setTriggeredAlerts] = useState<AlertCheck[]>([]);
   
   const [newAlert, setNewAlert] = useState<NewAlertState>({
     coinId: 'bitcoin',
     targetPrice: '',
     condition: 'above'
   });
+
+  // Fetch prices periodically
+  useEffect(() => {
+    const fetchPricesForAlerts = () => {
+      const uniqueCoins = [...new Set(alerts.map(alert => alert.coinId))];
+      if (uniqueCoins.length > 0) {
+        dispatch(fetchCryptoPrices(uniqueCoins.join(',')));
+      }
+    };
+
+    fetchPricesForAlerts();
+    const interval = setInterval(fetchPricesForAlerts, 30000); // Check every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [alerts, dispatch]);
+
+  // Check alerts when prices update
+  useEffect(() => {
+    if (Object.keys(prices).length > 0) {
+      const checkedAlerts = checkAlerts(alerts, prices);
+      const newTriggeredAlerts = checkedAlerts.filter(check => check.triggered);
+      
+      // Show notifications for newly triggered alerts
+      newTriggeredAlerts.forEach(({ alert, currentPrice }) => {
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification('Price Alert Triggered!', {
+            body: `${alert.coinId.toUpperCase()} is now ${alert.condition} $${alert.targetPrice} (Current: $${currentPrice.toFixed(2)})`,
+          });
+        }
+      });
+
+      setTriggeredAlerts(checkedAlerts);
+    }
+  }, [prices, alerts]);
+
+  useEffect(() => {
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +80,16 @@ const PriceAlerts = () => {
     }));
 
     setNewAlert(prev => ({ ...prev, targetPrice: '' }));
+  };
+
+  const getAlertStatus = (alert: PriceAlert) => {
+    const checkResult = triggeredAlerts.find(check => check.alert.id === alert.id);
+    if (!checkResult) return null;
+
+    return {
+      triggered: checkResult.triggered,
+      currentPrice: checkResult.currentPrice
+    };
   };
 
   return (
@@ -82,38 +137,48 @@ const PriceAlerts = () => {
       
       {/* Alerts List */}
       <div className="space-y-3">
-        {alerts.map((alert: PriceAlert) => (
-          <div
-            key={alert.id}
-            className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow"
-          >
-            <div className="dark:text-white">
-              <span className="font-semibold">{alert.coinId.toUpperCase()}</span>
-              <span> {alert.condition} </span>
-              <span>${alert.targetPrice.toLocaleString()}</span>
+        {alerts.map((alert: PriceAlert) => {
+          const status = getAlertStatus(alert);
+          return (
+            <div
+              key={alert.id}
+              className={`flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow ${
+                status?.triggered ? 'border-2 border-yellow-500' : ''
+              }`}
+            >
+              <div className="dark:text-white">
+                <span className="font-semibold">{alert.coinId.toUpperCase()}</span>
+                <span> {alert.condition} </span>
+                <span>${alert.targetPrice.toLocaleString()}</span>
+                {status && (
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Current: ${status.currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex gap-2">
+                <button
+                  onClick={() => dispatch(toggleAlert(alert.id))}
+                  className={`p-2 rounded-full ${
+                    alert.isActive ? 'bg-green-100 dark:bg-green-900' : 'bg-gray-100 dark:bg-gray-700'
+                  }`}
+                >
+                  {alert.isActive ? 
+                    <Bell className="h-5 w-5 text-green-600 dark:text-green-400" /> : 
+                    <BellOff className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                  }
+                </button>
+                <button
+                  onClick={() => dispatch(removeAlert(alert.id))}
+                  className="p-2 rounded-full bg-red-100 dark:bg-red-900"
+                >
+                  <Trash2 className="h-5 w-5 text-red-600 dark:text-red-400" />
+                </button>
+              </div>
             </div>
-            
-            <div className="flex gap-2">
-              <button
-                onClick={() => dispatch(toggleAlert(alert.id))}
-                className={`p-2 rounded-full ${
-                  alert.isActive ? 'bg-green-100 dark:bg-green-900' : 'bg-gray-100 dark:bg-gray-700'
-                }`}
-              >
-                {alert.isActive ? 
-                  <Bell className="h-5 w-5 text-green-600 dark:text-green-400" /> : 
-                  <BellOff className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-                }
-              </button>
-              <button
-                onClick={() => dispatch(removeAlert(alert.id))}
-                className="p-2 rounded-full bg-red-100 dark:bg-red-900"
-              >
-                <Trash2 className="h-5 w-5 text-red-600 dark:text-red-400" />
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
