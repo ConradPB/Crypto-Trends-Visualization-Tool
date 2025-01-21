@@ -1,10 +1,12 @@
+// src/store/index.ts
 import { configureStore } from '@reduxjs/toolkit';
 import cryptoReducer from '../features/cryptoSlice';
+import alertsReducer from '../features/alertsSlice';
 
 const store = configureStore({
   reducer: {
     crypto: cryptoReducer,
-    alerts: alertsReducer,
+    alerts: alertsReducer,  // Add alerts reducer
   },
   devTools: process.env.NODE_ENV !== 'production',
 });
