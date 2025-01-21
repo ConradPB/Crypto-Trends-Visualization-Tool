@@ -4,6 +4,7 @@ import cryptoReducer from '../features/cryptoSlice';
 const store = configureStore({
   reducer: {
     crypto: cryptoReducer,
+    alerts: alertsReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });
