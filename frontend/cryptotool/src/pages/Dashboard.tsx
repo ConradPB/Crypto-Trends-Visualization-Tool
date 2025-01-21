@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Button, Typography, Box, Stack } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+
 
 const Dashboard = () => {
+  const theme = useTheme(); 
+
   return (
     <Box
       sx={{
@@ -77,6 +81,22 @@ const Dashboard = () => {
         >
           View Historical Data
         </Button>
+        <Button
+        variant="contained"
+        size="large"
+        sx={{
+          px: 5,
+          py: 2,
+          backgroundColor: theme.palette.mode === 'dark' ? '#9c27b0' : '#ba68c8',
+          '&:hover': { 
+            backgroundColor: theme.palette.mode === 'dark' ? '#7b1fa2' : '#ab47bc' 
+          },
+        }}
+        component={Link}
+        to="/alerts"
+        >
+          Price Alerts
+          </Button>
       </Stack>
     </Box>
   );
