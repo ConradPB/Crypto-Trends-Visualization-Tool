@@ -1,4 +1,3 @@
-// src/store/index.ts
 import { configureStore } from '@reduxjs/toolkit';
 import cryptoReducer from '../features/cryptoSlice';
 import alertsReducer from '../features/alertsSlice';
