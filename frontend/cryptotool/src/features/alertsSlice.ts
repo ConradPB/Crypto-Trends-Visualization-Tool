@@ -6,58 +6,60 @@ export interface PriceAlert {
   targetPrice: number;
   condition: 'above' | 'below';
   isActive: boolean;
-  createdAt: number;
 }
 
 interface AlertsState {
   alerts: PriceAlert[];
-  lastCheck: number;
 }
 
-const loadAlertsFromStorage = (): PriceAlert[] => {
+// Load initial state from localStorage
+const loadAlertsFromStorage = (): AlertsState => {
   try {
-    const saved = localStorage.getItem('priceAlerts');
-    return saved ? JSON.parse(saved) : [];
+    const savedAlerts = localStorage.getItem('cryptoAlerts');
+    if (savedAlerts) {
+      return JSON.parse(savedAlerts);
+    }
   } catch (error) {
-    console.error('Failed to load alerts from storage:', error);
-    return [];
+    console.error('Error loading alerts from localStorage:', error);
   }
+  return { alerts: [] };
 };
 
-const initialState: AlertsState = {
-  alerts: loadAlertsFromStorage(),
-  lastCheck: Date.now()
-};
+const initialState: AlertsState = loadAlertsFromStorage();
 
 const alertsSlice = createSlice({
   name: 'alerts',
   initialState,
   reducers: {
-    addAlert: (state, action: PayloadAction<Omit<PriceAlert, 'id' | 'createdAt'>>) => {
-      const newAlert: PriceAlert = {
+    addAlert: (state, action: PayloadAction<Omit<PriceAlert, 'id'>>) => {
+      const newAlert = {
         ...action.payload,
         id: Date.now().toString(),
-        createdAt: Date.now(),
       };
       state.alerts.push(newAlert);
-      localStorage.setItem('priceAlerts', JSON.stringify(state.alerts));
+      // Save to localStorage
+      localStorage.setItem('cryptoAlerts', JSON.stringify(state));
     },
     removeAlert: (state, action: PayloadAction<string>) => {
       state.alerts = state.alerts.filter(alert => alert.id !== action.payload);
-      localStorage.setItem('priceAlerts', JSON.stringify(state.alerts));
+      // Save to localStorage
+      localStorage.setItem('cryptoAlerts', JSON.stringify(state));
     },
     toggleAlert: (state, action: PayloadAction<string>) => {
-      const alert = state.alerts.find(a => a.id === action.payload);
+      const alert = state.alerts.find(alert => alert.id === action.payload);
       if (alert) {
         alert.isActive = !alert.isActive;
-        localStorage.setItem('priceAlerts', JSON.stringify(state.alerts));
+        // Save to localStorage
+        localStorage.setItem('cryptoAlerts', JSON.stringify(state));
       }
     },
-    updateLastCheck: (state) => {
-      state.lastCheck = Date.now();
+    clearAllAlerts: (state) => {
+      state.alerts = [];
+      // Save to localStorage
+      localStorage.setItem('cryptoAlerts', JSON.stringify(state));
     }
-  }
+  },
 });
 
-export const { addAlert, removeAlert, toggleAlert, updateLastCheck } = alertsSlice.actions;
+export const { addAlert, removeAlert, toggleAlert, clearAllAlerts } = alertsSlice.actions;
 export default alertsSlice.reducer;
