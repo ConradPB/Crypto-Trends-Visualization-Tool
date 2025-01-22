@@ -7,7 +7,6 @@ export interface PriceAlert {
   condition: 'above' | 'below';
   isActive: boolean;
 }
-
 interface AlertsState {
   alerts: PriceAlert[];
 }
