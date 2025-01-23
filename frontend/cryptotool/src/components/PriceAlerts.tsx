@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAlert, removeAlert, toggleAlert } from '../features/alertsSlice';
+import { addAlert, addHistoryEntry, removeAlert, toggleAlert } from '../features/alertsSlice';
 import { fetchCryptoPrices } from '../features/cryptoSlice';
 import { checkAlerts } from '../utils/alertChecker';
 import { Bell, BellOff, Trash2 } from 'lucide-react';
@@ -49,8 +49,18 @@ const PriceAlerts = () => {
       const checkedAlerts = checkAlerts(alerts, prices);
       const newTriggeredAlerts = checkedAlerts.filter(check => check.triggered);
       
-      // Show notifications for newly triggered alerts
+      // Record history and show notifications for newly triggered alerts
       newTriggeredAlerts.forEach(({ alert, currentPrice }) => {
+        // Add to history
+        dispatch(addHistoryEntry({
+          alertId: alert.id,
+          coinId: alert.coinId,
+          targetPrice: alert.targetPrice,
+          condition: alert.condition,
+          price: currentPrice
+        }));
+
+        // Show notification
         if ('Notification' in window && Notification.permission === 'granted') {
           new Notification('Price Alert Triggered!', {
             body: `${alert.coinId.toUpperCase()} is now ${alert.condition} $${alert.targetPrice} (Current: $${currentPrice.toFixed(2)})`,
@@ -60,7 +70,7 @@ const PriceAlerts = () => {
 
       setTriggeredAlerts(checkedAlerts);
     }
-  }, [prices, alerts]);
+  }, [prices, alerts, dispatch]);
 
   useEffect(() => {
     if ('Notification' in window && Notification.permission === 'default') {
