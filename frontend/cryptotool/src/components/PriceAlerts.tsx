@@ -57,7 +57,8 @@ const PriceAlerts = () => {
           coinId: alert.coinId,
           targetPrice: alert.targetPrice,
           condition: alert.condition,
-          price: currentPrice
+          price: currentPrice,
+          triggeredAt: new Date().toISOString()
         }));
 
         // Show notification
