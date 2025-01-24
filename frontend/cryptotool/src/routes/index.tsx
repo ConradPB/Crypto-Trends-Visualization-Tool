@@ -5,6 +5,7 @@ import CryptoPrices from '../components/CryptoPrices';
 import HistoricalData from '../components/HistoricalData';
 import TrendingCoins from '../pages/TrendingCoins';
 import PriceAlerts from '../components/PriceAlerts';
+import AlertHistory from '../components/AlertHistory';
 
 const AppRoutes = () => (
     <Router>
@@ -14,6 +15,7 @@ const AppRoutes = () => (
             <Route path="/crypto" element={<CryptoPrices />} />
             <Route path="/trending" element={<TrendingCoins />} />
             <Route path="/historical" element={<HistoricalData />} />
+            <Route path="/alerts-history" element={<AlertHistory />} />
             <Route path="*" element={<NotFound />} /> {/* Move this to the end */}
         </Routes>
     </Router>
