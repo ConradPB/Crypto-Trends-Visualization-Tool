@@ -81,6 +81,13 @@ const PriceAlerts = () => {
     }
   }, [prices, alerts, dispatch, soundNotification]);
 
+  // Toggle sound notification
+  const toggleSoundNotification = () => {
+    const newSoundState = !isSoundEnabled;
+    setIsSoundEnabled(newSoundState);
+    localStorage.setItem('soundNotificationEnabled', newSoundState.toString());
+  };
+
   useEffect(() => {
     if ('Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission();
