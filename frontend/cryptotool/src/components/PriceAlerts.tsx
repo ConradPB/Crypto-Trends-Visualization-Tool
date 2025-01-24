@@ -7,7 +7,7 @@ import { Bell, BellOff, Trash2 } from 'lucide-react';
 import type { RootState, AppDispatch } from '../store';
 import type { PriceAlert } from '../features/alertsSlice';
 import { AlertCheck } from '../utils/alertChecker';
-import SoundNotification from '../utils/SoundNotification';
+import { SoundNotification } from '../utils/soundNotification';
 import AlertHistory from './AlertHistory';
 
 type AlertCondition = 'above' | 'below';
@@ -23,7 +23,7 @@ const PriceAlerts = () => {
   const alerts = useSelector((state: RootState) => state.alerts.alerts);
   const prices = useSelector((state: RootState) => state.crypto.prices);
   const [triggeredAlerts, setTriggeredAlerts] = useState<AlertCheck[]>([]);
-  const [SoundNotification] = useState(new SoundNotification ());
+  const [SoundNotification] = useState(new SoundNotification());
 
   
   const [newAlert, setNewAlert] = useState<NewAlertState>({
@@ -69,7 +69,7 @@ const PriceAlerts = () => {
           triggeredAt: new Date().toISOString()
         }));
 
-        // Show notification
+        // Show notification in browser
         if ('Notification' in window && Notification.permission === 'granted') {
           new Notification('Price Alert Triggered!', {
             body: `${alert.coinId.toUpperCase()} is now ${alert.condition} $${alert.targetPrice} (Current: $${currentPrice.toFixed(2)})`,
