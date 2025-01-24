@@ -7,6 +7,7 @@ import { Bell, BellOff, Trash2 } from 'lucide-react';
 import type { RootState, AppDispatch } from '../store';
 import type { PriceAlert } from '../features/alertsSlice';
 import { AlertCheck } from '../utils/alertChecker';
+import SoundNotification from '../utils/SoundNotification';
 import AlertHistory from './AlertHistory';
 
 type AlertCondition = 'above' | 'below';
@@ -22,6 +23,8 @@ const PriceAlerts = () => {
   const alerts = useSelector((state: RootState) => state.alerts.alerts);
   const prices = useSelector((state: RootState) => state.crypto.prices);
   const [triggeredAlerts, setTriggeredAlerts] = useState<AlertCheck[]>([]);
+  const [SoundNotification] = useState(new SoundNotification ());
+
   
   const [newAlert, setNewAlert] = useState<NewAlertState>({
     coinId: 'bitcoin',
