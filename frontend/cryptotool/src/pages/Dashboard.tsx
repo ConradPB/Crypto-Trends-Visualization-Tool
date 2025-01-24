@@ -97,6 +97,22 @@ const Dashboard = () => {
         >
           Price Alerts
           </Button>
+          <Button
+          variant="contained"
+          size="large"
+          sx={{
+            px: 5,
+            py: 2,
+            backgroundColor: theme.palette.mode === 'dark' ? '#9c27b0' : '#ba68c8',
+            '&:hover': { 
+              backgroundColor: theme.palette.mode === 'dark' ? '#7b1fa2' : '#ab47bc' 
+            },
+          }}
+          component={Link}
+          to="/alerts-history" // Add this button
+        >
+          Alert History
+        </Button>
       </Stack>
     </Box>
   );
