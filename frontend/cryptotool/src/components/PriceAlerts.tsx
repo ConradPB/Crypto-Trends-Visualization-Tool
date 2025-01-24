@@ -23,6 +23,11 @@ const PriceAlerts = () => {
   const alerts = useSelector((state: RootState) => state.alerts.alerts);
   const prices = useSelector((state: RootState) => state.crypto.prices);
   const [triggeredAlerts, setTriggeredAlerts] = useState<AlertCheck[]>([]);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
+    // Load sound preference from localStorage, default to true
+    const savedSoundPreference = localStorage.getItem('soundNotificationEnabled');
+    return savedSoundPreference === null ? true : savedSoundPreference === 'true';
+  });
   const [soundNotification] = useState(new SoundNotification());
 
   
@@ -56,8 +61,10 @@ const PriceAlerts = () => {
       // Record history and show notifications for newly triggered alerts
       newTriggeredAlerts.forEach(({ alert, currentPrice }) => {
 
-        // Play sound notification
-        soundNotification.play();
+        // Play sound only if enabled
+        if (isSoundEnabled) {
+          soundNotification.play();
+        }
 
         // Add to history
         dispatch(addHistoryEntry({
@@ -79,7 +86,7 @@ const PriceAlerts = () => {
 
       setTriggeredAlerts(checkedAlerts);
     }
-  }, [prices, alerts, dispatch, soundNotification]);
+  }, [prices, alerts, dispatch, soundNotification, isSoundEnabled]);
 
   // Toggle sound notification
   const toggleSoundNotification = () => {
