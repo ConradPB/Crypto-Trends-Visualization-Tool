@@ -7,6 +7,7 @@ import { Bell, BellOff, Trash2 } from 'lucide-react';
 import type { RootState, AppDispatch } from '../store';
 import type { PriceAlert } from '../features/alertsSlice';
 import { AlertCheck } from '../utils/alertChecker';
+import AlertHistory from './AlertHistory';
 
 type AlertCondition = 'above' | 'below';
 
