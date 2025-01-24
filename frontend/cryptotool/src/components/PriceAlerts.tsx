@@ -23,7 +23,7 @@ const PriceAlerts = () => {
   const alerts = useSelector((state: RootState) => state.alerts.alerts);
   const prices = useSelector((state: RootState) => state.crypto.prices);
   const [triggeredAlerts, setTriggeredAlerts] = useState<AlertCheck[]>([]);
-  const [SoundNotification] = useState(new SoundNotification());
+  const [soundNotification] = useState(new SoundNotification());
 
   
   const [newAlert, setNewAlert] = useState<NewAlertState>({
@@ -57,7 +57,7 @@ const PriceAlerts = () => {
       newTriggeredAlerts.forEach(({ alert, currentPrice }) => {
 
         // Play sound notification
-        SoundNotification.play();
+        soundNotification.play();
 
         // Add to history
         dispatch(addHistoryEntry({
@@ -79,7 +79,7 @@ const PriceAlerts = () => {
 
       setTriggeredAlerts(checkedAlerts);
     }
-  }, [prices, alerts, dispatch, SoundNotification]);
+  }, [prices, alerts, dispatch, soundNotification]);
 
   useEffect(() => {
     if ('Notification' in window && Notification.permission === 'default') {
