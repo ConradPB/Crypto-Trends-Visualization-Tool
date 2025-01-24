@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearHistory } from '../features/alertsSlice';
 import type { RootState } from '../store';
