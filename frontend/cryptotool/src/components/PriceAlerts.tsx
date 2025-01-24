@@ -55,6 +55,10 @@ const PriceAlerts = () => {
       
       // Record history and show notifications for newly triggered alerts
       newTriggeredAlerts.forEach(({ alert, currentPrice }) => {
+
+        // Play sound notification
+        SoundNotification.play();
+
         // Add to history
         dispatch(addHistoryEntry({
           alertId: alert.id,
