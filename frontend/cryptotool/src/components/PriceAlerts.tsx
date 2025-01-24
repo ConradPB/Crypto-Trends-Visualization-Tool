@@ -191,6 +191,7 @@ const PriceAlerts = () => {
           );
         })}
       </div>
+      <AlertHistory />
     </div>
   );
 };
