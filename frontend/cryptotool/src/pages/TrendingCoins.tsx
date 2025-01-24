@@ -6,9 +6,7 @@ import { AppDispatch, RootState } from "../store";
 
 const TrendingCoins = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { trendingCoins, loading, error } = useSelector(
-    (state: RootState) => state.crypto
-  );
+  const { trendingCoins, loading, error } = useSelector((state: RootState) => state.crypto);
 
   useEffect(() => {
     console.log("Fetching trending coins...");
