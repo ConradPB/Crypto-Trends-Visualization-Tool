@@ -75,7 +75,7 @@ const PriceAlerts = () => {
 
       setTriggeredAlerts(checkedAlerts);
     }
-  }, [prices, alerts, dispatch]);
+  }, [prices, alerts, dispatch, SoundNotification]);
 
   useEffect(() => {
     if ('Notification' in window && Notification.permission === 'default') {
