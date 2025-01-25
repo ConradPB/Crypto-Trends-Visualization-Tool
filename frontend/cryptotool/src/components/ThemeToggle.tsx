@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTheme } from '@mui/material/styles';
 import { IconButton, Tooltip } from '@mui/material';
 import { Sun, Moon } from 'lucide-react';
