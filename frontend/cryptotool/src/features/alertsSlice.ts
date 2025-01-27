@@ -5,6 +5,7 @@ export interface PriceAlert {
   coinId: string;
   targetPrice: number;
   condition: 'above' | 'below';
+  frequency: 'onetime' | 'daily' | 'weekly';
   isActive: boolean;
 }
 
