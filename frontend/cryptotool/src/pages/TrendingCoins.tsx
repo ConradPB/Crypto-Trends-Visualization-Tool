@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Card, Typography, CircularProgress } from "@mui/material";
 import { fetchTrendingCoins } from "../features/cryptoSlice";
