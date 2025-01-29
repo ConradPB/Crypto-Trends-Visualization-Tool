@@ -16,6 +16,7 @@ interface NewAlertState {
   coinId: string;
   targetPrice: string;
   condition: AlertCondition;
+  frequency: AlertFrequency;
 }
 
 const PriceAlerts = () => {
