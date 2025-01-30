@@ -126,7 +126,7 @@ const PriceAlerts = () => {
         coinId: newAlert.coinId,
         targetPrice: Number(newAlert.targetPrice),
         condition: newAlert.condition,
-        frequency: "onetime", // or 'daily' or 'weekly' based on your requirement
+        frequency: newAlert.frequency,
         isActive: true,
       })
     );
