@@ -45,6 +45,7 @@ const PriceAlerts = () => {
     coinId: "bitcoin",
     targetPrice: "",
     condition: "above",
+    frequency: "onetime",
   });
 
   // Fetch prices periodically
