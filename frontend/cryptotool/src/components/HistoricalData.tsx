@@ -13,7 +13,7 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
-import { Grid } from '@mui/material';
+import { Grid } from "@mui/material";
 import {
   CartesianGrid,
   Line,
@@ -24,15 +24,18 @@ import {
   YAxis,
 } from "recharts";
 
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+
 interface TooltipProps {
   active?: boolean;
   payload?: Array<{
-      payload: {
-          tooltip: {
-              date: string;
-              price: string;
-          };
+    payload: {
+      tooltip: {
+        date: string;
+        price: string;
       };
+    };
   }>;
 }
 const HistoricalData = () => {
@@ -50,29 +53,34 @@ const HistoricalData = () => {
   }, [selectedCoin, timeRange, dispatch]);
 
   // Format data for the chart
-  const formattedData = historicalData[selectedCoin]?.map(entry => ({
-    date: new Date(entry.date).toLocaleDateString(),
-    price: parseFloat(entry.price.toFixed(2)),
-    tooltip: {
-      date: new Date(entry.date).toLocaleString(),
-      price: `$${entry.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-    }
-  })) || [];
+  const formattedData =
+    historicalData[selectedCoin]?.map((entry) => ({
+      date: new Date(entry.date).toLocaleDateString(),
+      price: parseFloat(entry.price.toFixed(2)),
+      tooltip: {
+        date: new Date(entry.date).toLocaleString(),
+        price: `$${entry.price.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
+      },
+    })) || [];
 
-  
-const CustomTooltip = ({ active, payload }: TooltipProps) => {
-  if (active && payload && payload.length) {
+  const CustomTooltip = ({ active, payload }: TooltipProps) => {
+    if (active && payload && payload.length) {
       return (
-          <Paper sx={{ p: 2, backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
-              <Typography variant="subtitle2">{payload[0].payload.tooltip.date}</Typography>
-              <Typography variant="body1" color="primary">
-                  Price: {payload[0].payload.tooltip.price}
-              </Typography>
-          </Paper>
+        <Paper sx={{ p: 2, backgroundColor: "rgba(255, 255, 255, 0.95)" }}>
+          <Typography variant="subtitle2">
+            {payload[0].payload.tooltip.date}
+          </Typography>
+          <Typography variant="body1" color="primary">
+            Price: {payload[0].payload.tooltip.price}
+          </Typography>
+        </Paper>
       );
-  }
-  return null;
-};
+    }
+    return null;
+  };
 
   return (
     <Box padding={4}>
@@ -138,25 +146,35 @@ const CustomTooltip = ({ active, payload }: TooltipProps) => {
         }}
       >
         {loading ? (
-          <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+          >
             <CircularProgress />
           </Box>
         ) : error ? (
-          <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+          >
             <Typography color="error">{error}</Typography>
           </Box>
         ) : (
           <ResponsiveContainer>
             <LineChart data={formattedData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
-                dataKey="date" 
+              <XAxis
+                dataKey="date"
                 tick={{ fontSize: 12 }}
                 interval="preserveStartEnd"
               />
-              <YAxis 
+              <YAxis
                 tick={{ fontSize: 12 }}
-                domain={['auto', 'auto']}
+                domain={["auto", "auto"]}
                 tickFormatter={(value) => `$${value.toLocaleString()}`}
               />
               <Tooltip content={<CustomTooltip />} />
