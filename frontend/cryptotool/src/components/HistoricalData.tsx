@@ -24,6 +24,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
