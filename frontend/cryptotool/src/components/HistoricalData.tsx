@@ -23,10 +23,10 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 interface TooltipProps {
   active?: boolean;
@@ -39,19 +39,43 @@ interface TooltipProps {
     };
   }>;
 }
+
 const HistoricalData = () => {
   const dispatch: AppDispatch = useDispatch();
   const { historicalData, loading, error } = useSelector(
     (state: RootState) => state.crypto
   );
 
+  // State for selected coin, time range, and custom date range
   const [selectedCoin, setSelectedCoin] = useState("bitcoin");
   const [timeRange, setTimeRange] = useState("7");
+  const [startDate, setStartDate] = useState<Dayjs | null>(
+    dayjs().subtract(7, "day")
+  );
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
 
+  // Fetch historical data based on selected options
   useEffect(() => {
-    console.log("Fetching historical data for:", selectedCoin, timeRange);
-    dispatch(fetchHistoricalData({ id: selectedCoin, days: timeRange }));
-  }, [selectedCoin, timeRange, dispatch]);
+    if (timeRange === "custom") {
+      if (!startDate || !endDate) return;
+
+      const start = startDate.format("YYYY-MM-DD");
+      const end = endDate.format("YYYY-MM-DD");
+
+      console.log(
+        "Fetching custom historical data for:",
+        selectedCoin,
+        start,
+        end
+      );
+      dispatch(
+        fetchHistoricalData({ id: selectedCoin, days: "custom", start, end })
+      );
+    } else {
+      console.log("Fetching historical data for:", selectedCoin, timeRange);
+      dispatch(fetchHistoricalData({ id: selectedCoin, days: timeRange }));
+    }
+  }, [selectedCoin, timeRange, startDate, endDate, dispatch]);
 
   // Format data for the chart
   const formattedData =
@@ -67,6 +91,7 @@ const HistoricalData = () => {
       },
     })) || [];
 
+  // Custom tooltip for the chart
   const CustomTooltip = ({ active, payload }: TooltipProps) => {
     if (active && payload && payload.length) {
       return (
@@ -89,6 +114,7 @@ const HistoricalData = () => {
         Cryptocurrency Historical Data
       </Typography>
 
+      {/* Controls */}
       <Paper
         elevation={3}
         sx={{
@@ -99,6 +125,7 @@ const HistoricalData = () => {
         }}
       >
         <Grid container spacing={3} justifyContent="center">
+          {/* Cryptocurrency Selector */}
           <Grid item xs={12} sm={6} md={4}>
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
@@ -116,6 +143,7 @@ const HistoricalData = () => {
             </FormControl>
           </Grid>
 
+          {/* Time Range Selector */}
           <Grid item xs={12} sm={6} md={4}>
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel id="time-range-select-label">Time Range</InputLabel>
@@ -130,12 +158,40 @@ const HistoricalData = () => {
                 <MenuItem value="30">30 Days</MenuItem>
                 <MenuItem value="90">90 Days</MenuItem>
                 <MenuItem value="365">1 Year</MenuItem>
+                <MenuItem value="custom">Custom Range</MenuItem>
               </Select>
             </FormControl>
           </Grid>
+
+          {/* Custom Date Range Picker */}
+          {timeRange === "custom" && (
+            <Grid item xs={12} container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Start Date"
+                    value={startDate}
+                    onChange={(newValue) => setStartDate(newValue)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="End Date"
+                    value={endDate}
+                    onChange={(newValue) => setEndDate(newValue)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </Grid>
+            </Grid>
+          )}
         </Grid>
       </Paper>
 
+      {/* Chart */}
       <Box
         mt={4}
         sx={{
