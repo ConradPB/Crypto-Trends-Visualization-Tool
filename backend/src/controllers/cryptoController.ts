@@ -61,7 +61,19 @@ export const getHistoricalData = async (req: Request, res: Response): Promise<vo
             price: item[1],
         }));
 
-       
+        // Return formatted data
+        const formattedData = {
+            [id as string]: prices,
+        };
+
+        // Log success
+        logger.info(`Fetched historical data for: ${id}, Days: ${days}, Interval: ${interval}, Start: ${start}, End: ${end}`);
+        res.json(formattedData);
+    } catch (error: any) {
+        // Handle errors
+        logger.error(`Error fetching historical data: ${error.message}`);
+        res.status(500).json({ error: 'Failed to fetch historical data' });
+    }
 };
 
 export const getTrendingCoins = async (_req: Request, res: Response): Promise<void> => {
