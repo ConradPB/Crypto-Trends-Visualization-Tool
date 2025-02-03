@@ -11,8 +11,6 @@ import {
   MenuItem,
   Select,
   Typography,
-  TextField,
-  TextFieldProps,
   Paper,
 } from "@mui/material";
 import { Grid } from "@mui/material";
@@ -48,7 +46,6 @@ const HistoricalData = () => {
     (state: RootState) => state.crypto
   );
 
-  // State for selected coin, time range, and custom date range
   const [selectedCoin, setSelectedCoin] = useState("bitcoin");
   const [timeRange, setTimeRange] = useState("7");
   const [startDate, setStartDate] = useState<Dayjs | null>(
@@ -56,7 +53,6 @@ const HistoricalData = () => {
   );
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
 
-  // Fetch historical data based on selected options
   useEffect(() => {
     if (timeRange === "custom") {
       if (!startDate || !endDate) return;
@@ -79,7 +75,6 @@ const HistoricalData = () => {
     }
   }, [selectedCoin, timeRange, startDate, endDate, dispatch]);
 
-  // Format data for the chart
   const formattedData =
     historicalData[selectedCoin]?.map((entry) => ({
       date: new Date(entry.date).toLocaleDateString(),
@@ -93,7 +88,6 @@ const HistoricalData = () => {
       },
     })) || [];
 
-  // Custom tooltip for the chart
   const CustomTooltip = ({ active, payload }: TooltipProps) => {
     if (active && payload && payload.length) {
       return (
@@ -116,7 +110,6 @@ const HistoricalData = () => {
         Cryptocurrency Historical Data
       </Typography>
 
-      {/* Controls */}
       <Paper
         elevation={3}
         sx={{
@@ -127,7 +120,6 @@ const HistoricalData = () => {
         }}
       >
         <Grid container spacing={3} justifyContent="center">
-          {/* Cryptocurrency Selector */}
           <Grid item xs={12} sm={6} md={4}>
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
@@ -145,7 +137,6 @@ const HistoricalData = () => {
             </FormControl>
           </Grid>
 
-          {/* Time Range Selector */}
           <Grid item xs={12} sm={6} md={4}>
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel id="time-range-select-label">Time Range</InputLabel>
@@ -165,7 +156,6 @@ const HistoricalData = () => {
             </FormControl>
           </Grid>
 
-          {/* Custom Date Range Picker */}
           {timeRange === "custom" && (
             <Grid item xs={12} container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -174,9 +164,11 @@ const HistoricalData = () => {
                     label="Start Date"
                     value={startDate}
                     onChange={(newValue) => setStartDate(newValue)}
-                    renderInput={(params: TextFieldProps) => (
-                      <TextField {...params} />
-                    )}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                      },
+                    }}
                   />
                 </LocalizationProvider>
               </Grid>
@@ -186,9 +178,11 @@ const HistoricalData = () => {
                     label="End Date"
                     value={endDate}
                     onChange={(newValue) => setEndDate(newValue)}
-                    renderInput={(params: TextFieldProps) => (
-                      <TextField {...params} />
-                    )}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                      },
+                    }}
                   />
                 </LocalizationProvider>
               </Grid>
@@ -197,7 +191,6 @@ const HistoricalData = () => {
         </Grid>
       </Paper>
 
-      {/* Chart */}
       <Box
         mt={4}
         sx={{
