@@ -20,34 +20,19 @@ export const getCryptoPrices = async (req: Request, res: Response): Promise<void
 
 export const getHistoricalData = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id = 'bitcoin', days = '7', interval = 'daily' } = req.query;
+        // Extract query parameters
+        const { id = 'bitcoin', days = '7', interval = 'daily', start, end } = req.query;
 
-        const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart`, {
-            params: {
-                vs_currency: 'usd',
-                days,
-                interval,
-            },
-            headers: {
-                'accept': 'application/json',
-            },
-        });
+        // Validate required parameters
+        if (!id) {
+            res.status(400).json({ error: 'Cryptocurrency ID is required' });
+            return;
+        }
 
-        const prices = response.data.prices.map((item: [number, number]) => ({
-            date: new Date(item[0]).toISOString(),
-            price: item[1]
-        }));
+        // Build the API URL dynamically based on the presence of `start` and `end`
+        let url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart`;
 
-        const formattedData = {
-            [(id as string)]: prices
-        };
-
-        logger.info(`Fetched historical data for: ${id}, Days: ${days}, Interval: ${interval}`);
-        res.json(formattedData);
-    } catch (error: any) {
-        logger.error(`Error fetching historical data: ${error.message}`);
-        res.status(500).json({ error: 'Failed to fetch historical data' });
-    }
+       
 };
 
 export const getTrendingCoins = async (_req: Request, res: Response): Promise<void> => {
