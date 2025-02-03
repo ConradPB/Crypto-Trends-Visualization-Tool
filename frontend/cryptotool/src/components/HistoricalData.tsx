@@ -11,9 +11,11 @@ import {
   MenuItem,
   Select,
   Typography,
+  TextField,
+  TextFieldProps,
   Paper,
 } from "@mui/material";
-import { Grid, TextField } from "@mui/material";
+import { Grid } from "@mui/material";
 import {
   CartesianGrid,
   Line,
@@ -172,7 +174,9 @@ const HistoricalData = () => {
                     label="Start Date"
                     value={startDate}
                     onChange={(newValue) => setStartDate(newValue)}
-                    renderInput={(params) => <TextField {...params} />}
+                    renderInput={(params: TextFieldProps) => (
+                      <TextField {...params} />
+                    )}
                   />
                 </LocalizationProvider>
               </Grid>
@@ -182,7 +186,9 @@ const HistoricalData = () => {
                     label="End Date"
                     value={endDate}
                     onChange={(newValue) => setEndDate(newValue)}
-                    renderInput={(params) => <TextField {...params} />}
+                    renderInput={(params: TextFieldProps) => (
+                      <TextField {...params} />
+                    )}
                   />
                 </LocalizationProvider>
               </Grid>
