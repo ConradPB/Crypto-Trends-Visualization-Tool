@@ -32,7 +32,16 @@ export const getHistoricalData = async (req: Request, res: Response): Promise<vo
         // Build the API URL dynamically based on the presence of `start` and `end`
         let url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart`;
 
-       
+        // Construct query parameters
+        const params: Record<string, string | number> = {
+            vs_currency: 'usd',
+        };
+
+        if (start && end) {
+            // Use `from` and `to` for custom date ranges
+            params.from = Math.floor(new Date(start as string).getTime() / 1000); // Convert to Unix timestamp
+            params.to = Math.floor(new Date(end as string).getTime() / 1000);
+        } 
 };
 
 export const getTrendingCoins = async (_req: Request, res: Response): Promise<void> => {
