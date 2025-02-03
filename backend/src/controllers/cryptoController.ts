@@ -41,7 +41,27 @@ export const getHistoricalData = async (req: Request, res: Response): Promise<vo
             // Use `from` and `to` for custom date ranges
             params.from = Math.floor(new Date(start as string).getTime() / 1000); // Convert to Unix timestamp
             params.to = Math.floor(new Date(end as string).getTime() / 1000);
-        } 
+        } else {
+            // Use `days` and `interval` for predefined time ranges
+            params.days = days as string;
+            params.interval = interval as string;
+        }
+
+        // Fetch data from CoinGecko API
+        const response = await axios.get(url, {
+            params,
+            headers: {
+                'accept': 'application/json',
+            },
+        });
+
+        // Format the response data
+        const prices = response.data.prices.map((item: [number, number]) => ({
+            date: new Date(item[0]).toISOString(),
+            price: item[1],
+        }));
+
+       
 };
 
 export const getTrendingCoins = async (_req: Request, res: Response): Promise<void> => {
