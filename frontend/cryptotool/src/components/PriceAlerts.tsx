@@ -14,20 +14,6 @@ import type { PriceAlert } from "../features/alertsSlice";
 import { AlertCheck } from "../utils/alertChecker";
 import { SoundNotification } from "../utils/soundNotification";
 import AlertHistory from "./AlertHistory";
-import {
-  Box,
-  Typography,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  TextField,
-  IconButton,
-  Tooltip,
-  Paper,
-  CircularProgress,
-} from "@mui/material";
 
 type AlertCondition = "above" | "below";
 type AlertFrequency = "onetime" | "daily" | "weekly";
@@ -40,12 +26,12 @@ interface NewAlertState {
 }
 
 const PriceAlerts = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>(); // Updated dispatch typing
   const alerts = useSelector((state: RootState) => state.alerts.alerts);
   const prices = useSelector((state: RootState) => state.crypto.prices);
   const [triggeredAlerts, setTriggeredAlerts] = useState<AlertCheck[]>([]);
-  const [loading, setLoading] = useState(false);
   const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
+    // Load sound preference from localStorage, default to true
     const savedSoundPreference = localStorage.getItem(
       "soundNotificationEnabled"
     );
@@ -65,8 +51,6 @@ const PriceAlerts = () => {
   // Fetch prices periodically
   useEffect(() => {
     const fetchPricesForAlerts = () => {
-      setLoading(true); // Start loading
-
       const uniqueCoins = [...new Set(alerts.map((alert) => alert.coinId))];
       if (uniqueCoins.length > 0) {
         dispatch(fetchCryptoPrices(uniqueCoins.join(",")));
@@ -163,257 +147,148 @@ const PriceAlerts = () => {
   };
 
   return (
-    <Box sx={{ p: 4 }}>
-      {/* Title */}
-      <Typography variant="h4" gutterBottom textAlign="center">
-        Price Alerts
-      </Typography>
+    <div className="p-4 max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4 dark:text-white">Price Alerts</h2>
 
       {/* Add New Alert Form */}
-      <Paper
-        elevation={3}
-        sx={{
-          p: 3,
-          mt: 2,
-          borderRadius: 2,
-          backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "#1e1e1e" : "#ffffff",
-        }}
+      <form
+        onSubmit={handleSubmit}
+        className="mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow"
       >
-        <form onSubmit={handleSubmit}>
-          <Box display="flex" gap={2} flexWrap="wrap">
-            {/* Coin Selector */}
-            <FormControl fullWidth variant="outlined" size="small">
-              <InputLabel>Cryptocurrency</InputLabel>
-              <Select
-                value={newAlert.coinId}
-                onChange={(e) =>
-                  setNewAlert((prev) => ({ ...prev, coinId: e.target.value }))
-                }
-                label="Cryptocurrency"
-              >
-                <MenuItem value="bitcoin">Bitcoin</MenuItem>
-                <MenuItem value="ethereum">Ethereum</MenuItem>
-                <MenuItem value="dogecoin">Dogecoin</MenuItem>
-              </Select>
-            </FormControl>
+        <div className="flex gap-4 flex-wrap">
+          <select
+            value={newAlert.coinId}
+            onChange={(e) =>
+              setNewAlert((prev) => ({ ...prev, coinId: e.target.value }))
+            }
+            className="px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          >
+            <option value="bitcoin">Bitcoin</option>
+            <option value="ethereum">Ethereum</option>
+            <option value="dogecoin">Dogecoin</option>
+          </select>
 
-            {/* Condition Selector */}
-            <FormControl fullWidth variant="outlined" size="small">
-              <InputLabel>Condition</InputLabel>
-              <Select
-                value={newAlert.condition}
-                onChange={(e) =>
-                  setNewAlert((prev) => ({
-                    ...prev,
-                    condition: e.target.value as AlertCondition,
-                  }))
-                }
-                label="Condition"
-              >
-                <MenuItem value="above">Above</MenuItem>
-                <MenuItem value="below">Below</MenuItem>
-              </Select>
-            </FormControl>
+          <select
+            value={newAlert.condition}
+            onChange={(e) =>
+              setNewAlert((prev) => ({
+                ...prev,
+                condition: e.target.value as AlertCondition,
+              }))
+            }
+            className="px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          >
+            <option value="above">Above</option>
+            <option value="below">Below</option>
+          </select>
 
-            {/* Frequency Selector */}
-            <FormControl fullWidth variant="outlined" size="small">
-              <InputLabel>Frequency</InputLabel>
-              <Select
-                value={newAlert.frequency}
-                onChange={(e) =>
-                  setNewAlert((prev) => ({
-                    ...prev,
-                    frequency: e.target.value as AlertFrequency,
-                  }))
-                }
-                label="Frequency"
-              >
-                <MenuItem value="onetime">One-Time</MenuItem>
-                <MenuItem value="daily">Daily</MenuItem>
-                <MenuItem value="weekly">Weekly</MenuItem>
-              </Select>
-            </FormControl>
+          <select
+            value={newAlert.frequency}
+            onChange={(e) =>
+              setNewAlert((prev) => ({
+                ...prev,
+                frequency: e.target.value as AlertFrequency,
+              }))
+            }
+            className="px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          >
+            <option value="onetime">One-Time</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+          </select>
+          <p className="text-xs text-gray-500 mt-1">
+            Select how often the alert should trigger.
+          </p>
 
-            {/* Target Price Input */}
-            <TextField
-              type="number"
-              value={newAlert.targetPrice}
-              onChange={(e) =>
-                setNewAlert((prev) => ({
-                  ...prev,
-                  targetPrice: e.target.value,
-                }))
-              }
-              label="Target Price"
-              variant="outlined"
-              size="small"
-              fullWidth
-            />
+          <input
+            type="number"
+            value={newAlert.targetPrice}
+            onChange={(e) =>
+              setNewAlert((prev) => ({ ...prev, targetPrice: e.target.value }))
+            }
+            placeholder="Target Price"
+            className="px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
 
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{
-                px: 5,
-                py: 2,
-                height: "100%",
-                "&:hover": {
-                  backgroundColor: (theme) => theme.palette.primary.dark,
-                },
-              }}
-            >
-              Add Alert
-            </Button>
-          </Box>
-        </form>
-      </Paper>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            Add Alert
+          </button>
+        </div>
+      </form>
 
       {/* Alerts List */}
-      <Box mt={4}>
-        {alerts.length === 0 ? (
-          <Typography variant="subtitle1" textAlign="center">
-            No alerts set yet.
-          </Typography>
-        ) : (
-          alerts.map((alert) => {
-            const status = getAlertStatus(alert);
-            return (
-              <Paper
-                key={alert.id}
-                elevation={3}
-                sx={{
-                  p: 3,
-                  mt: 2,
-                  borderRadius: 2,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  backgroundColor: (theme) =>
-                    theme.palette.mode === "dark" ? "#1e1e1e" : "#ffffff",
-                  transition: "transform 0.2s",
-                  "&:hover": {
-                    transform: "scale(1.02)",
-                  },
-                }}
-              >
-                {/* Alert Details */}
-                <Box>
-                  <Typography variant="h6">
-                    {alert.coinId.toUpperCase()} {alert.condition} $
-                    {alert.targetPrice.toLocaleString()}
-                  </Typography>
-                  {status && (
-                    <Typography variant="body2" color="textSecondary">
-                      Current: $
-                      {status.currentPrice.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </Typography>
-                  )}
-                </Box>
-
-                {/* Actions */}
-                <Box display="flex" gap={2}>
-                  {/* Toggle Active State */}
-                  <Tooltip
-                    title={alert.isActive ? "Disable Alert" : "Enable Alert"}
-                  >
-                    <IconButton
-                      onClick={() => dispatch(toggleAlert(alert.id))}
-                      sx={{
-                        backgroundColor: alert.isActive
-                          ? "success.light"
-                          : "grey.300",
-                        "&:hover": {
-                          backgroundColor: alert.isActive
-                            ? "success.main"
-                            : "grey.400",
-                        },
-                      }}
-                    >
-                      {alert.isActive ? (
-                        <Bell color="success" />
-                      ) : (
-                        <BellOff color="disabled" />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-
-                  {/* Remove Alert */}
-                  <Tooltip title="Remove Alert">
-                    <IconButton
-                      onClick={() => dispatch(removeAlert(alert.id))}
-                      sx={{
-                        backgroundColor: "error.light",
-                        "&:hover": {
-                          backgroundColor: "error.main",
-                        },
-                      }}
-                    >
-                      <Trash2 color="error" />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </Paper>
-            );
-          })
-        )}
-      </Box>
-
-      {/* Alert History */}
-      <Box mt={4}>
-        <AlertHistory />
-      </Box>
-
-      {/* Sound Notifications Toggle */}
-      <Box mt={4} display="flex" justifyContent="center">
-        <Tooltip title="Toggle Sound Notifications">
-          <label
-            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-          >
-            <input
-              type="checkbox"
-              checked={isSoundEnabled}
-              onChange={toggleSoundNotification}
-              style={{ display: "none" }}
-            />
-            <Box
-              sx={{
-                width: 40,
-                height: 20,
-                borderRadius: 20,
-                backgroundColor: isSoundEnabled ? "primary.main" : "grey.300",
-                position: "relative",
-                transition: "background-color 0.3s",
-                "&:hover": {
-                  backgroundColor: isSoundEnabled ? "primary.dark" : "grey.400",
-                },
-              }}
+      <div className="space-y-3">
+        {alerts.map((alert: PriceAlert) => {
+          const status = getAlertStatus(alert);
+          return (
+            <div
+              key={alert.id}
+              className={`flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow ${
+                status?.triggered ? "border-2 border-yellow-500" : ""
+              }`}
             >
-              <Box
-                sx={{
-                  width: 16,
-                  height: 16,
-                  borderRadius: "50%",
-                  backgroundColor: "#fff",
-                  position: "absolute",
-                  top: 2,
-                  left: isSoundEnabled ? 20 : 2,
-                  transition: "left 0.3s",
-                }}
-              ></Box>
-            </Box>
-            <Typography variant="body1" ml={2}>
-              Sound Notifications
-            </Typography>
-          </label>
-        </Tooltip>
-      </Box>
-    </Box>
+              <div className="dark:text-white">
+                <span className="font-semibold">
+                  {alert.coinId.toUpperCase()}
+                </span>
+                <span> {alert.condition} </span>
+                <span>${alert.targetPrice.toLocaleString()}</span>
+                {status && (
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Current: $
+                    {status.currentPrice.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => dispatch(toggleAlert(alert.id))}
+                  className={`p-2 rounded-full ${
+                    alert.isActive
+                      ? "bg-green-100 dark:bg-green-900"
+                      : "bg-gray-100 dark:bg-gray-700"
+                  }`}
+                >
+                  {alert.isActive ? (
+                    <Bell className="h-5 w-5 text-green-600 dark:text-green-400" />
+                  ) : (
+                    <BellOff className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                  )}
+                </button>
+                <button
+                  onClick={() => dispatch(removeAlert(alert.id))}
+                  className="p-2 rounded-full bg-red-100 dark:bg-red-900"
+                >
+                  <Trash2 className="h-5 w-5 text-red-600 dark:text-red-400" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <AlertHistory />
+      <div className="mt-4 flex items-center justify-center">
+        <label className="flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isSoundEnabled}
+            onChange={toggleSoundNotification}
+            className="sr-only peer"
+          />
+          <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+            Sound Notifications
+          </span>
+        </label>
+      </div>
+    </div>
   );
 };
 
