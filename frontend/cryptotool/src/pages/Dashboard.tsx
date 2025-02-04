@@ -16,6 +16,15 @@ const Dashboard = () => {
   const theme = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  // Define button colors based on the theme
+  const buttonColors = {
+    crypto: "#ff8a65",
+    trending: "#4db6ac",
+    historical: "#7986cb",
+    alerts: theme.palette.mode === "dark" ? "#9c27b0" : "#ba68c8",
+    history: theme.palette.mode === "dark" ? "#9c27b0" : "#ba68c8",
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       {/* Sidebar */}
@@ -32,76 +41,54 @@ const Dashboard = () => {
         }}
       >
         <List>
-          <ListItem
-            component={Link}
-            to="/crypto"
-            onClick={() => setIsSidebarOpen(false)}
-            sx={{
-              textDecoration: "none",
-              color: "inherit",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.action.hover,
-              },
-            }}
-          >
-            <ListItemText primary="Crypto Prices" />
-          </ListItem>
-          <ListItem
-            component={Link}
-            to="/trending"
-            onClick={() => setIsSidebarOpen(false)}
-            sx={{
-              textDecoration: "none",
-              color: "inherit",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.action.hover,
-              },
-            }}
-          >
-            <ListItemText primary="Trending Coins" />
-          </ListItem>
-          <ListItem
-            component={Link}
-            to="/historical"
-            onClick={() => setIsSidebarOpen(false)}
-            sx={{
-              textDecoration: "none",
-              color: "inherit",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.action.hover,
-              },
-            }}
-          >
-            <ListItemText primary="Historical Data" />
-          </ListItem>
-          <ListItem
-            component={Link}
-            to="/alerts"
-            onClick={() => setIsSidebarOpen(false)}
-            sx={{
-              textDecoration: "none",
-              color: "inherit",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.action.hover,
-              },
-            }}
-          >
-            <ListItemText primary="Price Alerts" />
-          </ListItem>
-          <ListItem
-            component={Link}
-            to="/alerts-history"
-            onClick={() => setIsSidebarOpen(false)}
-            sx={{
-              textDecoration: "none",
-              color: "inherit",
-              "&:hover": {
-                backgroundColor: (theme) => theme.palette.action.hover,
-              },
-            }}
-          >
-            <ListItemText primary="Alert History" />
-          </ListItem>
+          {[
+            {
+              text: "Crypto Prices",
+              path: "/crypto",
+              color: buttonColors.crypto,
+            },
+            {
+              text: "Trending Coins",
+              path: "/trending",
+              color: buttonColors.trending,
+            },
+            {
+              text: "Historical Data",
+              path: "/historical",
+              color: buttonColors.historical,
+            },
+            {
+              text: "Price Alerts",
+              path: "/alerts",
+              color: buttonColors.alerts,
+            },
+            {
+              text: "Alert History",
+              path: "/alerts-history",
+              color: buttonColors.history,
+            },
+          ].map((item) => (
+            <ListItem
+              key={item.text}
+              component={Link}
+              to={item.path}
+              onClick={() => setIsSidebarOpen(false)}
+              sx={{
+                textDecoration: "none",
+                color: "#fff",
+                backgroundColor: item.color,
+                borderRadius: 2,
+                margin: "0.5rem 1rem",
+                transition: "transform 0.2s",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  backgroundColor: item.color,
+                },
+              }}
+            >
+              <ListItemText primary={item.text} sx={{ textAlign: "center" }} />
+            </ListItem>
+          ))}
         </List>
       </Drawer>
 
@@ -132,94 +119,6 @@ const Dashboard = () => {
           Explore the latest prices, trending coins, historical data, and set up
           price alerts in the cryptocurrency market.
         </Typography>
-
-        {/* Action Buttons */}
-        <Box
-          sx={{
-            display: "flex",
-            gap: 3,
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          <Link to="/crypto" style={{ textDecoration: "none" }}>
-            <Box
-              sx={{
-                px: 5,
-                py: 2,
-                backgroundColor: "#ff8a65",
-                color: "#fff",
-                borderRadius: 2,
-                transition: "transform 0.2s",
-                "&:hover": { transform: "scale(1.05)" },
-              }}
-            >
-              View Crypto Prices
-            </Box>
-          </Link>
-          <Link to="/trending" style={{ textDecoration: "none" }}>
-            <Box
-              sx={{
-                px: 5,
-                py: 2,
-                backgroundColor: "#4db6ac",
-                color: "#fff",
-                borderRadius: 2,
-                transition: "transform 0.2s",
-                "&:hover": { transform: "scale(1.05)" },
-              }}
-            >
-              View Trending Coins
-            </Box>
-          </Link>
-          <Link to="/historical" style={{ textDecoration: "none" }}>
-            <Box
-              sx={{
-                px: 5,
-                py: 2,
-                backgroundColor: "#7986cb",
-                color: "#fff",
-                borderRadius: 2,
-                transition: "transform 0.2s",
-                "&:hover": { transform: "scale(1.05)" },
-              }}
-            >
-              View Historical Data
-            </Box>
-          </Link>
-          <Link to="/alerts" style={{ textDecoration: "none" }}>
-            <Box
-              sx={{
-                px: 5,
-                py: 2,
-                backgroundColor:
-                  theme.palette.mode === "dark" ? "#9c27b0" : "#ba68c8",
-                color: "#fff",
-                borderRadius: 2,
-                transition: "transform 0.2s",
-                "&:hover": { transform: "scale(1.05)" },
-              }}
-            >
-              Price Alerts
-            </Box>
-          </Link>
-          <Link to="/alerts-history" style={{ textDecoration: "none" }}>
-            <Box
-              sx={{
-                px: 5,
-                py: 2,
-                backgroundColor:
-                  theme.palette.mode === "dark" ? "#9c27b0" : "#ba68c8",
-                color: "#fff",
-                borderRadius: 2,
-                transition: "transform 0.2s",
-                "&:hover": { transform: "scale(1.05)" },
-              }}
-            >
-              Alert History
-            </Box>
-          </Link>
-        </Box>
       </Box>
     </Box>
   );
