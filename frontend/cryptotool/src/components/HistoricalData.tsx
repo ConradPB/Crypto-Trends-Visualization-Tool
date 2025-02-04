@@ -5,15 +5,15 @@ import { fetchHistoricalData } from "../features/cryptoSlice";
 import { RootState } from "../store";
 import {
   Box,
+  Typography,
   CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
-  Typography,
   Paper,
+  Grid,
 } from "@mui/material";
-import { Grid } from "@mui/material";
 import {
   CartesianGrid,
   Line,
@@ -23,10 +23,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from "dayjs";
 
 interface TooltipProps {
   active?: boolean;
@@ -48,33 +44,13 @@ const HistoricalData = () => {
 
   const [selectedCoin, setSelectedCoin] = useState("bitcoin");
   const [timeRange, setTimeRange] = useState("7");
-  const [startDate, setStartDate] = useState<Dayjs | null>(
-    dayjs().subtract(7, "day")
-  );
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
 
   useEffect(() => {
-    if (timeRange === "custom") {
-      if (!startDate || !endDate) return;
+    console.log("Fetching historical data for:", selectedCoin, timeRange);
+    dispatch(fetchHistoricalData({ id: selectedCoin, days: timeRange }));
+  }, [selectedCoin, timeRange, dispatch]);
 
-      const start = startDate.format("YYYY-MM-DD");
-      const end = endDate.format("YYYY-MM-DD");
-
-      console.log(
-        "Fetching custom historical data for:",
-        selectedCoin,
-        start,
-        end
-      );
-      dispatch(
-        fetchHistoricalData({ id: selectedCoin, days: "custom", start, end })
-      );
-    } else {
-      console.log("Fetching historical data for:", selectedCoin, timeRange);
-      dispatch(fetchHistoricalData({ id: selectedCoin, days: timeRange }));
-    }
-  }, [selectedCoin, timeRange, startDate, endDate, dispatch]);
-
+  // Format data for the chart
   const formattedData =
     historicalData[selectedCoin]?.map((entry) => ({
       date: new Date(entry.date).toLocaleDateString(),
@@ -110,16 +86,19 @@ const HistoricalData = () => {
         Cryptocurrency Historical Data
       </Typography>
 
+      {/* Filters */}
       <Paper
         elevation={3}
         sx={{
           padding: 3,
           marginTop: 2,
           borderRadius: 2,
-          backgroundColor: "#f9f9f9",
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#1e1e1e" : "#f9f9f9",
         }}
       >
         <Grid container spacing={3} justifyContent="center">
+          {/* Coin Selector */}
           <Grid item xs={12} sm={6} md={4}>
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel id="coin-select-label">Cryptocurrency</InputLabel>
@@ -137,6 +116,7 @@ const HistoricalData = () => {
             </FormControl>
           </Grid>
 
+          {/* Time Range Selector */}
           <Grid item xs={12} sm={6} md={4}>
             <FormControl fullWidth variant="outlined" size="small">
               <InputLabel id="time-range-select-label">Time Range</InputLabel>
@@ -151,51 +131,19 @@ const HistoricalData = () => {
                 <MenuItem value="30">30 Days</MenuItem>
                 <MenuItem value="90">90 Days</MenuItem>
                 <MenuItem value="365">1 Year</MenuItem>
-                <MenuItem value="custom">Custom Range</MenuItem>
               </Select>
             </FormControl>
           </Grid>
-
-          {timeRange === "custom" && (
-            <Grid item xs={12} container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Start Date"
-                    value={startDate}
-                    onChange={(newValue) => setStartDate(newValue)}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="End Date"
-                    value={endDate}
-                    onChange={(newValue) => setEndDate(newValue)}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
-              </Grid>
-            </Grid>
-          )}
         </Grid>
       </Paper>
 
+      {/* Chart */}
       <Box
         mt={4}
         sx={{
           height: 400,
-          backgroundColor: "#fff",
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#1e1e1e" : "#fff",
           boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
           borderRadius: 2,
           padding: 2,
