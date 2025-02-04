@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Card, Typography, CircularProgress } from "@mui/material";
 import { fetchTrendingCoins } from "../features/cryptoSlice";
@@ -6,7 +6,9 @@ import { AppDispatch, RootState } from "../store";
 
 const TrendingCoins = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { trendingCoins, loading, error } = useSelector((state: RootState) => state.crypto);
+  const { trendingCoins, loading, error } = useSelector(
+    (state: RootState) => state.crypto
+  );
 
   useEffect(() => {
     console.log("Fetching trending coins...");
@@ -15,7 +17,12 @@ const TrendingCoins = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="200px"
+      >
         <CircularProgress />
       </Box>
     );
@@ -54,10 +61,13 @@ const TrendingCoins = () => {
               boxShadow: 3,
               textAlign: "center",
               borderRadius: 2,
-              background: 'linear-gradient(to bottom right, #ffffff, #f5f5f5)',
-              transition: 'transform 0.2s, box-shadow 0.2s',
+              background: (theme) =>
+                theme.palette.mode === "dark"
+                  ? "linear-gradient(to bottom right, #1e1e1e, #121212)"
+                  : "linear-gradient(to bottom right, #ffffff, #f5f5f5)",
+              transition: "transform 0.2s, box-shadow 0.2s",
               "&:hover": {
-                transform: 'translateY(-5px)',
+                transform: "translateY(-5px)",
                 boxShadow: 6,
               },
             }}
@@ -68,17 +78,19 @@ const TrendingCoins = () => {
             <Typography variant="subtitle1" color="textSecondary" gutterBottom>
               {coin.symbol.toUpperCase()}
             </Typography>
-            <Typography 
-              variant="body1" 
+            <Typography
+              variant="body1"
               sx={{
                 mt: 2,
                 p: 1,
                 borderRadius: 1,
-                backgroundColor: 'primary.light',
-                color: 'white'
+                backgroundColor: (theme) =>
+                  theme.palette.mode === "dark" ? "#333" : "primary.light",
+                color: (theme) =>
+                  theme.palette.mode === "dark" ? "#fff" : "#fff",
               }}
             >
-              Market Cap Rank: #{coin.marketCapRank || 'N/A'}
+              Market Cap Rank: #{coin.marketCapRank || "N/A"}
             </Typography>
           </Card>
         ))}
