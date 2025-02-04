@@ -196,6 +196,7 @@ const PriceAlerts = () => {
             <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
           </select>
+
           <p className="text-xs text-gray-500 mt-1">
             Select how often the alert should trigger.
           </p>
