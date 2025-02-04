@@ -4,16 +4,26 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#4facfe',
+      main: '#4facfe', // Primary blue
     },
     secondary: {
-      main: '#4db6ac',
+      main: '#4db6ac', // Secondary teal
     },
     background: {
       default: '#f5f5f5',
       paper: '#ffffff',
     },
+    success: {
+      main: '#81c784', // Success green
+    },
+    error: {
+      main: '#e57373', // Error red
+    },
+    warning: {
+      main: '#ffb74d', // Warning orange
+    },
   },
+  
   typography: {
     fontFamily: "'Poppins', sans-serif",
     h1: {
@@ -47,14 +57,23 @@ export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#64b5f6',
+      main: '#64b5f6', // Primary blue
     },
     secondary: {
-      main: '#4db6ac',
+      main: '#4db6ac', // Secondary teal
     },
     background: {
       default: '#121212',
       paper: '#1e1e1e',
+    },
+    success: {
+      main: '#4caf50', // Success green
+    },
+    error: {
+      main: '#f44336', // Error red
+    },
+    warning: {
+      main: '#ff9800', // Warning orange
     },
   },
 });
