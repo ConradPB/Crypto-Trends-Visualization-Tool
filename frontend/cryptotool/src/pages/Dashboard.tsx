@@ -33,42 +33,72 @@ const Dashboard = () => {
       >
         <List>
           <ListItem
-            button
             component={Link}
             to="/crypto"
             onClick={() => setIsSidebarOpen(false)}
+            sx={{
+              textDecoration: "none",
+              color: "inherit",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.action.hover,
+              },
+            }}
           >
             <ListItemText primary="Crypto Prices" />
           </ListItem>
           <ListItem
-            button
             component={Link}
             to="/trending"
             onClick={() => setIsSidebarOpen(false)}
+            sx={{
+              textDecoration: "none",
+              color: "inherit",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.action.hover,
+              },
+            }}
           >
             <ListItemText primary="Trending Coins" />
           </ListItem>
           <ListItem
-            button
             component={Link}
             to="/historical"
             onClick={() => setIsSidebarOpen(false)}
+            sx={{
+              textDecoration: "none",
+              color: "inherit",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.action.hover,
+              },
+            }}
           >
             <ListItemText primary="Historical Data" />
           </ListItem>
           <ListItem
-            button
             component={Link}
             to="/alerts"
             onClick={() => setIsSidebarOpen(false)}
+            sx={{
+              textDecoration: "none",
+              color: "inherit",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.action.hover,
+              },
+            }}
           >
             <ListItemText primary="Price Alerts" />
           </ListItem>
           <ListItem
-            button
             component={Link}
             to="/alerts-history"
             onClick={() => setIsSidebarOpen(false)}
+            sx={{
+              textDecoration: "none",
+              color: "inherit",
+              "&:hover": {
+                backgroundColor: (theme) => theme.palette.action.hover,
+              },
+            }}
           >
             <ListItemText primary="Alert History" />
           </ListItem>
