@@ -29,9 +29,19 @@ export const lightTheme = createTheme({
       lineHeight: 1.5,
     },
   },
+
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          padding: '8px 16px',
+          textTransform: 'none',
+        },
+      },
+    },
+  },
 });
-
-
 
 export const darkTheme = createTheme({
   palette: {
