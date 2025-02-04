@@ -44,6 +44,7 @@ const PriceAlerts = () => {
   const alerts = useSelector((state: RootState) => state.alerts.alerts);
   const prices = useSelector((state: RootState) => state.crypto.prices);
   const [triggeredAlerts, setTriggeredAlerts] = useState<AlertCheck[]>([]);
+  const [loading, setLoading] = useState(false);
   const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
     const savedSoundPreference = localStorage.getItem(
       "soundNotificationEnabled"
@@ -64,6 +65,8 @@ const PriceAlerts = () => {
   // Fetch prices periodically
   useEffect(() => {
     const fetchPricesForAlerts = () => {
+      setLoading(true); // Start loading
+
       const uniqueCoins = [...new Set(alerts.map((alert) => alert.coinId))];
       if (uniqueCoins.length > 0) {
         dispatch(fetchCryptoPrices(uniqueCoins.join(",")));
