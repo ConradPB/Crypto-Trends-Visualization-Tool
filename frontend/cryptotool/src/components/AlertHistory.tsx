@@ -43,6 +43,49 @@ const AlertHistory = () => {
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page when rows per page changes
+  };
+
+  // Apply Filters and Sorting
+  const filteredHistory =
+    filterCoin !== null
+      ? history.filter((entry) => entry.coinId === filterCoin)
+      : [...history];
+
+  const sortedHistory = filteredHistory.sort((a, b) => {
+    if (sortField === "coinId") {
+      return sortOrder === "asc"
+        ? a.coinId.localeCompare(b.coinId)
+        : b.coinId.localeCompare(a.coinId);
+    }
+    if (sortField === "triggeredAt") {
+      return sortOrder === "asc"
+        ? new Date(a.triggeredAt).getTime() - new Date(b.triggeredAt).getTime()
+        : new Date(b.triggeredAt).getTime() - new Date(a.triggeredAt).getTime();
+    }
+    return 0;
+  });
+
+  // Paginate Data
+  const paginatedHistory = sortedHistory.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
+  // Toggle Sorting
+  const handleSort = (field: "coinId" | "triggeredAt") => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+  };
 };
 
 export default AlertHistory;
