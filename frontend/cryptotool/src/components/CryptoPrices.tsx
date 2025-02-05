@@ -38,7 +38,8 @@ const CryptoPrices = () => {
     link: "chainlink",
     dot: "polkadot",
     bnb: "binancecoin",
-    shib: "shiba",
+    shib: "shiba-inu",
+    pepe: "pepe",
   };
 
   useEffect(() => {
@@ -61,6 +62,8 @@ const CryptoPrices = () => {
 
       // Map symbols to IDs
       const coinId = SYMBOL_TO_ID_MAP[userInput] || userInput;
+
+      console.log("Searching for coin ID:", coinId); // Debugging log
 
       // Fetch the price for the searched cryptocurrency
       const response = await fetch(
