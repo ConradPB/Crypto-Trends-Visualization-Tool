@@ -145,7 +145,93 @@ const AlertHistory = () => {
         </Tooltip>
       </Box>
 
-      
+      {/* Table */}
+      {paginatedHistory.length === 0 ? (
+        <Paper
+          elevation={3}
+          sx={{ p: 4, textAlign: "center", borderRadius: 2 }}
+        >
+          <Typography variant="subtitle1" color="textSecondary">
+            No alert history available.
+          </Typography>
+        </Paper>
+      ) : (
+        <TableContainer component={Paper} elevation={3}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    Coin
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    Condition
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    Target Price
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    Triggered At
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    Current Price
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {paginatedHistory.map((entry) => (
+                <TableRow key={entry.id}>
+                  <TableCell>{entry.coinId.toUpperCase()}</TableCell>
+                  <TableCell>{entry.condition}</TableCell>
+                  <TableCell>${entry.targetPrice.toLocaleString()}</TableCell>
+                  <TableCell>
+                    {format(
+                      new Date(entry.triggeredAt),
+                      "MMM d, yyyy HH:mm:ss"
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    $
+                    {entry.price.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+
+      {/* Pagination */}
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={sortedHistory.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="Entries per page"
+        sx={{
+          "& .MuiTablePagination-selectLabel": {
+            fontSize: "0.875rem",
+          },
+          "& .MuiTablePagination-displayedRows": {
+            fontSize: "0.875rem",
+          },
+        }}
+      />
+    </Box>
   );
 };
 
