@@ -26,16 +26,7 @@ const CryptoPrices = () => {
   } | null>(null);
   const [searchError, setSearchError] = useState("");
 
-  useEffect(() => {
-    // Fetch prices for multiple cryptocurrencies
-    dispatch(
-      fetchCryptoPrices(
-        "bitcoin,ethereum,dogecoin,cardano,solana,xrp,litecoin,chainlink,polkadot,binancecoin"
-      )
-    );
-  }, [dispatch]);
-
-  // Handle search submission
+  // Symbol to ID mapping
   const SYMBOL_TO_ID_MAP: Record<string, string> = {
     btc: "bitcoin",
     eth: "ethereum",
@@ -49,6 +40,16 @@ const CryptoPrices = () => {
     bnb: "binancecoin",
   };
 
+  useEffect(() => {
+    // Fetch prices for multiple cryptocurrencies
+    dispatch(
+      fetchCryptoPrices(
+        "bitcoin,ethereum,dogecoin,cardano,solana,xrp,litecoin,chainlink,polkadot,binancecoin"
+      )
+    );
+  }, [dispatch]);
+
+  // Handle search submission
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
