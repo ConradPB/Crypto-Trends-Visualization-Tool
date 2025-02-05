@@ -36,13 +36,29 @@ const CryptoPrices = () => {
   }, [dispatch]);
 
   // Handle search submission
+  const SYMBOL_TO_ID_MAP: Record<string, string> = {
+    btc: "bitcoin",
+    eth: "ethereum",
+    doge: "dogecoin",
+    ada: "cardano",
+    sol: "solana",
+    xrp: "ripple",
+    ltc: "litecoin",
+    link: "chainlink",
+    dot: "polkadot",
+    bnb: "binancecoin",
+  };
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
 
     try {
-      // Convert user input to lowercase and replace spaces
-      const coinId = searchTerm.toLowerCase().trim();
+      // Normalize user input
+      const userInput = searchTerm.toLowerCase().trim();
+
+      // Map symbols to IDs
+      const coinId = SYMBOL_TO_ID_MAP[userInput] || userInput;
 
       // Fetch the price for the searched cryptocurrency
       const response = await fetch(
