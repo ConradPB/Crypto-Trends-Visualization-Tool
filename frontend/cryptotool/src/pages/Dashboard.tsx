@@ -9,7 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import React, { useState } from "react";
-import { Menu as MenuIcon } from "@mui/icons-material";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 
 const Dashboard = () => {
@@ -26,7 +26,7 @@ const Dashboard = () => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
       {/* Sidebar */}
       <Drawer
         anchor="left"
@@ -37,6 +37,7 @@ const Dashboard = () => {
             width: 240,
             background: theme.palette.mode === "dark" ? "#1e1e1e" : "#ffffff",
             color: theme.palette.text.primary,
+            borderRight: `1px solid ${theme.palette.divider}`,
           },
         }}
       >
@@ -90,6 +91,20 @@ const Dashboard = () => {
             </ListItem>
           ))}
         </List>
+
+        {/* Footer in Sidebar */}
+        <Box
+          sx={{
+            mt: "auto",
+            p: 2,
+            textAlign: "center",
+            borderTop: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <Typography variant="body2" color="textSecondary">
+            Powered by CoinGecko API
+          </Typography>
+        </Box>
       </Drawer>
 
       {/* Main Content */}
