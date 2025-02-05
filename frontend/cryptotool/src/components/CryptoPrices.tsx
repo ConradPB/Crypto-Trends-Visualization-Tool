@@ -41,22 +41,27 @@ const CryptoPrices = () => {
     if (!searchTerm.trim()) return;
 
     try {
-      setSearchError("");
+      // Convert user input to lowercase and replace spaces
+      const coinId = searchTerm.toLowerCase().trim();
+
+      // Fetch the price for the searched cryptocurrency
       const response = await fetch(
-        `/api/crypto/prices?ids=${searchTerm.toLowerCase()}&vs_currencies=usd`
+        `/api/crypto/prices?ids=${coinId}&vs_currencies=usd`
       );
       const data = await response.json();
 
-      if (data[searchTerm.toLowerCase()]) {
+      if (data[coinId]) {
         setSearchResult({
-          coinId: searchTerm.toLowerCase(),
-          price: data[searchTerm.toLowerCase()].usd,
+          coinId: coinId,
+          price: data[coinId].usd,
         });
+        setSearchError("");
       } else {
         setSearchError("Cryptocurrency not found");
         setSearchResult(null);
       }
-    } catch {
+    } catch (err) {
+      console.error("Error fetching cryptocurrency data:", err);
       setSearchError("Failed to fetch cryptocurrency data");
       setSearchResult(null);
     }
