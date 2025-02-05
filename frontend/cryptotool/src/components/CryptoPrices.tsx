@@ -38,6 +38,7 @@ const CryptoPrices = () => {
     link: "chainlink",
     dot: "polkadot",
     bnb: "binancecoin",
+    shib: "shiba",
   };
 
   useEffect(() => {
@@ -66,19 +67,28 @@ const CryptoPrices = () => {
         `/api/crypto/prices?ids=${coinId}&vs_currencies=usd`
       );
       const data = await response.json();
+      console.log("Search API Response:", data); // Debugging log
 
-      if (data[coinId]) {
+      if (Object.keys(data).length === 0) {
+        // Handle empty response (invalid ID)
+        setSearchError("Cryptocurrency not found");
+        setSearchResult(null);
+      } else if (data[coinId]) {
+        // Valid response with price data
         setSearchResult({
           coinId: coinId,
           price: data[coinId].usd,
         });
         setSearchError("");
       } else {
-        setSearchError("Cryptocurrency not found");
+        // Unexpected response format
+        setSearchError("Failed to fetch cryptocurrency data");
         setSearchResult(null);
       }
     } catch (err) {
       console.error("Error fetching cryptocurrency data:", err);
+
+      // Handle network errors or other unexpected issues
       setSearchError("Failed to fetch cryptocurrency data");
       setSearchResult(null);
     }
