@@ -86,6 +86,67 @@ const AlertHistory = () => {
       setSortOrder("asc");
     }
   };
+
+  return (
+    <Box sx={{ p: 4 }}>
+      {/* Header */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Typography variant="h5" fontWeight="bold">
+          Alert History
+        </Typography>
+        <Button
+          variant="contained"
+          color="error"
+          startIcon={<Trash2 />}
+          onClick={() => dispatch(clearHistory())}
+          sx={{
+            "&:hover": {
+              backgroundColor: "error.dark",
+            },
+          }}
+        >
+          Clear History
+        </Button>
+      </Box>
+
+      {/* Filters */}
+      <Box display="flex" gap={2} alignItems="center" mb={3}>
+        <FormControl size="small" sx={{ minWidth: 150 }}>
+          <InputLabel>Coin Filter</InputLabel>
+          <Select
+            value={filterCoin || ""}
+            onChange={(e) => setFilterCoin(e.target.value || null)}
+            label="Coin Filter"
+          >
+            <MenuItem value="">All Coins</MenuItem>
+            {[...new Set(history.map((entry) => entry.coinId))].map((coin) => (
+              <MenuItem key={coin} value={coin}>
+                {coin.toUpperCase()}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <Tooltip title="Sort by Coin">
+          <IconButton onClick={() => handleSort("coinId")}>
+            <ArrowUpDown />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip title="Filter by Date">
+          <IconButton onClick={() => handleSort("triggeredAt")}>
+            <Filter />
+          </IconButton>
+        </Tooltip>
+      </Box>
+
+      
+  );
 };
 
 export default AlertHistory;
