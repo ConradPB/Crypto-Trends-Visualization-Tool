@@ -69,6 +69,7 @@ const CryptoPrices = () => {
       const response = await fetch(
         `/api/crypto/prices?ids=${coinId}&vs_currencies=usd`
       );
+      console.log("Fetch Response Status:", response.status); // Log HTTP status
       const data = await response.json();
       console.log("Search API Response:", data); // Debugging log
 
