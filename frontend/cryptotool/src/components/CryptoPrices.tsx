@@ -59,6 +59,18 @@ const CryptoPrices = () => {
     egld: "elrond-erd-2",
     uni: "uniswap",
     sand: "the-sandbox",
+    mana: "decentraland",
+    axs: "axie-infinity",
+    ape: "apecoin",
+    algo: "algorand",
+    etc: "ethereum-classic",
+    fil: "filecoin",
+    xtz: "tezos",
+    hbar: "hedera-hashgraph",
+    icp: "internet-computer",
+    eos: "eos",
+    bch: "bitcoin-cash",
+    ftm: "fantom",
   };
 
   useEffect(() => {
