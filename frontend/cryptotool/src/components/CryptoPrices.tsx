@@ -71,6 +71,22 @@ const CryptoPrices = () => {
     eos: "eos",
     bch: "bitcoin-cash",
     ftm: "fantom",
+    flow: "flow",
+    chiliz: "chiliz",
+    arb: "arbitrum",
+    apt: "aptos",
+    lunc: "terra-luna-classic",
+    stx: "stacks",
+    mina: "mina-protocol",
+    osmo: "osmosis",
+    ren: "ren",
+    grt: "the-graph",
+    enj: "enjincoin",
+    cro: "crypto-com-chain",
+    dydx: "dydx",
+    sushiswap: "sushi",
+    comp: "compound-governance-token",
+    gala: "gala",
   };
 
   useEffect(() => {
