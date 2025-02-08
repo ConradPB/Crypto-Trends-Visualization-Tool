@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCryptoPrices } from "../features/cryptoSlice";
 import { RootState, AppDispatch } from "../store";
+import axiosInstance from "../api/axiosInstance";
 import {
   Box,
   Typography,
