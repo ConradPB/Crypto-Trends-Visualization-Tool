@@ -40,7 +40,6 @@ const CryptoPrices = () => {
     dot: "polkadot",
     bnb: "binancecoin",
     shib: "shiba-inu",
-    pepe: "pepe",
   };
 
   useEffect(() => {
