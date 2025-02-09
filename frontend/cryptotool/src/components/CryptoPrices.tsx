@@ -113,7 +113,7 @@ const CryptoPrices = () => {
   useEffect(() => {
     dispatch(
       fetchCryptoPrices(
-        "bitcoin,ethereum,dogecoin,cardano,solana,xrp,litecoin,chainlink,polkadot,binancecoin"
+        "bitcoin,ethereum,dogecoin,cardano,solana,ripple,litecoin,chainlink,polkadot,binancecoin"
       )
     );
   }, [dispatch]);
