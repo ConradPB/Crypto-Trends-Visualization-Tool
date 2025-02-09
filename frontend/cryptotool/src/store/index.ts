@@ -7,6 +7,7 @@ const store = configureStore({
     crypto: cryptoReducer,
     alerts: alertsReducer,  
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   devTools: process.env.NODE_ENV !== 'production',
 });
 
