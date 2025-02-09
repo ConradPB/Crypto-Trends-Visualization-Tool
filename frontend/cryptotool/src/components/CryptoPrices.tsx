@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCryptoPrices } from "../features/cryptoSlice";
+import { RootState, AppDispatch } from "../store";
 import axiosInstance from "../api/axiosInstance";
 import {
   Box,
@@ -13,15 +14,9 @@ import {
 } from "@mui/material";
 
 const CryptoPrices = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { prices, loading, error } = useSelector(
-    (state: {
-      crypto: {
-        prices: Record<string, { usd: number }>;
-        loading: boolean;
-        error: string;
-      };
-    }) => state.crypto
+    (state: RootState) => state.crypto
   );
 
   // State for search functionality
@@ -45,6 +40,7 @@ const CryptoPrices = () => {
     dot: "polkadot",
     bnb: "binancecoin",
     shib: "shiba-inu",
+    pepe: "pepe",
     usdt: "tether",
     usdc: "usd-coin",
     busd: "binance-usd",
@@ -114,9 +110,13 @@ const CryptoPrices = () => {
     mkr: "maker",
   };
 
-  // Fetch initial prices
   useEffect(() => {
-    dispatch(fetchCryptoPrices("bitcoin,ethereum,dogecoin,cardano,solana"));
+    // Fetch prices for multiple cryptocurrencies
+    dispatch(
+      fetchCryptoPrices(
+        "bitcoin,ethereum,dogecoin,cardano,solana,ripple,litecoin,chainlink,polkadot,binancecoin"
+      )
+    );
   }, [dispatch]);
 
   // Handle search submission
@@ -133,12 +133,9 @@ const CryptoPrices = () => {
 
       console.log("Searching for coin ID:", coinId); // Debugging log
 
-      // Encode the coin ID to prevent API errors
-      const encodedCoinId = encodeURIComponent(coinId);
-
       // Fetch the price for the searched cryptocurrency
       const response = await axiosInstance.get(
-        `/crypto/prices?ids=${encodedCoinId}&vs_currencies=usd`
+        `/crypto/prices?ids=${coinId}&vs_currencies=usd`
       );
       console.log("Fetch Response Status:", response.status); // Log HTTP status
       const data = response.data;
