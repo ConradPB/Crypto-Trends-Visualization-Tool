@@ -129,14 +129,13 @@ const CryptoPrices = () => {
       const userInput = searchTerm.toLowerCase().trim();
 
       // Map symbols to IDs
-      const coinId = SYMBOL_TO_ID_MAP[userInput] || userInput.toLowerCase();
-      const encodedCoinId = encodeURIComponent(coinId);
+      const coinId = SYMBOL_TO_ID_MAP[userInput] || userInput;
 
-      console.log("Searching for coin ID:", encodedCoinId); // Debugging log
+      console.log("Searching for coin ID:", coinId); // Debugging log
 
       // Fetch the price for the searched cryptocurrency
       const response = await axiosInstance.get(
-        `/crypto/prices?ids=${encodedCoinId}&vs_currencies=usd`
+        `/crypto/prices?ids=${coinId}&vs_currencies=usd`
       );
       console.log("Fetch Response Status:", response.status); // Log HTTP status
       const data = response.data;
@@ -158,19 +157,11 @@ const CryptoPrices = () => {
         setSearchError("Failed to fetch cryptocurrency data");
         setSearchResult(null);
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error fetching cryptocurrency data:", err);
 
-      // Handle different error scenarios
-      if (err.response) {
-        setSearchError(
-          `API Error: ${err.response.data.error || "Unknown error"}`
-        );
-      } else if (err.request) {
-        setSearchError("Network error. Please check your connection.");
-      } else {
-        setSearchError("Unexpected error occurred.");
-      }
+      // Handle network errors or other unexpected issues
+      setSearchError("Failed to fetch cryptocurrency data");
       setSearchResult(null);
     }
   };
@@ -192,36 +183,103 @@ const CryptoPrices = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             fullWidth
+            InputProps={{
+              endAdornment: (
+                <button
+                  type="submit"
+                  style={{ border: "none", background: "transparent" }}
+                >
+                  🔍
+                </button>
+              ),
+            }}
           />
         </form>
       </Box>
 
-      {/* Display Search Error */}
-      {searchError && (
-        <Typography variant="body1" color="error" textAlign="center">
-          {searchError}
-        </Typography>
-      )}
-
       {/* Display Search Result */}
       {searchResult && (
-        <Typography variant="h6" textAlign="center">
-          {searchResult.coinId.toUpperCase()} Price: $
-          {searchResult.price.toFixed(2)}
-        </Typography>
+        <Box mb={4} display="flex" justifyContent="center">
+          <Card
+            sx={{
+              padding: 2,
+              boxShadow: 2,
+              borderRadius: 2,
+              transition: "transform 0.2s",
+              "&:hover": {
+                transform: "scale(1.02)",
+              },
+            }}
+          >
+            <CardContent>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                {searchResult.coinId.toUpperCase()}
+              </Typography>
+              <Typography variant="body1" color="primary">
+                ${searchResult.price.toFixed(2)}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+      )}
+
+      {/* Display Search Error */}
+      {searchError && (
+        <Box mb={4} display="flex" justifyContent="center">
+          <Typography variant="body1" color="error">
+            {searchError}
+          </Typography>
+        </Box>
       )}
 
       {/* Loading State */}
       {loading && (
-        <CircularProgress sx={{ display: "block", margin: "auto" }} />
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="200px"
+        >
+          <CircularProgress />
+        </Box>
       )}
 
       {/* Error State */}
       {error && (
-        <Typography variant="h6" color="error" textAlign="center">
-          {error}
-        </Typography>
+        <Box display="flex" justifyContent="center" mt={4}>
+          <Typography variant="h6" color="error">
+            {error}
+          </Typography>
+        </Box>
       )}
+
+      {/* Prices List */}
+      <Grid container spacing={3} justifyContent="center">
+        {Object.entries(prices).map(([coin, priceData]) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={coin}>
+            <Card
+              sx={{
+                padding: 2,
+                boxShadow: 2,
+                borderRadius: 2,
+                transition: "transform 0.2s",
+                "&:hover": {
+                  transform: "scale(1.02)",
+                },
+              }}
+            >
+              <CardContent>
+                <Typography variant="h6" fontWeight="bold" gutterBottom>
+                  {coin.toUpperCase()}
+                </Typography>
+                <Typography variant="body1" color="primary">
+                  ${priceData.usd.toFixed(2)}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </Box>
   );
 };
