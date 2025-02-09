@@ -110,8 +110,8 @@ const CryptoPrices = () => {
     mkr: "maker",
   };
 
+  // Fetch initial prices
   useEffect(() => {
-    // Fetch prices for multiple cryptocurrencies
     dispatch(
       fetchCryptoPrices(
         "bitcoin,ethereum,dogecoin,cardano,solana,ripple,litecoin,chainlink,polkadot,binancecoin"
@@ -133,9 +133,12 @@ const CryptoPrices = () => {
 
       console.log("Searching for coin ID:", coinId); // Debugging log
 
+      // Encode the coin ID to prevent API errors
+      const encodedCoinId = encodeURIComponent(coinId);
+
       // Fetch the price for the searched cryptocurrency
       const response = await axiosInstance.get(
-        `/crypto/prices?ids=${coinId}&vs_currencies=usd`
+        `/crypto/prices?ids=${encodedCoinId}&vs_currencies=usd`
       );
       console.log("Fetch Response Status:", response.status); // Log HTTP status
       const data = response.data;
