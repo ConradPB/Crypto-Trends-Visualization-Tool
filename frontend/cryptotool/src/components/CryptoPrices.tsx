@@ -134,11 +134,11 @@ const CryptoPrices = () => {
       console.log("Searching for coin ID:", coinId); // Debugging log
 
       // Fetch the price for the searched cryptocurrency
-      const response = await fetch(
-        `/api/crypto/prices?ids=${coinId}&vs_currencies=usd`
+      const response = await axiosInstance.get(
+        `/crypto/prices?ids=${coinId}&vs_currencies=usd`
       );
       console.log("Fetch Response Status:", response.status); // Log HTTP status
-      const data = await response.json();
+      const data = response.data;
       console.log("Search API Response:", data); // Debugging log
 
       if (Object.keys(data).length === 0) {
