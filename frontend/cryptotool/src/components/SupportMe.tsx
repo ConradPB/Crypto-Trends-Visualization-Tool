@@ -64,6 +64,27 @@ const SupportMe = () => {
           Show QR Code
         </Button>
       </Box>
+
+      {/* USDT */}
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="subtitle1">USDT (TRC20):</Typography>
+        <Typography variant="body2" sx={{ wordBreak: "break-all" }}>
+          {WALLET_ADDRESSES.usdt}
+        </Typography>
+        <Button
+          onClick={() =>
+            window.open(
+              `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${WALLET_ADDRESSES.usdt}`,
+              "_blank"
+            )
+          }
+          startIcon={<QrCodeIcon />}
+          size="small"
+          sx={{ mt: 1 }}
+        >
+          Show QR Code
+        </Button>
+      </Box>
     </Box>
   );
 };
