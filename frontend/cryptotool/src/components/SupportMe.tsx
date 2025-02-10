@@ -23,7 +23,30 @@ const SupportMe = () => {
         If you find this app helpful, consider sending a tip!
       </Typography>
 
+      {/* Bitcoin */}
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="subtitle1">Bitcoin (BTC):</Typography>
+        <Typography variant="body2" sx={{ wordBreak: "break-all" }}>
+          {WALLET_ADDRESSES.bitcoin}
+        </Typography>
+        <Button
+          onClick={() =>
+            window.open(
+              `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${WALLET_ADDRESSES.bitcoin}`,
+              "_blank"
+            )
+          }
+          startIcon={<QrCodeIcon />}
+          size="small"
+          sx={{ mt: 1 }}
+        >
+          Show QR Code
+        </Button>
+      </Box>
+
       
+      </Box>
+    </Box>
   );
 };
 
