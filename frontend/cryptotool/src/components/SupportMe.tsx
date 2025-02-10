@@ -1,3 +1,4 @@
+// src/components/SupportMe.tsx
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import QrCodeIcon from "@mui/icons-material/QrCode";
@@ -64,37 +65,16 @@ const SupportMe = () => {
         </Button>
       </Box>
 
-      {/* USDT (ERC-20) */}
+      {/* USDT */}
       <Box sx={{ mt: 2 }}>
-        <Typography variant="subtitle1">USDT (ERC-20):</Typography>
+        <Typography variant="subtitle1">USDT (TRC20):</Typography>
         <Typography variant="body2" sx={{ wordBreak: "break-all" }}>
-          {WALLET_ADDRESSES.usdtErc20}
+          {WALLET_ADDRESSES.usdt}
         </Typography>
         <Button
           onClick={() =>
             window.open(
-              `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${WALLET_ADDRESSES.usdtErc20}`,
-              "_blank"
-            )
-          }
-          startIcon={<QrCodeIcon />}
-          size="small"
-          sx={{ mt: 1 }}
-        >
-          Show QR Code
-        </Button>
-      </Box>
-
-      {/* XRP */}
-      <Box sx={{ mt: 2 }}>
-        <Typography variant="subtitle1">XRP:</Typography>
-        <Typography variant="body2" sx={{ wordBreak: "break-all" }}>
-          {WALLET_ADDRESSES.xrp}
-        </Typography>
-        <Button
-          onClick={() =>
-            window.open(
-              `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${WALLET_ADDRESSES.xrp}`,
+              `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${WALLET_ADDRESSES.usdt}`,
               "_blank"
             )
           }
