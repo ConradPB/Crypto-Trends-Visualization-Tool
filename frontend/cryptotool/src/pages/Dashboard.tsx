@@ -11,6 +11,7 @@ import {
 import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
+import SupportMe from "../components/SupportMe";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -134,6 +135,7 @@ const Dashboard = () => {
           Explore the latest prices, trending coins, historical data, and set up
           price alerts in the cryptocurrency market.
         </Typography>
+        <SupportMe />
       </Box>
     </Box>
   );
