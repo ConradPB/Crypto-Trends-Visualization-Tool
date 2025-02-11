@@ -27,7 +27,9 @@ interface NewAlertState {
 
 const PriceAlerts = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const alerts = useSelector((state: RootState) => state.alerts.alerts);
+  const alerts = useSelector(
+    (state: RootState) => state.alerts.alerts as PriceAlert[]
+  );
   const prices = useSelector((state: RootState) => state.crypto.prices);
   const [triggeredAlerts, setTriggeredAlerts] = useState<AlertCheck[]>([]);
   const [isSoundEnabled, setIsSoundEnabled] = useState<boolean>(() => {
