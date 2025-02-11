@@ -11,7 +11,6 @@ import {
 import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
-import SupportMe from "./SupportMe";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -24,6 +23,7 @@ const Dashboard = () => {
     historical: "#7986cb",
     alerts: theme.palette.mode === "dark" ? "#9c27b0" : "#ba68c8",
     history: theme.palette.mode === "dark" ? "#9c27b0" : "#ba68c8",
+    support: "#fbc02d",
   };
 
   return (
@@ -68,6 +68,11 @@ const Dashboard = () => {
               text: "Alert History",
               path: "/alerts-history",
               color: buttonColors.history,
+            },
+            {
+              text: "Support Me",
+              path: "/support-me",
+              color: buttonColors.support,
             },
           ].map((item) => (
             <ListItem
@@ -135,7 +140,6 @@ const Dashboard = () => {
           Explore the latest prices, trending coins, historical data, and set up
           price alerts in the cryptocurrency market.
         </Typography>
-        <SupportMe />
       </Box>
     </Box>
   );
