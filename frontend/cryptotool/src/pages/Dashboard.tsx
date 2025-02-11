@@ -11,7 +11,7 @@ import {
 import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
-import SupportMe from "../components/SupportMe";
+import SupportMe from "./SupportMe";
 
 const Dashboard = () => {
   const theme = useTheme();
