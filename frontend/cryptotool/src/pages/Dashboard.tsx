@@ -8,7 +8,7 @@ import {
   Drawer,
   IconButton,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 
