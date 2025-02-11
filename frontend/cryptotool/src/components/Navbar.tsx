@@ -31,6 +31,23 @@ const Navbar = () => {
         >
           Crypto Trends Tool
         </Typography>
+
+        {/* Optional Links */}
+        <Button color="inherit" component={Link} to="/crypto">
+          Crypto Prices
+        </Button>
+        <Button color="inherit" component={Link} to="/trending">
+          Trending Coins
+        </Button>
+        <Button color="inherit" component={Link} to="/historical">
+          Historical Data
+        </Button>
+        <Button color="inherit" component={Link} to="/alerts">
+          Price Alerts
+        </Button>
+        <Button color="inherit" component={Link} to="/support-me">
+          Support Me
+        </Button>
       </Toolbar>
     </AppBar>
   );
