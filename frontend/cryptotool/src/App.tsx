@@ -26,8 +26,8 @@ const App = () => {
     <ThemeProvider theme={getTheme(mode)}>
       <CssBaseline />
       <ThemeToggle onToggle={toggleTheme} />
-      <Navbar />
       <AppRoutes />
+      <Navbar />
       <Footer />
     </ThemeProvider>
   );
