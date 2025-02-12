@@ -5,6 +5,7 @@ import { getTheme } from "./theme";
 import AppRoutes from "./routes";
 import ThemeToggle from "./components/ThemeToggle";
 import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   // Initialize theme from localStorage or default to 'light'
@@ -24,6 +25,7 @@ const App = () => {
   return (
     <ThemeProvider theme={getTheme(mode)}>
       <CssBaseline />
+      <Navbar />
       <ThemeToggle onToggle={toggleTheme} />
       <AppRoutes />
       <Footer />
