@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 import React from "react";
 import { Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
