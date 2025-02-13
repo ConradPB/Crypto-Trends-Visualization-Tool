@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { screen } from "@testing-library/react";
+import { screen } from "@testing-library/dom";
 import PriceAlerts from "../components/PriceAlerts";
 import "@testing-library/jest-dom";
 
