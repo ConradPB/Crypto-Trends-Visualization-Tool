@@ -1,5 +1,5 @@
 import { fetchCryptoPrices } from "../features/cryptoSlice";
-import setupStore from "../store";
+import { setupStore } from "../store";
 import axiosInstance from "../api/axiosInstance";
 
 jest.mock("../api/axiosInstance");
