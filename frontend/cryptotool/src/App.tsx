@@ -15,7 +15,13 @@ const App = () => {
   );
 
   // Update localStorage when theme changes
+  useEffect(() => {
+    localStorage.setItem("theme", mode);
+  }, [mode]);
 
+  const toggleTheme = () => {
+    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+  };
 
   return (
     
