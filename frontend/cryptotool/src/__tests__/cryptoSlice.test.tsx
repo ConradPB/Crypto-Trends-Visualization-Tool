@@ -6,7 +6,7 @@ jest.mock("../api/axiosInstance");
 
 test("fetchCryptoPrices success", async () => {
   const mockData = { bitcoin: { usd: 20000 } };
-  axiosInstance.get.mockResolvedValue({ data: mockData });
+  (axiosInstance.get as jest.Mock).mockResolvedValue({ data: mockData });
 
   const store = setupStore();
   await store.dispatch(fetchCryptoPrices("bitcoin"));
