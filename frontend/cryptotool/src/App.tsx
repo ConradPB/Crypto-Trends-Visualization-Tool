@@ -15,11 +15,13 @@ const NavbarWrapper = () => {
 };
 
 const App = () => {
+  // Initialize theme from localStorage or default to 'light'
   const [mode, setMode] = useState<"light" | "dark">(
     () => (localStorage.getItem("theme") as "light" | "dark") || "light"
   );
 
   useEffect(() => {
+    // Update localStorage when theme changes
     localStorage.setItem("theme", mode);
   }, [mode]);
 
