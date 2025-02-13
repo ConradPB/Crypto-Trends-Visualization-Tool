@@ -24,7 +24,15 @@ const App = () => {
   };
 
   return (
-    
+    <BrowserRouter>
+      <ThemeProvider theme={getTheme(mode)}>
+        <CssBaseline />
+        <Navbar />
+        <ThemeToggle onToggle={toggleTheme} />
+        <AppRoutes />
+        <Footer />
+      </ThemeProvider>
+    </BrowserRouter>
   );
 };
 
