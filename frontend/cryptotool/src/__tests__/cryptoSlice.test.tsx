@@ -1,4 +1,3 @@
-// src/__tests__/cryptoSlice.test.tsx
 import { setupStore } from "../store";
 import { fetchCryptoPrices } from "../features/cryptoSlice";
 import axiosInstance from "../api/axiosInstance";
