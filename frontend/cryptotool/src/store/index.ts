@@ -1,5 +1,4 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import type { PreloadedState } from '@reduxjs/toolkit';
 import cryptoReducer from '../features/cryptoSlice';
 import alertsReducer from '../features/alertsSlice';
 import logger from 'redux-logger';
@@ -26,7 +25,7 @@ export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];
 
 // Function to create a mock store for testing
-export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
+export const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     preloadedState,
