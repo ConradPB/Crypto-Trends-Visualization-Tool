@@ -6,7 +6,6 @@ import { setupStore } from "../store";
 
 describe("PriceAlerts Component", () => {
   it("renders without crashing", () => {
-    // Create a mock store with initial state
     const store = setupStore({
       alerts: {
         alerts: [],
@@ -21,14 +20,12 @@ describe("PriceAlerts Component", () => {
       },
     });
 
-    // Render the component with the mock store
     render(
       <Provider store={store}>
         <PriceAlerts />
       </Provider>
     );
 
-    // Check if the component renders correctly
     expect(screen.getByText(/Price Alerts/i)).toBeInTheDocument();
   });
 });
