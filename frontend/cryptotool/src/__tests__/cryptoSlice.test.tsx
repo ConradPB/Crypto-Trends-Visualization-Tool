@@ -1,5 +1,5 @@
 import { fetchCryptoPrices } from "../features/cryptoSlice";
-import { setupStore } from "../store";
+import setupStore from "../store";
 import axiosInstance from "../api/axiosInstance";
 
 jest.mock("../api/axiosInstance");
@@ -8,7 +8,7 @@ test("fetchCryptoPrices success", async () => {
   const mockData = { bitcoin: { usd: 20000 } };
   (axiosInstance.get as jest.Mock).mockResolvedValue({ data: mockData });
 
-  const store = setupStore();
+  const store = setupStore;
   await store.dispatch(fetchCryptoPrices("bitcoin"));
 
   const state = store.getState().crypto;
