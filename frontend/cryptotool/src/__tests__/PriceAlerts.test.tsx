@@ -1,10 +1,33 @@
-import { render } from "@testing-library/react";
-import { screen } from "@testing-library/dom";
+import { render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
 import PriceAlerts from "../components/PriceAlerts";
-import "@testing-library/jest-dom";
+import { setupStore } from "../store";
 
-test("renders Price Alerts heading", () => {
-  render(<PriceAlerts />);
-  const heading = screen.getByText(/Price Alerts/i);
-  expect(heading).toBeInTheDocument();
+describe("PriceAlerts Component", () => {
+  it("renders without crashing", () => {
+    // Create a mock store with initial state
+    const store = setupStore({
+      alerts: {
+        alerts: [],
+        history: [],
+      },
+      crypto: {
+        prices: {},
+        historicalData: {},
+        trendingCoins: [],
+        loading: false,
+        error: null,
+      },
+    });
+
+    // Render the component with the mock store
+    render(
+      <Provider store={store}>
+        <PriceAlerts />
+      </Provider>
+    );
+
+    // Check if the component renders correctly
+    expect(screen.getByText(/Price Alerts/i)).toBeInTheDocument();
+  });
 });
