@@ -6,9 +6,11 @@ export default {
     },
     transform: {
       '^.+\\.(ts|tsx)$': ['ts-jest', {
-        tsconfig: 'tsconfig.test.json'
+        tsconfig: 'tsconfig.test.json',
+        useESM: true
       }]
     },
-    setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts']
-  };
-  
+    extensionsToTreatAsEsm: ['.ts', '.tsx'],
+    setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node']
+  }
