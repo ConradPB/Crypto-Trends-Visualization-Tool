@@ -2,7 +2,8 @@ export default {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
     moduleNameMapper: {
-      '^@/(.*)$': '<rootDir>/src/$1'
+      '^@/(.*)$': '<rootDir>/src/$1',
+      '^lucide-react$': '<rootDir>/src/__mocks__/lucide-react.ts'
     },
     transform: {
       '^.+\\.(ts|tsx)$': ['ts-jest', {
