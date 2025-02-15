@@ -4,6 +4,12 @@ import { Provider } from "react-redux";
 import PriceAlerts from "../components/PriceAlerts";
 import { setupStore } from "../store";
 
+// Mock the entire alertChecker module
+jest.mock("../utils/alertChecker", () => ({
+  checkAlerts: jest.fn(),
+  AlertCheck: jest.fn(),
+}));
+
 const mockInitialState = {
   alerts: {
     alerts: [],
@@ -21,7 +27,11 @@ const mockInitialState = {
 };
 
 describe("PriceAlerts Component", () => {
-  it("renders without crashing", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("renders without crashing", async () => {
     const store = setupStore(mockInitialState);
 
     render(
@@ -30,6 +40,8 @@ describe("PriceAlerts Component", () => {
       </Provider>
     );
 
-    expect(screen.getByText(/Price Alerts/i)).toBeInTheDocument();
+    // Wait for component to render
+    const titleElement = await screen.findByText(/Price Alerts/i);
+    expect(titleElement).toBeInTheDocument();
   });
 });
