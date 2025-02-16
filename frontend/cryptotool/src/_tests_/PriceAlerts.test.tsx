@@ -1,14 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import { Provider } from "react-redux";
-import PriceAlerts from "../components/PriceAlerts";
-import { setupStore } from "../store";
-
-// Mock the entire alertChecker module
-jest.mock("../utils/alertChecker", () => ({
-  checkAlerts: jest.fn(),
-  AlertCheck: jest.fn(),
-}));
+jest.mock("@mui/material", () => require("../__mocks__/mui-mocks.ts"));
+jest.mock("lucide-react");
+jest.mock("../utils/alertChecker");
+jest.mock("../utils/soundNotification");
 
 const mockInitialState = {
   alerts: {
@@ -31,17 +24,14 @@ describe("PriceAlerts Component", () => {
     jest.clearAllMocks();
   });
 
-  it("renders without crashing", async () => {
+  it("renders without crashing", () => {
     const store = setupStore(mockInitialState);
-
     render(
       <Provider store={store}>
         <PriceAlerts />
       </Provider>
     );
 
-    // Wait for component to render
-    const titleElement = await screen.findByText(/Price Alerts/i);
-    expect(titleElement).toBeInTheDocument();
+    expect(screen.getByText(/Price Alerts/i)).toBeInTheDocument();
   });
 });
