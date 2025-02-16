@@ -10,15 +10,15 @@ describe("PriceAlerts Component", () => {
       alerts: [],
       history: [],
       loading: false,
-      error: null,
+      error: null
     },
     crypto: {
       prices: {},
       historicalData: {},
       trendingCoins: [],
       loading: false,
-      error: null,
-    },
+      error: null
+    }
   };
 
   it("renders without crashing", () => {
