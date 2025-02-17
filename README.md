@@ -1,6 +1,6 @@
 # Crypto-Trends-Visualization-Tool
 
-A web-based application that provides real-time and historical cryptocurrency market data through interactive visualizations.
+Welcome to the **Crypto Trends Visualization Tool**, a React-based application designed to provide real-time cryptocurrency data, price alerts, historical trends, and more.Through interactive visualizations,this tool empowers users to stay informed about the dynamic cryptocurrency market with an intuitive and responsive interface.
 
 # Backend
 
