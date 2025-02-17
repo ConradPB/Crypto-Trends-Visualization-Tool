@@ -161,6 +161,137 @@ Ensure the following for deployment:
 - Use a process manager like PM2 or Docker.
 - Enable HTTPS in production.
 
-## License
+# 📌 Crypto Trends Visualization Tool - Frontend
 
-This project is licensed under the ISC License.
+**Author**: Conrad P Mbaziira B
+**Tech Stack**: React, Redux, Vite, TypeScript, MUI, Recharts, Axios  
+**Backend**: Node.js, Express (API Integration)
+
+---
+
+## 🚀 Project Overview
+
+The **Crypto Trends Visualization Tool** provides real-time and historical cryptocurrency price data, trends, and alerts. Users can track price changes, view trending coins, analyze historical data, and set up custom price alerts.
+
+---
+
+## 🎯 Features
+
+✅ **Real-time Cryptocurrency Prices** - Fetches live prices from CoinGecko API.  
+✅ **Trending Coins** - Displays top trending cryptocurrencies.  
+✅ **Historical Data** - Interactive charts for historical price trends.  
+✅ **Price Alerts** - Set custom alerts for price thresholds.  
+✅ **Dark/Light Mode** - User-friendly theme toggle.  
+✅ **Redux State Management** - Efficient app state handling.
+
+---
+
+## 🏗️ Tech Stack
+
+### **Frontend:**
+
+- **React 18 + TypeScript** - Modern, type-safe development.
+- **Redux Toolkit** - Efficient global state management.
+- **MUI (Material UI)** - Stylish and responsive UI components.
+- **Recharts** - Interactive cryptocurrency price charts.
+- **Axios** - API requests to fetch crypto data.
+- **Vite** - Fast and optimized development build system.
+
+### **Backend API:**
+
+- **Node.js + Express.js** - Handles API requests.
+- **CoinGecko API** - Fetches real-time cryptocurrency data.
+
+---
+
+## ⚡ Installation & Setup
+
+### **1️⃣ Clone the Repository**
+
+```sh
+git clone https://github.com/yourusername/crypto-trends-visualization.git
+cd crypto-trends-visualization/frontend
+```
+
+### **2️⃣ Install Dependencies**
+
+```sh
+yarn install
+```
+
+### **3️⃣ Start the Development Server**
+
+```sh
+yarn dev
+```
+
+This runs the app on `http://localhost:5173/`.
+
+### **4️⃣ Run Tests**
+
+```sh
+yarn test
+```
+
+---
+
+## 🛠 Project Structure
+
+```
+frontend/
+│── src/
+│   ├── api/              # Axios instance for API requests
+│   ├── components/       # UI Components (CryptoPrices, HistoricalData, PriceAlerts, etc.)
+│   ├── features/         # Redux slices (cryptoSlice.ts, alertsSlice.ts)
+│   ├── pages/            # Route pages (Dashboard, TrendingCoins, NotFound)
+│   ├── routes/           # React Router configuration
+│   ├── store/            # Redux store setup
+│   ├── theme/            # Dark and Light theme settings
+│   ├── utils/            # Utility functions (alertChecker, soundNotification)
+│   ├── App.tsx           # Main application component
+│   ├── main.tsx          # React entry point
+│── public/               # Static assets
+│── package.json          # Project dependencies and scripts
+│── vite.config.ts        # Vite configuration
+│── tsconfig.json         # TypeScript configuration
+│── README.md             # Project documentation
+```
+
+---
+
+## 🔧 Environment Variables
+
+Before running the project, configure your `.env` file in the **backend** with:
+
+```sh
+COINGECKO_API_KEY=your_api_key
+PORT=7000
+```
+
+---
+
+## 💡 How to Use
+
+1️⃣ **View Live Prices** - Navigate to the "Crypto Prices" page.  
+2️⃣ **Check Trending Coins** - Visit the "Trending Coins" section.  
+3️⃣ **Analyze Historical Data** - Select a coin and time range in the "Historical Data" section.  
+4️⃣ **Set Price Alerts** - Define conditions (`above` or `below`) for price notifications.  
+5️⃣ **Enable Sound Notifications** - Toggle sound alerts for triggered alerts.
+
+---
+
+## 🤝 Contributing
+
+Want to improve this project? Follow these steps:
+
+1. **Fork** the repo.
+2. Create a new **feature branch** (`git checkout -b feature-name`).
+3. **Commit** changes (`git commit -m "Added new feature"`).
+4. **Push** to your fork (`git push origin feature-name`).
+5. Open a **Pull Request**.
+
+---
+
+## 📜 License
+
+This project is **open-source** under the **MIT License**.
