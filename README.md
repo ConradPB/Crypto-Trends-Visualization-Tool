@@ -164,6 +164,8 @@ Ensure the following for deployment:
 # 📌 Crypto Trends Visualization Tool - Frontend
 
 **Author**: Conrad P Mbaziira B
+**Email** : cpbmbaz57@gmail.com
+**GitHub** : https://github.com/ConradPB/Crypto-Trends-Visualization-Tool
 **Tech Stack**: React, Redux, Vite, TypeScript, MUI, Recharts, Axios  
 **Backend**: Node.js, Express (API Integration)
 
