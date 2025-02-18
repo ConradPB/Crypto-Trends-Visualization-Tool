@@ -1,11 +1,11 @@
 {
   "version": 2,
   "functions": {
-    "dist/index.js": {
-      "runtime": "nodejs18.x"
+    "index.js": {
+      "runtime": "@vercel/node"
     }
   },
   "routes": [
-    { "src": "/api/(.*)", "dest": "dist/index.js" }
+    { "src": "/(.*)", "dest": "dist/index.js" }
   ]
 }
