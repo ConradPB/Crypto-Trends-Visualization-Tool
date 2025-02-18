@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 const allowedOrigins = [
-    "https://crypto-trends-4d98d1h40-conrad-p-bs-projects.vercel.app", 
+    "https://crypto-trends-kohl.vercel.app", 
     "http://localhost:5173" 
 ];
 
@@ -23,6 +23,7 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"], 
     credentials: true, 
 }));
+
 app.use('/api/crypto', cryptoRoutes);
 
 // Use Morgan for HTTP request logging
