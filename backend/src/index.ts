@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 const allowedOrigins = [
-    "https://crypto-trends-kohl.vercel.app", 
+    "https://crypto-trends-visualization-tool-8njfshscg-conrad-p-bs-projects.vercel.app", 
     "http://localhost:5173" 
 ];
 
