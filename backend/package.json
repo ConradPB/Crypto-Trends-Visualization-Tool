@@ -10,7 +10,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "watch": "tsc -w",
     "clean": "rimraf dist",
-    "prebuild": "npm run clean",
+    "prebuild": "pnpm run clean",
     "test:endpoints": "ts-node src/tests/test-endpoints.ts"
   },
   "repository": {
