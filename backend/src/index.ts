@@ -7,9 +7,7 @@ import logger from './utils/logger';
 
 dotenv.config();
 
-
-const app = express();
-const PORT = process.env.PORT || 5000;
+const app: express.Application = express();
 
 app.use(express.json());
 
@@ -24,19 +22,30 @@ app.use(cors({
     credentials: true, 
 }));
 
+// Basic test route
+app.get('/api/test', (req, res) => {
+    res.json({ message: 'Backend is working!' });
+});
+
 app.use('/api/crypto', cryptoRoutes);
 
-// Use Morgan for HTTP request logging
-app.use(
-    morgan('combined', {
-        stream: {
-            write: (message) => logger.info(message.trim()),
-        },
-    })
-);
+// Only use morgan in development
+if (process.env.NODE_ENV !== 'production') {
+    app.use(
+        morgan('combined', {
+            stream: {
+                write: (message) => logger.info(message.trim()),
+            },
+        })
+    );
+}
 
+// Don't start server in production (Vercel)
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
 
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+export default app;
