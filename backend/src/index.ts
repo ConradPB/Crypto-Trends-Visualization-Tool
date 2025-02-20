@@ -1,5 +1,4 @@
-import express, { Application } from "express"; // Explicitly import Application type
-import cors from "cors";
+import express, { Application } from "express";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
 import morgan from "morgan";
