@@ -14,8 +14,8 @@
     "declaration": true, // Generate `.d.ts` declaration files.
     "sourceMap": true, // Include source maps in compiled output.
     "incremental": true, // Enable faster builds with incremental compilation.
-    "noEmitOnError": true,  // Don't emit files if there are errors
-    "removeComments": true  // Remove comments in production build
+    "noEmitOnError": true, // Don't emit files if there are errors
+    "removeComments": true // Remove comments in production build
   },
   "include": [
     "src"
