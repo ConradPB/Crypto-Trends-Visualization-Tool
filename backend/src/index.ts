@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
 import morgan from "morgan";
@@ -6,7 +7,6 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-// Explicitly type app as Application
 const app: Application = express();
 
 app.use(express.json());
