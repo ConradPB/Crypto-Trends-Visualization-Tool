@@ -1,4 +1,4 @@
-import * as express from "express"; // Use namespace import to avoid default import issues
+import express, { Application } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
@@ -7,8 +7,7 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-// Use express.Application explicitly from the namespace
-const app: express.Application = express();
+const app: Application = express();
 
 app.use(express.json());
 
