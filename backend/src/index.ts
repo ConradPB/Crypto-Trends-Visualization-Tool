@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import * as express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
@@ -7,7 +7,7 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-const app: Application = express();
+const app = express();
 
 app.use(express.json());
 
@@ -24,14 +24,12 @@ app.use(
   })
 );
 
-// Basic test route
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend is working!" });
 });
 
 app.use("/api/crypto", cryptoRoutes);
 
-// Only use morgan in development
 if (process.env.NODE_ENV !== "production") {
   app.use(
     morgan("combined", {
