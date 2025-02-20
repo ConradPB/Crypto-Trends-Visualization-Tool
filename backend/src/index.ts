@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Application } from "express"; // Explicitly import Application type
 import cors from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
@@ -7,7 +7,8 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-const app: express.Application = express();
+// Explicitly type app as Application
+const app: Application = express();
 
 app.use(express.json());
 
