@@ -1,4 +1,4 @@
-import * as express from "express";
+import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
@@ -7,7 +7,7 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-const app: express.Express = express();
+const app: Express = express();
 
 app.use(express.json());
 
@@ -24,7 +24,7 @@ app.use(
   })
 );
 
-app.get("/api/test", (req: express.Request, res: express.Response) => {
+app.get("/api/test", (req: Request, res: Response) => {
   res.json({ message: "Backend is working!" });
 });
 
