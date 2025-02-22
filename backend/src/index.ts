@@ -1,5 +1,5 @@
 import express = require("express");
-import cors from "cors";
+const cors = require("cors");
 import { CorsOptions } from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
