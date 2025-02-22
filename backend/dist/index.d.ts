@@ -1,3 +1,3 @@
-import { Application } from "express";
-declare const app: Application;
+import { Express } from "express";
+declare const app: Express;
 export default app;
