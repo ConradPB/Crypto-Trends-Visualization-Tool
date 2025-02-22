@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import * as express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
@@ -7,7 +7,7 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-const app: Application = express();
+const app: express.Express = express();
 
 app.use(express.json());
 
@@ -24,7 +24,7 @@ app.use(
   })
 );
 
-app.get("/api/test", (req: Request, res: Response) => {
+app.get("/api/test", (req: express.Request, res: express.Response) => {
   res.json({ message: "Backend is working!" });
 });
 
@@ -40,9 +40,8 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
-// Start server locally only if not in production (e.g., Vercel)
 if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000; // Use .env PORT or default to 5000
+  const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
