@@ -1,6 +1,5 @@
-import express from "express";
-import type { Application, Request, Response } from "express";
-import cors from "cors";
+import express = require("express");
+import cors, { CorsOptions } from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
 import morgan from "morgan";
@@ -8,7 +7,7 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-const app: Application = express();
+const app = express();
 
 app.use(express.json());
 
@@ -17,15 +16,15 @@ const allowedOrigins = [
   "http://localhost:5173",
 ];
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+const corsOptions: CorsOptions = {
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+};
 
-app.get("/api/test", (_req: Request, res: Response) => {
+app.use(cors(corsOptions));
+
+app.get("/api/test", (_req, res) => {
   res.json({ message: "Backend is working!" });
 });
 
