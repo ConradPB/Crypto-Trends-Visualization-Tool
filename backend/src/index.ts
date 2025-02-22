@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, Response } from "express"; // Add Express type
 import cors from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
@@ -7,7 +7,7 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-const app: Express = express();
+const app: Express = express(); // Change from express.Application to Express
 
 app.use(express.json());
 
@@ -24,26 +24,30 @@ app.use(
   })
 );
 
+// Basic test route
 app.get("/api/test", (req: Request, res: Response) => {
+  // Add type annotations
   res.json({ message: "Backend is working!" });
 });
 
 app.use("/api/crypto", cryptoRoutes);
 
+// Only use morgan in development
 if (process.env.NODE_ENV !== "production") {
   app.use(
     morgan("combined", {
       stream: {
-        write: (message: string) => logger.info(message.trim()),
+        write: (message) => logger.info(message.trim()),
       },
     })
   );
 }
 
+// Don't start server in production (Vercel)
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
   });
 }
 
