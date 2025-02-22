@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express"; // Add Express type
+import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
@@ -7,7 +7,7 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-const app: Express = express(); // Change from express.Application to Express
+const app: Express = express();
 
 app.use(express.json());
 
@@ -26,7 +26,6 @@ app.use(
 
 // Basic test route
 app.get("/api/test", (req: Request, res: Response) => {
-  // Add type annotations
   res.json({ message: "Backend is working!" });
 });
 
