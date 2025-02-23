@@ -8,7 +8,7 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-const app: express.Application = express();
+const app = express();
 
 app.use(express.json());
 
