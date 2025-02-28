@@ -4,53 +4,34 @@
   "description": "trend visualizer web app for crypto assets",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/index.js",
-    "build": "tsc",
-    "dev": "ts-node src/index.ts",
-    "watch": "tsc -w",
-    "clean": "rimraf dist",
-    "test:endpoints": "ts-node src/tests/test-endpoints.ts"
+      "start": "node dist/index.js",
+      "build": "tsc",
+      "dev": "ts-node src/index.ts",
+      "watch": "tsc -w",
+      "clean": "rimraf dist",
+      "test:endpoints": "ts-node src/tests/test-endpoints.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ConradPB/Crypto-Trends-Visualization-Tool.git"
-  },
-  "keywords": [
-    "crypto",
-    "tool"
-  ],
-  "author": "Conrad PMB",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ConradPB/Crypto-Trends-Visualization-Tool/issues"
-  },
-  "homepage": "https://github.com/ConradPB/Crypto-Trends-Visualization-Tool#readme",
   "dependencies": {
-    "@types/node-cache": "^4.2.5",
-    "axios": "^1.7.9",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "4.18.2",
-    "express-rate-limit": "^7.5.0",
-    "joi": "^17.13.3",
-    "mongoose": "^8.9.2",
-    "morgan": "^1.10.0",
-    "node-cache": "^5.1.2",
-    "winston": "^3.17.0"
+      "axios": "^1.7.9",
+      "cors": "^2.8.5",
+      "dotenv": "^16.4.7",
+      "express": "4.18.2",
+      "express-rate-limit": "^7.5.0",
+      "joi": "^17.13.3",
+      "mongoose": "^8.9.2",
+      "morgan": "^1.10.0",
+      "node-cache": "^5.1.2",
+      "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "5.0.0",
-    "@types/morgan": "^1.9.9",
-    "@types/node": "^20.17.11",
-    "nodemon": "^3.1.0",
-    "rimraf": "^5.0.5",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.3.3"
-  },
-  "engines": {
-    "node": ">=14.0.0"
+      "@types/cors": "^2.8.17",
+      "@types/express": "4.17.13",
+      "@types/express-serve-static-core": "4.17.30", 
+      "@types/morgan": "^1.9.9",
+      "@types/node": "^20.17.11",
+      "nodemon": "^3.1.0",
+      "rimraf": "^5.0.5",
+      "ts-node": "^10.9.2",
+      "typescript": "5.3.3"
   }
 }
