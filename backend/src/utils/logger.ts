@@ -1,11 +1,11 @@
 import { createLogger, format, transports } from "winston";
-import { TransformableInfo } from "logform";
 
 const logger = createLogger({
   level: "info",
   format: format.combine(
-    format.timestamp(), // Adds timestamp
-    format.printf((info: TransformableInfo & { timestamp: string }) => {
+    format.timestamp(),
+    format.printf((info: any) => {
+      // Temporary any
       return `[${info.timestamp}] ${info.level.toUpperCase()}: ${info.message}`;
     })
   ),
