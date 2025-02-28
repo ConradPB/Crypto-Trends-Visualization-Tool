@@ -1,4 +1,5 @@
-import express = require("express");
+import express from "express";
+import { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cryptoRoutes from "./routes/cryptoRoutes";
@@ -7,7 +8,7 @@ import logger from "./utils/logger";
 
 dotenv.config();
 
-const app: express.Application = express();
+const app = express();
 
 app.use(express.json());
 
@@ -24,7 +25,7 @@ app.use(
   })
 );
 
-app.get("/api/test", (_req, res) => {
+app.get("/api/test", (req: Request, res: Response) => {
   res.json({ message: "Backend is working!" });
 });
 
@@ -34,7 +35,7 @@ if (process.env.NODE_ENV !== "production") {
   app.use(
     morgan("combined", {
       stream: {
-        write: (message) => logger.info(message.trim()),
+        write: (message: string) => logger.info(message.trim()),
       },
     })
   );
@@ -43,7 +44,7 @@ if (process.env.NODE_ENV !== "production") {
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   });
 }
 
