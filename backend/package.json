@@ -29,8 +29,6 @@
       "@types/express-serve-static-core": "4.17.30", 
       "@types/morgan": "^1.9.9",
       "@types/node": "^20.17.11",
-      "@types/winston": "^2.4.4",
-      "@types/logform": "^1.10.1", 
       "nodemon": "^3.1.0",
       "rimraf": "^5.0.5",
       "ts-node": "^10.9.2",
