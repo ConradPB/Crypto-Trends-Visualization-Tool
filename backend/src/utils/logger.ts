@@ -1,5 +1,5 @@
-import { createLogger, format, transports, Logger } from "winston";
-import { TransformableInfo } from "logform";
+import { createLogger, format, transports } from "winston";
+import type { Logger, TransformableInfo } from "winston/lib/winston/logger";
 
 const logger: Logger = createLogger({
   level: "info",
