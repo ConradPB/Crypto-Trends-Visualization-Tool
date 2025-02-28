@@ -1,29 +1,25 @@
-import { createLogger, format, transports, Logger } from "winston";
+import {
+  createLogger,
+  format,
+  transports,
+  Logger,
+  TransformableInfo,
+} from "winston";
 
 const logger: Logger = createLogger({
   level: "info",
   format: format.combine(
-    format.timestamp(),
-    format.printf(
-      ({
-        level,
-        message,
-        timestamp,
-      }: {
-        level: string;
-        message: string;
-        timestamp: string;
-      }) => {
-        return `[${timestamp}] ${level.toUpperCase()}: ${message}`;
-      }
-    )
+    format.timestamp(), // Adds timestamp to info
+    format.printf((info: TransformableInfo & { timestamp: string }) => {
+      return `[${info.timestamp}] ${info.level.toUpperCase()}: ${info.message}`;
+    })
   ),
   transports: [
     new transports.Console(),
     new transports.File({
       filename: "logs/error.log",
-      level: "error", // Winston supports this, type issue is a false positive
-    } as transports.FileTransportOptions), // Type assertion
+      level: "error",
+    } as transports.FileTransportOptions),
     new transports.File({
       filename: "logs/combined.log",
     } as transports.FileTransportOptions),
