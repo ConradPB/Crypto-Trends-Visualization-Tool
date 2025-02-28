@@ -1,11 +1,10 @@
 import { createLogger, format, transports } from "winston";
-import type { Logger, TransformableInfo } from "winston/lib/winston/logger";
 
-const logger: Logger = createLogger({
+const logger = createLogger({
   level: "info",
   format: format.combine(
     format.timestamp(),
-    format.printf((info: TransformableInfo & { timestamp: string }) => {
+    format.printf((info) => {
       return `[${info.timestamp}] ${info.level.toUpperCase()}: ${info.message}`;
     })
   ),
@@ -21,4 +20,4 @@ const logger: Logger = createLogger({
   ],
 });
 
-export default logger;
+export default logger as import("winston").Logger;
