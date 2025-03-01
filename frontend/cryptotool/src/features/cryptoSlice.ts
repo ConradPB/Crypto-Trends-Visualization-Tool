@@ -101,6 +101,7 @@ const cryptoSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Fetch Crypto Prices
       .addCase(fetchCryptoPrices.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -113,6 +114,7 @@ const cryptoSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      // Fetch Historical Data
       .addCase(fetchHistoricalData.pending, (state) => {
         state.loading = true;
         state.error = null;
