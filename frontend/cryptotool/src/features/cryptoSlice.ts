@@ -127,6 +127,7 @@ const cryptoSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      // Fetch Trending Coins
       .addCase(fetchTrendingCoins.pending, (state) => {
         state.loading = true;
         state.error = null;
