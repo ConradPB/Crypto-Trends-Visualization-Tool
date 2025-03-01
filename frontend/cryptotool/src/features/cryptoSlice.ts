@@ -32,9 +32,9 @@ export const fetchCryptoPrices = createAsyncThunk(
   async (ids: string, { rejectWithValue }) => {
     try {
       // Add the `vs_currencies=usd` parameter to the URL
-      const response = await axiosInstance.get(
-        `/crypto/prices?ids=${ids}&vs_currencies=usd`
-      );
+      const response = await axiosInstance.get("/crypto/prices", {
+        params: { ids, vs_currencies: "usd" },
+      });
       console.log("Crypto Prices API Response:", response.data);
       return response.data;
     } catch (error) {
@@ -54,16 +54,14 @@ export const fetchHistoricalData = createAsyncThunk(
   ) => {
     try {
       console.log("Fetching historical data with params:", params);
-
-      const queryParams = new URLSearchParams();
-      queryParams.append("id", params.id);
-      if (params.days) queryParams.append("days", params.days);
-      if (params.start) queryParams.append("start", params.start);
-      if (params.end) queryParams.append("end", params.end);
-
-      const response = await axiosInstance.get(
-        `/crypto/historical?id=${params.id}&days=${params.days}`
-      );
+      const response = await axiosInstance.get("/crypto/historical", {
+        params: {
+          id: params.id,
+          days: params.days,
+          start: params.start,
+          end: params.end,
+        },
+      });
       console.log("Historical data response:", response.data);
       return response.data;
     } catch (error) {
@@ -146,7 +144,7 @@ const cryptoSlice = createSlice({
       .addCase(fetchTrendingCoins.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-        state.trendingCoins = []; // Reset trendingCoins on error
+        state.trendingCoins = [];
       });
   },
 });

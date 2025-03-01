@@ -1,154 +1,196 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import axiosInstance from "../api/axiosInstance";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCryptoPrices } from "../features/cryptoSlice";
+import { RootState, AppDispatch } from "../store";
+import axiosInstance from "../api/axiosInstance"; // Ensure consistent use
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Grid,
+  Card,
+  CardContent,
+  TextField,
+} from "@mui/material";
 
-export interface CryptoPriceData {
-  usd: number;
-}
-interface CryptoState {
-  prices: Record<string, CryptoPriceData>;
-  historicalData: Record<string, { date: string; price: number }[]>;
-  trendingCoins: {
-    id: string;
-    name: string;
-    symbol: string;
-    marketCapRank: number;
-  }[];
-  loading: boolean;
-  error: string | null;
-}
+const CryptoPrices = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const { prices, loading, error } = useSelector(
+    (state: RootState) => state.crypto
+  );
 
-const initialState: CryptoState = {
-  prices: {},
-  historicalData: {},
-  trendingCoins: [],
-  loading: false,
-  error: null,
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState<{
+    coinId: string;
+    price: number;
+  } | null>(null);
+  const [searchError, setSearchError] = useState("");
+
+  const SYMBOL_TO_ID_MAP: Record<string, string> = {
+    btc: "bitcoin",
+    eth: "ethereum",
+    doge: "dogecoin",
+    ada: "cardano",
+    sol: "solana",
+    xrp: "ripple",
+    ltc: "litecoin",
+    link: "chainlink",
+    dot: "polkadot",
+    bnb: "binancecoin",
+    shib: "shiba-inu",
+    pepe: "pepe",
+  };
+
+  useEffect(() => {
+    console.log("Fetching initial prices...");
+    dispatch(
+      fetchCryptoPrices(
+        "bitcoin,ethereum,dogecoin,cardano,solana,xrp,litecoin,chainlink,polkadot,binancecoin"
+      )
+    );
+  }, [dispatch]);
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchTerm.trim()) return;
+
+    setSearchError("");
+    setSearchResult(null);
+
+    try {
+      const userInput = searchTerm.toLowerCase().trim();
+      const coinId = SYMBOL_TO_ID_MAP[userInput] || userInput;
+      console.log("Searching for coin ID:", coinId);
+      const response = await axiosInstance.get("/crypto/prices", {
+        params: { ids: coinId, vs_currencies: "usd" },
+      });
+      console.log("Search API Response:", response.data);
+
+      if (!response.data[coinId]) {
+        setSearchError("Cryptocurrency not found");
+      } else {
+        setSearchResult({
+          coinId: coinId,
+          price: response.data[coinId].usd,
+        });
+      }
+    } catch (err) {
+      console.error("Search error:", err);
+      setSearchError("Failed to fetch cryptocurrency data");
+    }
+  };
+
+  return (
+    <Box mt={4}>
+      <Typography variant="h4" textAlign="center" mb={4}>
+        Cryptocurrency Prices
+      </Typography>
+
+      <Box mb={4} display="flex" justifyContent="center">
+        <form onSubmit={handleSearch} style={{ width: "80%", maxWidth: 400 }}>
+          <TextField
+            label="Search Cryptocurrency"
+            variant="outlined"
+            size="small"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            fullWidth
+            InputProps={{
+              endAdornment: (
+                <button
+                  type="submit"
+                  style={{ border: "none", background: "transparent" }}
+                >
+                  🔍
+                </button>
+              ),
+            }}
+          />
+        </form>
+      </Box>
+
+      {searchResult && (
+        <Box mb={4} display="flex" justifyContent="center">
+          <Card
+            sx={{
+              padding: 2,
+              boxShadow: 2,
+              borderRadius: 2,
+              transition: "transform 0.2s",
+              "&:hover": { transform: "scale(1.02)" },
+            }}
+          >
+            <CardContent>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                {searchResult.coinId.toUpperCase()}
+              </Typography>
+              <Typography variant="body1" color="primary">
+                ${searchResult.price.toFixed(2)}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+      )}
+
+      {searchError && (
+        <Box mb={4} display="flex" justifyContent="center">
+          <Typography variant="body1" color="error">
+            {searchError}
+          </Typography>
+        </Box>
+      )}
+
+      {loading && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="200px"
+        >
+          <CircularProgress />
+        </Box>
+      )}
+
+      {error && (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <Typography variant="h6" color="error">
+            {error}
+          </Typography>
+        </Box>
+      )}
+
+      {!loading && !error && Object.keys(prices).length === 0 && (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <Typography variant="h6">No price data available</Typography>
+        </Box>
+      )}
+
+      <Grid container spacing={3} justifyContent="center">
+        {Object.entries(prices).map(([coin, priceData]) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={coin}>
+            <Card
+              sx={{
+                padding: 2,
+                boxShadow: 2,
+                borderRadius: 2,
+                transition: "transform 0.2s",
+                "&:hover": { transform: "scale(1.02)" },
+              }}
+            >
+              <CardContent>
+                <Typography variant="h6" fontWeight="bold" gutterBottom>
+                  {coin.toUpperCase()}
+                </Typography>
+                <Typography variant="body1" color="primary">
+                  ${priceData.usd.toFixed(2)}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
 };
 
-// Async Thunks for API calls
-export const fetchCryptoPrices = createAsyncThunk(
-  "crypto/fetchCryptoPrices",
-  async (ids: string, { rejectWithValue }) => {
-    try {
-      // Add the `vs_currencies=usd` parameter to the URL
-      const response = await axiosInstance.get(
-        `/crypto/prices?ids=${ids}&vs_currencies=usd`
-      );
-      console.log("Crypto Prices API Response:", response.data);
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        return rejectWithValue(error.response.data || "Failed to fetch prices");
-      }
-      return rejectWithValue("Failed to fetch prices");
-    }
-  }
-);
-
-export const fetchHistoricalData = createAsyncThunk(
-  "crypto/fetchHistoricalData",
-  async (
-    params: { id: string; days: string; start?: string; end?: string },
-    { rejectWithValue }
-  ) => {
-    try {
-      console.log("Fetching historical data with params:", params);
-
-      const queryParams = new URLSearchParams();
-      queryParams.append("id", params.id);
-      if (params.days) queryParams.append("days", params.days);
-      if (params.start) queryParams.append("start", params.start);
-      if (params.end) queryParams.append("end", params.end);
-
-      const response = await axiosInstance.get(
-        `/crypto/historical?id=${params.id}&days=${params.days}`
-      );
-      console.log("Historical data response:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching historical data:", error);
-      if (axios.isAxiosError(error) && error.response) {
-        return rejectWithValue(
-          error.response.data || "Failed to fetch historical data"
-        );
-      }
-      return rejectWithValue("Failed to fetch historical data");
-    }
-  }
-);
-
-export const fetchTrendingCoins = createAsyncThunk(
-  "crypto/fetchTrendingCoins",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.get("/crypto/trending");
-      console.log("Trending Coins API Response:", response.data);
-      return response.data.coins;
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        return rejectWithValue(
-          error.response.data || "Failed to fetch trending coins"
-        );
-      }
-      return rejectWithValue("Failed to fetch trending coins");
-    }
-  }
-);
-
-// Slice
-const cryptoSlice = createSlice({
-  name: "crypto",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      // Fetch Crypto Prices
-      .addCase(fetchCryptoPrices.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchCryptoPrices.fulfilled, (state, action) => {
-        state.loading = false;
-        state.prices = action.payload;
-      })
-      .addCase(fetchCryptoPrices.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      // Fetch Historical Data
-      .addCase(fetchHistoricalData.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchHistoricalData.fulfilled, (state, action) => {
-        state.loading = false;
-        state.historicalData = action.payload;
-      })
-      .addCase(fetchHistoricalData.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      // Fetch Trending Coins
-      .addCase(fetchTrendingCoins.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchTrendingCoins.fulfilled, (state, action) => {
-        state.loading = false;
-        state.trendingCoins = action.payload as {
-          id: string;
-          name: string;
-          symbol: string;
-          marketCapRank: number;
-        }[];
-      })
-      .addCase(fetchTrendingCoins.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-        state.trendingCoins = []; // Reset trendingCoins on error
-      });
-  },
-});
-
-export default cryptoSlice.reducer;
+export default CryptoPrices;
