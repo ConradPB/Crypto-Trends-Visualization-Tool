@@ -19,7 +19,6 @@ const CryptoPrices = () => {
     (state: RootState) => state.crypto
   );
 
-  // State for search functionality
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState<{
     coinId: string;
@@ -27,7 +26,6 @@ const CryptoPrices = () => {
   } | null>(null);
   const [searchError, setSearchError] = useState("");
 
-  // Symbol to ID mapping
   const SYMBOL_TO_ID_MAP: Record<string, string> = {
     btc: "bitcoin",
     eth: "ethereum",
@@ -41,129 +39,45 @@ const CryptoPrices = () => {
     bnb: "binancecoin",
     shib: "shiba-inu",
     pepe: "pepe",
-    usdt: "tether",
-    usdc: "usd-coin",
-    busd: "binance-usd",
-    wbtc: "wrapped-bitcoin",
-    dai: "dai",
-    matic: "matic-network",
-    trx: "tron",
-    avax: "avalanche-2",
-    xlm: "stellar",
-    atom: "cosmos",
-    near: "near",
-    egld: "elrond-erd-2",
-    uni: "uniswap",
-    sand: "the-sandbox",
-    mana: "decentraland",
-    axs: "axie-infinity",
-    ape: "apecoin",
-    algo: "algorand",
-    etc: "ethereum-classic",
-    fil: "filecoin",
-    xtz: "tezos",
-    hbar: "hedera-hashgraph",
-    icp: "internet-computer",
-    eos: "eos",
-    bch: "bitcoin-cash",
-    ftm: "fantom",
-    flow: "flow",
-    chiliz: "chiliz",
-    arb: "arbitrum",
-    apt: "aptos",
-    lunc: "terra-luna-classic",
-    stx: "stacks",
-    mina: "mina-protocol",
-    osmo: "osmosis",
-    ren: "ren",
-    grt: "the-graph",
-    enj: "enjincoin",
-    cro: "crypto-com-chain",
-    dydx: "dydx",
-    sushiswap: "sushi",
-    comp: "compound-governance-token",
-    gala: "gala",
-    ilv: "illuvium",
-    qtum: "qtum",
-    yfi: "yearn-finance",
-    omg: "omisego",
-    rsr: "reserve-rights-token",
-    zen: "horizen",
-    one: "harmony",
-    rose: "oasis-network",
-    ankr: "ankr",
-    c98: "coin98",
-    kda: "kadena",
-    ksm: "kusama",
-    bal: "balancer",
-    glmr: "moonbeam",
-    frax: "frax",
-    ldo: "lido-dao",
-    spell: "spell-token",
-    fxs: "frax-share",
-    lrc: "loopring",
-    bat: "basic-attention-token",
-    audio: "audius",
-    rari: "rarible",
-    ens: "ethereum-name-service",
-    mln: "melon",
-    mkr: "maker",
   };
 
-  // Fetch initial prices
   useEffect(() => {
     dispatch(
       fetchCryptoPrices(
-        "bitcoin,ethereum,dogecoin,cardano,solana,ripple,litecoin,chainlink,polkadot,binancecoin"
+        "bitcoin,ethereum,dogecoin,cardano,solana,xrp,litecoin,chainlink,polkadot,binancecoin"
       )
     );
   }, [dispatch]);
 
-  // Handle search submission
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
 
     try {
-      // Normalize user input
       const userInput = searchTerm.toLowerCase().trim();
-
-      // Map symbols to IDs
       const coinId = SYMBOL_TO_ID_MAP[userInput] || userInput;
 
-      console.log("Searching for coin ID:", coinId); // Debugging log
+      console.log("Searching for coin ID:", coinId);
+      const response = await axiosInstance.get("/api/crypto/prices", {
+        params: { ids: coinId, vs_currencies: "usd" },
+      });
+      console.log("Search API Response:", response.data);
 
-      // Encode the coin ID to prevent API errors
-      const encodedCoinId = encodeURIComponent(coinId);
-
-      // Fetch the price for the searched cryptocurrency
-      const response = await axiosInstance.get(
-        `/crypto/prices?ids=${encodedCoinId}&vs_currencies=usd`
-      );
-      console.log("Fetch Response Status:", response.status); // Log HTTP status
-      const data = response.data;
-      console.log("Search API Response:", data); // Debugging log
-
-      if (Object.keys(data).length === 0) {
-        // Handle empty response (invalid ID)
+      if (Object.keys(response.data).length === 0) {
         setSearchError("Cryptocurrency not found");
         setSearchResult(null);
-      } else if (data[coinId]) {
-        // Valid response with price data
+      } else if (response.data[coinId]) {
         setSearchResult({
           coinId: coinId,
-          price: data[coinId].usd,
+          price: response.data[coinId].usd,
         });
         setSearchError("");
       } else {
-        // Unexpected response format
         setSearchError("Failed to fetch cryptocurrency data");
         setSearchResult(null);
       }
     } catch (err) {
       console.error("Error fetching cryptocurrency data:", err);
-
-      // Handle network errors or other unexpected issues
       setSearchError("Failed to fetch cryptocurrency data");
       setSearchResult(null);
     }
@@ -171,12 +85,9 @@ const CryptoPrices = () => {
 
   return (
     <Box mt={4}>
-      {/* Title */}
       <Typography variant="h4" textAlign="center" mb={4}>
         Cryptocurrency Prices
       </Typography>
-
-      {/* Search Bar */}
       <Box mb={4} display="flex" justifyContent="center">
         <form onSubmit={handleSearch} style={{ width: "80%", maxWidth: 400 }}>
           <TextField
@@ -199,8 +110,6 @@ const CryptoPrices = () => {
           />
         </form>
       </Box>
-
-      {/* Display Search Result */}
       {searchResult && (
         <Box mb={4} display="flex" justifyContent="center">
           <Card
@@ -209,9 +118,7 @@ const CryptoPrices = () => {
               boxShadow: 2,
               borderRadius: 2,
               transition: "transform 0.2s",
-              "&:hover": {
-                transform: "scale(1.02)",
-              },
+              "&:hover": { transform: "scale(1.02)" },
             }}
           >
             <CardContent>
@@ -225,8 +132,6 @@ const CryptoPrices = () => {
           </Card>
         </Box>
       )}
-
-      {/* Display Search Error */}
       {searchError && (
         <Box mb={4} display="flex" justifyContent="center">
           <Typography variant="body1" color="error">
@@ -234,8 +139,6 @@ const CryptoPrices = () => {
           </Typography>
         </Box>
       )}
-
-      {/* Loading State */}
       {loading && (
         <Box
           display="flex"
@@ -246,8 +149,6 @@ const CryptoPrices = () => {
           <CircularProgress />
         </Box>
       )}
-
-      {/* Error State */}
       {error && (
         <Box display="flex" justifyContent="center" mt={4}>
           <Typography variant="h6" color="error">
@@ -255,8 +156,6 @@ const CryptoPrices = () => {
           </Typography>
         </Box>
       )}
-
-      {/* Prices List */}
       <Grid container spacing={3} justifyContent="center">
         {Object.entries(prices).map(([coin, priceData]) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={coin}>
@@ -266,9 +165,7 @@ const CryptoPrices = () => {
                 boxShadow: 2,
                 borderRadius: 2,
                 transition: "transform 0.2s",
-                "&:hover": {
-                  transform: "scale(1.02)",
-                },
+                "&:hover": { transform: "scale(1.02)" },
               }}
             >
               <CardContent>
