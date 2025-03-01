@@ -1,14 +1,19 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import axiosInstance from '../api/axiosInstance';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 export interface CryptoPriceData {
   usd: number;
 }
 interface CryptoState {
-  prices: Record<string, CryptoPriceData>;  
+  prices: Record<string, CryptoPriceData>;
   historicalData: Record<string, { date: string; price: number }[]>;
-  trendingCoins: { id: string; name: string; symbol: string; marketCapRank: number }[];
+  trendingCoins: {
+    id: string;
+    name: string;
+    symbol: string;
+    marketCapRank: number;
+  }[];
   loading: boolean;
   error: string | null;
 }
@@ -26,10 +31,9 @@ export const fetchCryptoPrices = createAsyncThunk(
   "crypto/fetchCryptoPrices",
   async (ids: string, { rejectWithValue }) => {
     try {
-      // Add the `vs_currencies=usd` parameter to the URL
-      const response = await axiosInstance.get(
-        `/crypto/prices?ids=${ids}&vs_currencies=usd`
-      );
+      const response = await axiosInstance.get("/crypto/prices", {
+        params: { ids, vs_currencies: "usd" },
+      });
       console.log("Crypto Prices API Response:", response.data);
       return response.data;
     } catch (error) {
@@ -41,28 +45,32 @@ export const fetchCryptoPrices = createAsyncThunk(
   }
 );
 
-
 export const fetchHistoricalData = createAsyncThunk(
-  'crypto/fetchHistoricalData',
-  async (params: { id: string; days: string, start?: string; end?: string }, { rejectWithValue }) => {
+  "crypto/fetchHistoricalData",
+  async (
+    params: { id: string; days: string; start?: string; end?: string },
+    { rejectWithValue }
+  ) => {
     try {
-      console.log('Fetching historical data with params:', params);
-
-      const queryParams = new URLSearchParams();
-      queryParams.append('id', params.id);
-      if (params.days) queryParams.append('days', params.days);
-      if (params.start) queryParams.append('start', params.start);
-      if (params.end) queryParams.append('end', params.end);
-      
-      const response = await axiosInstance.get(`/crypto/historical?id=${params.id}&days=${params.days}`);
-      console.log('Historical data response:', response.data);
+      console.log("Fetching historical data with params:", params);
+      const response = await axiosInstance.get("/crypto/historical", {
+        params: {
+          id: params.id,
+          days: params.days,
+          start: params.start,
+          end: params.end,
+        },
+      });
+      console.log("Historical data response:", response.data);
       return response.data;
     } catch (error) {
-      console.error('Error fetching historical data:', error);
+      console.error("Error fetching historical data:", error);
       if (axios.isAxiosError(error) && error.response) {
-        return rejectWithValue(error.response.data || 'Failed to fetch historical data');
+        return rejectWithValue(
+          error.response.data || "Failed to fetch historical data"
+        );
       }
-      return rejectWithValue('Failed to fetch historical data');
+      return rejectWithValue("Failed to fetch historical data");
     }
   }
 );
@@ -70,28 +78,28 @@ export const fetchHistoricalData = createAsyncThunk(
 export const fetchTrendingCoins = createAsyncThunk(
   "crypto/fetchTrendingCoins",
   async (_, { rejectWithValue }) => {
-      try {
-          const response = await axiosInstance.get("/crypto/trending");
-          console.log("Trending Coins API Response:", response.data);
-          return response.data.coins;
-      } catch (error) {
-          if (axios.isAxiosError(error) && error.response) {
-              return rejectWithValue(error.response.data || "Failed to fetch trending coins");
-          }
-          return rejectWithValue("Failed to fetch trending coins");
+    try {
+      const response = await axiosInstance.get("/crypto/trending");
+      console.log("Trending Coins API Response:", response.data);
+      return response.data.coins;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(
+          error.response.data || "Failed to fetch trending coins"
+        );
       }
+      return rejectWithValue("Failed to fetch trending coins");
+    }
   }
 );
-  
 
 // Slice
 const cryptoSlice = createSlice({
-  name: 'crypto',
+  name: "crypto",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Fetch Crypto Prices
       .addCase(fetchCryptoPrices.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -104,7 +112,6 @@ const cryptoSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Fetch Historical Data
       .addCase(fetchHistoricalData.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -117,19 +124,23 @@ const cryptoSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Fetch Trending Coins
       .addCase(fetchTrendingCoins.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchTrendingCoins.fulfilled, (state, action) => {
         state.loading = false;
-        state.trendingCoins = action.payload as { id: string; name: string; symbol: string; marketCapRank: number }[];
+        state.trendingCoins = action.payload as {
+          id: string;
+          name: string;
+          symbol: string;
+          marketCapRank: number;
+        }[];
       })
       .addCase(fetchTrendingCoins.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-        state.trendingCoins = []; // Reset trendingCoins on error
+        state.trendingCoins = [];
       });
   },
 });
