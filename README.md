@@ -161,6 +161,11 @@ Ensure the following for deployment:
 - Use a process manager like PM2 or Docker.
 - Enable HTTPS in production.
 
+## Live Backend link
+
+ [Backend API](https://crypto-tool-aaszkvsck-conrad-p-bs-projects.vercel.app/)
+
+ 
 # 📌 Crypto Trends Visualization Tool - Frontend
 
 **Author**: Conrad P Mbaziira B
