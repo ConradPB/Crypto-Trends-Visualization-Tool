@@ -294,6 +294,10 @@ Want to improve this project? Follow these steps:
 
 ---
 
+Check out the live Crypto Trends Visualization Tool: [Frontend](https://crypto-trends-kohl.vercel.app/) 
+
+---
+
 ## 📜 License
 
 This project is **open-source** under the **MIT License**.
