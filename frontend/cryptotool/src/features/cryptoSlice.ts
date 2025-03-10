@@ -26,23 +26,32 @@ const initialState: CryptoState = {
   error: null,
 };
 
+// Type the API response for prices
+interface PricesResponse {
+  [coin: string]: CryptoPriceData | number; // Allow both { usd: number } or flat number
+}
+
 export const fetchCryptoPrices = createAsyncThunk(
   "crypto/fetchCryptoPrices",
   async (ids: string, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get("/crypto/prices", {
-        params: { ids, vs_currencies: "usd" },
-      });
-      console.log("Crypto Prices API Response:", response.data);
-      // Normalize: Ensure every value has { usd: number }
-      const normalizedPrices = Object.fromEntries(
-        Object.entries(response.data).map(([coin, value]) => [
-          coin,
-          typeof value === "object" && value !== null && "usd" in value
-            ? value
-            : { usd: value as number }, // Handle flat numbers if API changes
-        ])
+      const response = await axiosInstance.get<PricesResponse>(
+        "/crypto/prices",
+        {
+          params: { ids, vs_currencies: "usd" },
+        }
       );
+      console.log("Crypto Prices API Response:", response.data);
+      // Normalize: Ensure every value is { usd: number }
+      const normalizedPrices: Record<string, CryptoPriceData> =
+        Object.fromEntries(
+          Object.entries(response.data).map(([coin, value]) => [
+            coin,
+            typeof value === "number"
+              ? { usd: value }
+              : { usd: (value as CryptoPriceData).usd },
+          ])
+        );
       return normalizedPrices;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -61,7 +70,9 @@ export const fetchHistoricalData = createAsyncThunk(
   ) => {
     try {
       console.log("Fetching historical data with params:", params);
-      const response = await axiosInstance.get("/crypto/historical", {
+      const response = await axiosInstance.get<
+        Record<string, { date: string; price: number }[]>
+      >("/crypto/historical", {
         params: {
           id: params.id,
           days: params.days,
@@ -70,12 +81,7 @@ export const fetchHistoricalData = createAsyncThunk(
         },
       });
       console.log("Historical data response:", response.data);
-      // Normalize: Ensure array if single coin
-      const normalized =
-        typeof response.data === "object" && response.data[params.id]
-          ? { [params.id]: response.data[params.id] }
-          : response.data;
-      return normalized;
+      return response.data;
     } catch (error) {
       console.error("Error fetching historical data:", error);
       if (axios.isAxiosError(error) && error.response) {
@@ -92,9 +98,15 @@ export const fetchTrendingCoins = createAsyncThunk(
   "crypto/fetchTrendingCoins",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get("/crypto/trending");
+      const response = await axiosInstance.get<{
+        coins: {
+          id: string;
+          name: string;
+          symbol: string;
+          marketCapRank: number;
+        }[];
+      }>("/crypto/trending");
       console.log("Trending Coins API Response:", response.data);
-      // Fallback to empty array if coins missing
       return response.data.coins || [];
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
