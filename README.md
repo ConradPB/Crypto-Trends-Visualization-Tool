@@ -163,9 +163,8 @@ Ensure the following for deployment:
 
 ## Live Backend link
 
- [Backend API](https://crypto-tool-aaszkvsck-conrad-p-bs-projects.vercel.app/)
+Check it out at [Backend API](https://crypto-tool-aaszkvsck-conrad-p-bs-projects.vercel.app/)
 
- 
 # 📌 Crypto Trends Visualization Tool - Frontend
 
 **Author**: Conrad P Mbaziira B
@@ -299,7 +298,7 @@ Want to improve this project? Follow these steps:
 
 ---
 
-Check out the live Crypto Trends Visualization Tool: [Frontend](https://crypto-trends-kohl.vercel.app/) 
+Check out the live Crypto Trends Visualization Tool: [Frontend](https://crypto-trends-kohl.vercel.app/)
 
 ---
 
