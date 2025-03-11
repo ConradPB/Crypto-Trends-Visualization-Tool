@@ -163,7 +163,7 @@ Ensure the following for deployment:
 
 ## Live Backend link
 
-Check it out at [Backend API](https://crypto-tool-aaszkvsck-conrad-p-bs-projects.vercel.app/)
+Check it out at [Backend API](https://crypto-trends-visualization-tool.vercel.app/)
 
 # 📌 Crypto Trends Visualization Tool - Frontend
 
