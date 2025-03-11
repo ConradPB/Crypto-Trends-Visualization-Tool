@@ -202,11 +202,13 @@ The **Crypto Trends Visualization Tool** provides real-time and historical crypt
 - **Recharts** - Interactive cryptocurrency price charts.
 - **Axios** - API requests to fetch crypto data.
 - **Vite** - Fast and optimized development build system.
+- **Hosting**: Vercel
 
 ### **Backend API:**
 
 - **Node.js + Express.js** - Handles API requests.
 - **CoinGecko API** - Fetches real-time cryptocurrency data.
+- **Hosting**: Vercel
 
 ---
 
